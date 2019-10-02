@@ -1,5 +1,4 @@
 # musclebeachtools
-# This is a copy of musclebeachtools hlab branch renamed as tests2
 ---
 This package used to analyze neuronal data, from basic plotting
  (ISI histograms, firing rate, cross correlation),
@@ -9,11 +8,11 @@ This package used to analyze neuronal data, from basic plotting
 ## Installation
 
 ### Download musclebeachtools
-git clone https://github.com/hengenlab/musclebeachtools.git  
+git clone https://github.com/hengenlab/musclebeachtools_hlab.git   
 Enter your username and password
 
 ### Using pip
-cd locationofmusclebeachtools/musclebeachtools/  
+cd locationofmusclebeachtools_hlab/musclebeachtools/  
 pip install .
 
 
@@ -24,7 +23,7 @@ pip install .
 My Computer > Properties > Advanced System Settings > Environment Variables >  
 In system variables, create a new variable  
     Variable name  : PYTHONPATH  
-    Variable value : location where musclebeachtools is located  
+    Variable value : location where musclebeachtools_hlab is located  
     Click OK
 
 
@@ -32,7 +31,7 @@ In system variables, create a new variable
 If you are using bash shell  
 In terminal open .barshrc or .bash_profile  
 add this line  
-export PYTHONPATH=/location_of_musclebeachtools:$PYTHONPATH
+export PYTHONPATH=/location_of_musclebeachtools_hlab:$PYTHONPATH
 
 
 ##### Mac
@@ -40,7 +39,7 @@ If you are using bash shell
 In terminal cd ~/  
 then open  .profile using your favourite text editor  
 add this line  
-export PYTHONPATH=/location_of_musclebeachtools:$PYTHONPATH
+export PYTHONPATH=/location_of_musclebeachtools_hlab:$PYTHONPATH
 
 
 ---
@@ -67,4 +66,7 @@ n1[4].isi_hist()
 n1[4].plotFR()
 
 ```
+## Issues
+
+```Please slack Kiran ```
 ---
