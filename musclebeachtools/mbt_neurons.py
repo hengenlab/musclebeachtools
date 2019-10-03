@@ -108,6 +108,9 @@ class Neuron:
     '''
     Neuron class for use in Hengen Lab
     '''
+    # fs, datatype, species, sex, age, start_time, end_time, clust_idx,
+    # spike_time, quality, waveform, waveforms, peak_channel, region,
+    # cell_type, mean_amplitude, behavior
     fs = 25000
     datatype = 'npy'
     species = str('')
@@ -115,6 +118,7 @@ class Neuron:
     age = np.int16(0)
     start_time = 0
     end_time = 12 * 60 * 60
+    behavior = None
 
     def __init__(self, sp_c, sp_t, qual, mwf, mwfs, max_channel):
         '''
@@ -151,7 +155,7 @@ class Neuron:
 
         logger.debug('Neuron %d', sp_c)
         self.clust_idx = np.int16(sp_c)
-        self.time = np.int64(sp_t)
+        self.spike_time = np.int64(sp_t)
         self.quality = np.int8(qual)
         self.waveform = mwf
         self.waveforms = mwfs
@@ -243,7 +247,7 @@ class Neuron:
 
         Returns
         -------
-        self.time : Returns shuffled spike times
+        self.spike_time : Returns shuffled spike times
 
         Raises
         ------
@@ -256,22 +260,23 @@ class Neuron:
 
         Examples
         --------
-        self.time = n1[0].shuffle_times(self, shuffle_alg=1, time_offset=10)
+        self.spike_time = n1[0].shuffle_times(self, shuffle_alg=1,
+                                              time_offset=10)
 
         '''
 
         logging.info('Shuffling spike times')
         assert shuffle_alg in [1], 'Unkown type in shuffle_times()'
-        max_t = np.max(self.time)
-        min_t = np.min(self.time)
+        max_t = np.max(self.spike_time)
+        min_t = np.min(self.spike_time)
         # add offset
         if shuffle_alg == 1:
             logging.debug('Shuffling spike times using random')
-            self.time = \
+            self.spike_time = \
                 np.sort(
                         np.random.randint(low=min_t,
                                           high=max_t,
-                                          size=np.size(self.time),
+                                          size=np.size(self.spike_time),
                                           dtype='int64'))
 
     def plot_wf(self):
@@ -359,7 +364,7 @@ class Neuron:
 
         logger.info('Calculating ISI')
         # Sample time to time in seconds
-        time_s = self.time/self.fs
+        time_s = self.spike_time/self.fs
 
         if start is False:
             start = self.start_time
@@ -432,7 +437,7 @@ class Neuron:
 
         logger.info('Plotting firing rate')
         # Sample time to time in seconds
-        time_s = (self.time / self.fs)
+        time_s = (self.spike_time / self.fs)
 
         if start is False:
             start = self.start_time
