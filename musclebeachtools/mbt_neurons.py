@@ -154,12 +154,12 @@ class Neuron:
         '''
 
         logger.debug('Neuron %d', sp_c)
-        self.clust_idx = np.int16(sp_c)
+        self.clust_idx = np.int16(sp_c)[0]
         self.spike_time = np.int64(sp_t)
         self.quality = np.int8(qual)
         self.waveform = mwf
         self.waveforms = mwfs
-        self.peak_channel = np.int16(max_channel)
+        self.peak_channel = np.int16(max_channel)[0]
         self.region = str("")
         self.cell_type, self.mean_amplitude = \
             self.__find_celltypewithmeanamplitude()
@@ -232,6 +232,35 @@ class Neuron:
         cell_type = 'RSU' if peaklatency >= 0.4 else 'FS'
 
         return cell_type, mean_amplitude
+
+    def get_behavior(self):
+        '''
+        Get sleep wake behavioral states of animal
+
+        get_behavior(self)
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+        self.behavior : Get sleep wake states
+
+        Raises
+        ------
+
+        See Also
+        --------
+
+        Notes
+        -----
+
+        Examples
+        --------
+
+        '''
+        logger.info('Not implemented')
+        pass
 
     def shuffle_times(self, shuffle_alg=1, time_offset=10):
         '''
@@ -465,6 +494,65 @@ class Neuron:
         return hzcount
 
 
+def n_getspikes(neuron_list, start=False, end=False):
+
+    '''
+    Extracts spiketimes to a list from neuron_list
+    Unless otherwise specified start, end are in seconds
+
+    n_getspikes(neuron_list, start=False, end=False)
+
+    Parameters
+    ----------
+    neuron_list : List of neurons from (usually output from ksout)
+    start : Start time (default self.start_time)
+    end : End time (default self.end_time)
+
+    Returns
+    -------
+    spiketimes_allcells : List of all spiketimes
+
+    Raises
+    ------
+
+    See Also
+    --------
+
+    Notes
+    -----
+
+    Examples
+    --------
+    n_getspikes(neuron_list, start=False, end=False)
+
+    '''
+
+    logger.info('Extracting spiketimes to a list from neuron_list')
+    # check neuron_list is not empty
+    assert len(neuron_list) > 0, \
+        'Please check neuron_list is not empty'
+
+    if start is False:
+        start = neuron_list[0].start_time
+    if end is False:
+        end = neuron_list[0].end_time
+    logger.info('start and end is %s and %s', start, end)
+
+    # Create empty list
+    spiketimes_allcells = []
+
+    # Loop through and get spike times
+    for i, _ in enumerate(neuron_list):
+        logger.debug('Getting spiketimes for cell %d', str(i))
+
+        # get spiketimes for each cell and append
+        spiketimes = neuron_list[i].spike_time
+        spiketimes = spiketimes[(spiketimes > start) & (spiketimes < end)]
+        spiketimes_allcells.append(spiketimes)
+
+    return spiketimes_allcells
+
+
 # loading function
 def ksout(datadir, filenum=0, prbnum=1, filt=None):
     '''
@@ -612,6 +700,7 @@ def ksout(datadir, filenum=0, prbnum=1, filt=None):
                 max_channel = cluster_maxchannel[i]
                 n.append(Neuron(sp_c, sp_t, qual, mwf, mwfs, max_channel))
 
+    logger.info('Found %d neurons', len(n))
     # neurons = n.copy()
     # neurons = copy.deepcopy(n)
     # return neurons
