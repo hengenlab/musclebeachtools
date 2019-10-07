@@ -65,6 +65,9 @@ n1[4].isi_hist()
 # plot firing rate of 4th neuron
 n1[4].plotFR()
 
+# get spiketimes from all neurons in n1 as a list
+spiketimes_list = n_getspikes(n1)
+
 ```
 ## Issues
 
