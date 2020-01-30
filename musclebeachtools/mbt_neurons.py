@@ -111,20 +111,26 @@ class Neuron:
     # fs, datatype, species, sex, age, start_time, end_time, clust_idx,
     # spike_time, quality, waveform, waveforms, peak_channel, region,
     # cell_type, mean_amplitude, behavior
-    fs = 25000
+    # fs = 25000
     datatype = 'npy'
-    species = str('')
-    sex = str('')
-    age = np.int16(0)
-    start_time = 0
-    end_time = 12 * 60 * 60
+    # species = str('')
+    # sex = str('')
+    # age = np.int16(0)
+    # start_time = 0
+    # end_time = 12 * 60 * 60
     behavior = None
 
-    def __init__(self, sp_c, sp_t, qual, mwf, mwfs, max_channel):
+    def __init__(self, sp_c, sp_t, qual, mwf, mwfs, max_channel,
+                 fs=25000, start_time=0, end_time=12 * 60 * 60,
+                 mwft=None,
+                 sex=None, age=None, species=None):
         '''
         The constructor for Neuron class.
 
-        __init__(self, sp_c, sp_t, qual, mwf, mwfs, max_channel)
+        __init__(self, sp_c, sp_t, qual, mwf, mwfs, max_channel,
+                 fs=25000, start_time=0, end_time=12 * 60 * 60,
+                 mwft=None,
+                 sex=None, age=None, species=None)
 
         Parameters
         ----------
@@ -134,6 +140,14 @@ class Neuron:
         mwf : mean waveform
         mwfs : mean waveform spline
         max_channel : peak channel
+        fs : sampling rate
+        start_time : start time in seconds
+        end_time : end time in seconds
+        mwft : mean waveform tetrodes
+        sex : sex of animal ('m' or 'f')
+        age : age in days from birth
+        species : "r" for rat or "m" for mouse
+
 
         Returns
         -------
@@ -149,16 +163,27 @@ class Neuron:
 
         Examples
         --------
-        (Neuron(sp_c, sp_t, qual, mwf, mwfs, max_channel)
+        (Neuron(sp_c, sp_t, qual, mwf, mwfs, max_channel,
+                fs=25000, start_time=0, end_time=12 * 60 * 60,
+                mwft=None,
+                sex=None, age=None, species=None))
 
         '''
 
         logger.debug('Neuron %d', sp_c)
+        self.fs = fs
+        self.start_time = start_time
+        self.end_time = end_time
+        self.sex = sex
+        self.age = age
+        self.species = species
+
         self.clust_idx = np.int16(sp_c)[0]
         self.spike_time = np.int64(sp_t)
         self.quality = np.int8(qual)
         self.waveform = mwf
         self.waveforms = mwfs
+        self.waveform_tetrodes = mwft
         self.peak_channel = np.int16(max_channel)[0]
         self.region = str("")
         self.cell_type, self.mean_amplitude = \
@@ -546,7 +571,7 @@ def n_getspikes(neuron_list, start=False, end=False):
         logger.debug('Getting spiketimes for cell %d', str(i))
 
         # get spiketimes for each cell and append
-        spiketimes = neuron_list[i].spike_time
+        spiketimes = neuron_list[i].spike_time / neuron_list[i].fs
         spiketimes = spiketimes[(spiketimes > start) & (spiketimes < end)]
         spiketimes_allcells.append(spiketimes)
 
@@ -655,7 +680,7 @@ def ksout(datadir, filenum=0, prbnum=1, filt=None):
     logger.debug('Finding sampling rate')
     fs_list = [20000, 25000]
     assert sampling_rate in fs_list, "fs (sampling rate) not in list"
-    Neuron.fs = sampling_rate
+    # Neuron.fs = sampling_rate
     n = []
 
     # Start and end time
@@ -672,8 +697,8 @@ def ksout(datadir, filenum=0, prbnum=1, filt=None):
     assert (end_time - start_time) > 1.0, \
         'Please check start and end time is more than few seconds apart'
     logger.info('Start and end times are %f and %f', start_time, end_time)
-    Neuron.start_time = start_time
-    Neuron.end_time = end_time
+    # Neuron.start_time = start_time
+    # Neuron.end_time = end_time
 
     # Loop through unique clusters and make neuron list
     for i in unique_clusters:
@@ -688,7 +713,13 @@ def ksout(datadir, filenum=0, prbnum=1, filt=None):
             mwf = cluster_mwf[i]
             mwfs = cluster_mwfs[i]
             max_channel = cluster_maxchannel[i]
-            n.append(Neuron(sp_c, sp_t, qual, mwf, mwfs, max_channel))
+            # def __init__(self, sp_c, sp_t, qual, mwf, mwfs, max_channel,
+            #              fs=25000, start_time=0, end_time=12 * 60 * 60,
+            #              mwft=None,
+            #              sex=None, age=None, species=None):
+            n.append(Neuron(sp_c, sp_t, qual, mwf, mwfs, max_channel,
+                            fs=sampling_rate,
+                            start_time=start_time, end_time=end_time))
         elif len(filt) > 0:
             if cluster_quals[i] in filt:
                 lspike_clust = np.where(spike_clusters == i)
@@ -698,7 +729,9 @@ def ksout(datadir, filenum=0, prbnum=1, filt=None):
                 mwf = cluster_mwf[i]
                 mwfs = cluster_mwfs[i]
                 max_channel = cluster_maxchannel[i]
-                n.append(Neuron(sp_c, sp_t, qual, mwf, mwfs, max_channel))
+                n.append(Neuron(sp_c, sp_t, qual, mwf, mwfs, max_channel,
+                                fs=sampling_rate,
+                                start_time=start_time, end_time=end_time))
 
     logger.info('Found %d neurons', len(n))
     # neurons = n.copy()
