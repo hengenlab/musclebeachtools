@@ -588,6 +588,7 @@ def n_getspikes(neuron_list, start=False, end=False):
 
     Raises
     ------
+    ValueError if neuron list is empty
 
     See Also
     --------
@@ -603,8 +604,8 @@ def n_getspikes(neuron_list, start=False, end=False):
 
     logger.info('Extracting spiketimes to a list from neuron_list')
     # check neuron_list is not empty
-    assert len(neuron_list) > 0, \
-        'Please check neuron_list is not empty'
+    if (len(neuron_list) == 0):
+        raise ValueError('Neuron list is empty')
 
     if start is False:
         start = neuron_list[0].start_time
@@ -625,6 +626,96 @@ def n_getspikes(neuron_list, start=False, end=False):
         spiketimes_allcells.append(spiketimes)
 
     return spiketimes_allcells
+
+
+def n_spiketimes_to_spikewords(neuron_list, binsz=0.02,
+                               start=False, end=False,
+                               binarize=0):
+    '''
+    This function converts spiketimes to spikewords
+    Unless otherwise specified binsz, start, end are in seconds
+
+    n_spiketimes_to_spikewords(neuron_list, binsz=0.02, binarize=0)
+
+    Parameters
+    ----------
+    neuron_list : List of neurons from (usually output from ksout)
+    binsz : Bin size (default 0.02 (20 ms))
+    start : Start time (default self.start_time)
+    end : End time (default self.end_time)
+    binarize : Get counts (default 0) in bins,
+    if binarize is 1,binarize to 0 and 1
+
+    Returns
+    -------
+    hzcount : count per bins
+    spikewords_array : array of spikewords row x column (time bins x cells)
+
+    Raises
+    ------
+    ValueError if neuron list is empty
+
+    See Also
+    --------
+
+    Notes
+    -----
+
+    Examples
+    --------
+    n_spiketimes_to_spikewords(neuron_list, binsz=0.02, binarize=0)
+    '''
+
+    # Constants
+    conv_mills = 1000.0
+
+    logger.info('Converting spiketime to spikewords')
+
+    # check neuron_list is not empty
+    if (len(neuron_list) == 0):
+        raise ValueError('Neuron list is empty')
+    # check binsize is not less than 1ms
+    if (binsz < 0.001):
+        raise ValueError('Bin size is less than 1millisecond')
+    # binarize is only 0 or 1
+    if (binarize not in [0, 1]):
+        raise ValueError('Binarize takes only values 0 or 1')
+
+    # Get time
+    if start is False:
+        start = neuron_list[0].start_time
+    if end is False:
+        end = neuron_list[0].end_time
+    logger.debug('start and end is %s and %s', start, end)
+
+    # Get spiketime list
+    spiketimes = n_getspikes(neuron_list, start=start, end=end)
+
+    # convert time to milli seconds
+    start = start * conv_mills
+    end = end * conv_mills
+    binsz = binsz * conv_mills
+
+    # startime in bins
+    binrange = np.arange(start, end, binsz)
+    n_cells = len(spiketimes)
+
+    # initialize array
+    spikewords_array = np.zeros([n_cells, binrange.shape[0]-1])
+
+    # loop over cells and find counts/binarize
+    for i in range(n_cells):
+
+        # spiketimes in seconds to ms
+        spiketimes_cell = np.asarray(spiketimes)[i] * conv_mills
+        counts, bins = np.histogram(spiketimes_cell, bins=binrange)
+
+        # binarize the counts
+        if binarize == 1:
+            counts[counts > 0] = 1
+        spikewords_array[i, :] = counts
+
+    return(spikewords_array.astype(np.int16))
 
 
 # loading function
