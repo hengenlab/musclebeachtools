@@ -370,7 +370,7 @@ class Neuron:
         with sns.axes_style("white"):
             fig1 = plt.figure()
             ax = fig1.add_subplot(111)
-            ax.plot(self.waveforms, color='#6a88f7')
+            ax.plot(self.waveform, color='#6a88f7')
             # ax.set_ylim(bottom=0)
             # ax.set_xlim(left=0)
             ax.set_xlabel('Time')
