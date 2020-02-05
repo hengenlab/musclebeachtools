@@ -518,12 +518,12 @@ class Neuron:
         # plt.show()
         return hzcount
 
-    def changequal(self, qual):
+    def set_qual(self, qual):
 
         '''
         This function allows to change quality of neuron
 
-        changequal(self, qual)
+        set_qual(self, qual)
 
         Parameters
         ----------
@@ -548,7 +548,7 @@ class Neuron:
 
         Examples
         --------
-        n[0].changequal(qual)
+        n[0].set_qual(qual)
 
         '''
 
