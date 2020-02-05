@@ -518,6 +518,55 @@ class Neuron:
         # plt.show()
         return hzcount
 
+    def changequal(self, qual):
+
+        '''
+        This function allows to change quality of neuron
+
+        changequal(self, qual)
+
+        Parameters
+        ----------
+        qual : Quality values should be 1, 2, 3 or 4
+               1 : Good
+               2 : Good but some contamination
+               3 : Multiunit contaminated unit
+               4 : Noise unit
+
+        Returns
+        -------
+
+        Raises
+        ------
+        ValueError if qual is not 1, 2, 3 or 4
+
+        See Also
+        --------
+
+        Notes
+        -----
+
+        Examples
+        --------
+        n[0].changequal(qual)
+
+        '''
+
+        logger.info('Changing quality')
+
+        # Check qual value
+        if not ((qual >= 1) and (qual <= 4)):
+            logger.error('1 : Good')
+            logger.error('2 : Good but some contamination')
+            logger.error('3 : Multiunit contaminated unit')
+            logger.error('4 : Noise unit')
+            raise \
+                ValueError('Error:quality values are 1, 2, 3 or 4 given {}'
+                           .format(qual))
+
+        logger.debug('Quality is of unit %d is %d', self.clust_idx, qual)
+        self.quality = np.int8(qual)
+
 
 def n_getspikes(neuron_list, start=False, end=False):
 
