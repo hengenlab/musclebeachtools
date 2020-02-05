@@ -24,6 +24,9 @@ try:
 except ImportError:
     raise ImportError('Run command : conda install numpy')
 from matplotlib import pyplot as plt
+# from matplotlib.widgets import TextBox
+# from matplotlib.widgets import CheckButtons
+from matplotlib.widgets import RadioButtons
 try:
     import seaborn as sns
 except ImportError:
@@ -447,8 +450,8 @@ class Neuron:
         cont_text = 'Contamination is {} percent.' .format(contamination)
         logger.info('Contamination is {} percent.' .format(contamination))
 
-        plt.ion()
         if lplot:
+            plt.ion()
             with sns.axes_style("white"):
                 fig1 = plt.figure()
                 ax = fig1.add_subplot(111)
@@ -460,9 +463,10 @@ class Neuron:
                 ax.set_ylabel('Number of intervals')
                 ax.text(30, 0.7*ax.get_ylim()[1], cont_text)
             sns.despine()
-        return ISI
+        return ISI, edges, hist_isi
 
-    def plotFR(self, binsz=3600, start=False, end=False):
+    def plotFR(self, binsz=3600, start=False, end=False,
+               lplot=1):
         # copied from musclebeachtools
         '''
         This will produce a firing rate plot for all loaded spike times
@@ -475,6 +479,7 @@ class Neuron:
         binsz : Bin size (default 3600)
         start : Start time (default self.start_time)
         end : End time (default self.end_time)
+        lplot : To plot or not (default lplot=1, plot firing rate)
 
         Returns
         -------
@@ -511,18 +516,19 @@ class Neuron:
         # hzcount[hzcount == 0] = 'NaN'
         xbins = bins[1]/binsz
 
-        plt.ion()
-        with sns.axes_style("white"):
-            fig1 = plt.figure()
-            ax = fig1.add_subplot(111)
-            # print(hzcount)
-            ax.plot(xbins[:-1], hzcount, color='#703be7')
-            ax.set_xlabel('Time (hours)')
-            ax.set_ylabel('Firing rate (Hz)')
+        if lplot:
+            plt.ion()
+            with sns.axes_style("white"):
+                fig1 = plt.figure()
+                ax = fig1.add_subplot(111)
+                # print(hzcount)
+                ax.plot(xbins[:-1], hzcount, color='#703be7')
+                ax.set_xlabel('Time (hours)')
+                ax.set_ylabel('Firing rate (Hz)')
 
         sns.despine()
         # plt.show()
-        return hzcount
+        return hzcount, xbins
 
     def set_qual(self, qual):
 
@@ -560,6 +566,10 @@ class Neuron:
 
         logger.info('Changing quality')
 
+        # convert to int from string
+        if isinstance(qual, str):
+            qual = int(qual)
+
         # Check qual value
         if not ((qual >= 1) and (qual <= 4)):
             logger.error('1 : Good')
@@ -572,6 +582,8 @@ class Neuron:
 
         logger.debug('Quality is of unit %d is %d', self.clust_idx, qual)
         self.quality = np.int8(qual)
+        logger.info('Changing quality of unit {} is now {}'
+                    .format(self.clust_idx, self.quality))
 
     def set_onofftimes(self, ontimes, offtimes):
 
@@ -657,6 +669,94 @@ class Neuron:
 
         self.on_times = ontimes
         self.off_times = offtimes
+
+    def checkqual(self, binsz=3600, start=False, end=False):
+        # copied from musclebeachtools
+        '''
+        This will produce a firing rate plot for all loaded spike times
+        unless otherwise specified binsz, start, end are in seconds
+
+        plotFR(self, binsz=3600, start=False, end=False)
+
+        Parameters
+        ----------
+        binsz : Bin size (default 3600)
+        start : Start time (default self.start_time)
+        end : End time (default self.end_time)
+
+        Returns
+        -------
+        hzcount : count per bins
+
+        Raises
+        ------
+
+        See Also
+        --------
+
+        Notes
+        -----
+
+        Examples
+        --------
+        n1[0].plotFR(binsz=3600, start=False, end=False)
+
+        '''
+
+        logger.info('Plotting figures for checking quality')
+
+        # sharex=True, sharey=True,  figsize=(4, 4),
+        with plt.style.context('seaborn-dark-palette'):
+            fig, ax = plt.subplots(nrows=4, ncols=1, squeeze=False,
+                                   sharex=False, sharey=False,  figsize=(8, 8),
+                                   num=1, dpi=100, facecolor='w',
+                                   edgecolor='w')
+            for i, row in enumerate(ax):
+                for j, col in enumerate(row):
+                    # Plot isi
+                    if i == 0:
+
+                        _, edges, hist_isi = self.isi_hist(lplot=0)
+
+                        isi_thresh = 0.1
+                        nbins = 101
+                        contamination = 100*(sum(hist_isi[0]
+                                             [0:int((0.1/isi_thresh) *
+                                              (nbins-1)/50)]) /
+                                             sum(hist_isi[0]))
+                        contamination = round(contamination, 2)
+                        col.bar(edges[1:]*1000-0.5, hist_isi[0],
+                                color='#0b559f')
+                        # ax.set_ylim(bottom=0)
+                        # ax.set_xlim(left=0)
+                        # ax.set_xlabel('ISI (ms)')
+                        # ax.set_ylabel('Number of intervals')
+                        # ax.text(30, 0.7*ax.get_ylim()[1], cont_text)
+                        col.text(4, 12, 'ISI Cont: {}'.format(contamination),
+                                 fontsize=11)
+
+                    # plot FR
+                    elif i == 1:
+                        hzcount, xbins = self.plotFR(lplot=0,
+                                                     binsz=self.end_time/30)
+                        col.plot(xbins[:-1], hzcount, color='#703be7')
+                    elif i == 2:
+                        col.plot(self.waveform, color='#6a88f7')
+                        # axbox = plt.axes([0.1, 0.05, 0.8, 0.075])
+                    elif i == 3:
+                        col.plot([1], [2])
+                        plt.xticks([], [])
+                        plt.yticks([], [])
+                        col.spines['right'].set_visible(False)
+                        col.spines['top'].set_visible(False)
+                        col.spines['bottom'].set_visible(False)
+                        col.spines['left'].set_visible(False)
+                        axbox = plt.axes([0.125, 0.046, 0.2, 0.2])
+                        radio = RadioButtons(axbox, ('1', '2', '3', '4'))
+                        radio.on_clicked(self.set_qual)
+            # fig.tight_layout()
+
+            plt.show()
 
 
 def n_getspikes(neuron_list, start=False, end=False):
