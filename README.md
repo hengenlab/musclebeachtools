@@ -86,6 +86,24 @@ import musclebeachtools as mbt
 n = np.load('neurons_group0.npy', allow_pickle=True)
 sw = mbt.n_spiketimes_to_spikewords(n)
 
+# Set on off times
+n[2].set_onofftimes([0, 3600], [900, 7200])
+print(n[2].on_times)
+[0, 3600]
+print(n[2].off_times)
+[900, 7200]
+
+# Change quality with plot of ISI, Firingrate and Waveform
+import numpy as np
+import musclebeachtools as mbt
+n = np.load('neurons_group0.npy', allow_pickle=True)
+n[2].checkqual()
+# Check quality is changed also there is a log from checkqual
+print(n[2].quality)
+
+# Save a modified neuron list
+mbt.n_save_modified_neuron_list(n, '/home/kbn/neuron_mod.npy')
+
 ```
 ## Issues
 
