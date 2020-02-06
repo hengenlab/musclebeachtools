@@ -711,8 +711,10 @@ class Neuron:
                                    sharex=False, sharey=False,  figsize=(8, 8),
                                    num=1, dpi=100, facecolor='w',
                                    edgecolor='w')
+            fig.tight_layout(pad=1.0)
             for i, row in enumerate(ax):
                 for j, col in enumerate(row):
+
                     # Plot isi
                     if i == 0:
 
@@ -727,22 +729,34 @@ class Neuron:
                         contamination = round(contamination, 2)
                         col.bar(edges[1:]*1000-0.5, hist_isi[0],
                                 color='#0b559f')
-                        # ax.set_ylim(bottom=0)
-                        # ax.set_xlim(left=0)
-                        # ax.set_xlabel('ISI (ms)')
-                        # ax.set_ylabel('Number of intervals')
-                        # ax.text(30, 0.7*ax.get_ylim()[1], cont_text)
-                        col.text(4, 12, 'ISI Cont: {}'.format(contamination),
-                                 fontsize=11)
+                        col.text(60, 4, 'ISI Cont: {}'.format(contamination))
+                        col.set_xlabel('ISI (ms)')
+                        col.set_ylabel('Number of intervals')
+                        col.set_xlim(left=0)
+                        col.set_ylim(bottom=0)
+                        col.set_xlim(left=0, right=101)
 
                     # plot FR
                     elif i == 1:
-                        hzcount, xbins = self.plotFR(lplot=0,
-                                                     binsz=self.end_time/30)
-                        col.plot(xbins[:-1], hzcount, color='#703be7')
+                        if self.end_time > 3600 * 4:
+                            hzcount, xbins = self.plotFR(lplot=0)
+                            col.plot(xbins[:-1], hzcount, color='#703be7')
+                            col.set_xlim(left=self.start_time)
+                            col.set_xlabel('Time(hr)')
+                            col.set_ylabel('Firing rate (Hz)')
+                        else:
+                            hzcount, xbins = \
+                                self.plotFR(binsz=self.end_time/60,
+                                            lplot=0)
+                            col.plot(xbins[:-1], hzcount, color='#703be7')
+                            col.set_xlim(left=self.start_time)
+                            col.set_xlabel('Time')
+                            col.set_ylabel('Firing rate (Hz)')
                     elif i == 2:
                         col.plot(self.waveform, color='#6a88f7')
-                        # axbox = plt.axes([0.1, 0.05, 0.8, 0.075])
+                        col.set_xlabel('Time')
+                        col.set_ylabel('Amplitude')
+                        col.set_xlim(left=0, right=75)
                     elif i == 3:
                         col.plot([1], [2])
                         plt.xticks([], [])
@@ -751,10 +765,10 @@ class Neuron:
                         col.spines['top'].set_visible(False)
                         col.spines['bottom'].set_visible(False)
                         col.spines['left'].set_visible(False)
-                        axbox = plt.axes([0.125, 0.046, 0.2, 0.2])
+                        axbox = plt.axes([0.068, 0.048, 0.2, 0.2])
                         radio = RadioButtons(axbox, ('1', '2', '3', '4'))
                         radio.on_clicked(self.set_qual)
-            # fig.tight_layout()
+                        col.set_ylabel('Select quality')
 
             plt.show()
 
