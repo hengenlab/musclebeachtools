@@ -753,7 +753,10 @@ class Neuron:
                             col.set_xlabel('Time')
                             col.set_ylabel('Firing rate (Hz)')
                     elif i == 2:
-                        col.plot(self.waveform, color='#6a88f7')
+                        if self.waveform_tetrodes is not None:
+                            col.plot(self.waveform_tetrodes, color='#6a88f7')
+                        else:
+                            col.plot(self.waveform, color='#6a88f7')
                         col.set_xlabel('Time')
                         col.set_ylabel('Amplitude')
                         col.set_xlim(left=0, right=75)
