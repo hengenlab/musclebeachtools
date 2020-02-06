@@ -673,10 +673,11 @@ class Neuron:
     def checkqual(self, binsz=3600, start=False, end=False):
         # copied from musclebeachtools
         '''
-        This will produce a firing rate plot for all loaded spike times
-        unless otherwise specified binsz, start, end are in seconds
+        Change quality of a neuron
+        This will produce a figure with ISI, Firing rate, waveform and
+        radio button to change quality.
 
-        plotFR(self, binsz=3600, start=False, end=False)
+        checkqual(self, binsz=3600, start=False, end=False)
 
         Parameters
         ----------
@@ -686,7 +687,6 @@ class Neuron:
 
         Returns
         -------
-        hzcount : count per bins
 
         Raises
         ------
@@ -699,7 +699,7 @@ class Neuron:
 
         Examples
         --------
-        n1[0].plotFR(binsz=3600, start=False, end=False)
+        n1[0].checkqual(binsz=3600, start=False, end=False)
 
         '''
 
@@ -921,6 +921,54 @@ def n_spiketimes_to_spikewords(neuron_list, binsz=0.02,
         spikewords_array[i, :] = counts
 
     return(spikewords_array.astype(np.int16))
+
+
+def n_save_modified_neuron_list(neuron_list, file_name):
+
+    '''
+    Save modified neuron_list
+
+    n_save_modified_neuron_list(neuron_list, file_name)
+
+    Parameters
+    ----------
+    neuron_list : List of neurons from (usually output from ksout)
+    file_name : Filename with path, '/home/kbn/neuron_withqual.npy'
+
+    Returns
+    -------
+    spiketimes_allcells : List of all spiketimes
+
+    Raises
+    ------
+    ValueError if neuron list is empty
+    FileExistsError if file_name exists
+
+    See Also
+    --------
+
+    Notes
+    -----
+
+    Examples
+    --------
+    n_save_modified_neuron_list(neuron_list, '/home/kbn/neuron_withqual.npy')
+
+    '''
+
+    logger.info('Saving modified neuron_list')
+
+    # check neuron_list is not empty
+    if (len(neuron_list) == 0):
+        raise ValueError('Neuron list is empty')
+
+    # check file exist
+    if op.exists(file_name) and op.isfile(file_name):
+        raise FileExistsError("File {} exists".format(file_name))
+
+    # Save
+    np.save(file_name, neuron_list)
+    logger.info('Saved modified neuron_list, %s.', file_name)
 
 
 # loading function
