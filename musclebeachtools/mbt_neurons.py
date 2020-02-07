@@ -772,6 +772,8 @@ class Neuron:
                         radio = RadioButtons(axbox, ('1', '2', '3', '4'))
                         radio.on_clicked(self.set_qual)
                         col.set_ylabel('Select quality')
+                        col.set_xlabel("Press 'q' to exit")
+                        col.xaxis.set_label_coords(0.073, -0.01)
 
             plt.show()
 
