@@ -33,6 +33,8 @@ except ImportError:
     raise ImportError('Run command : conda install seaborn')
 import logging
 import re
+from datetime import datetime
+import time
 
 
 # start logger
@@ -105,6 +107,41 @@ def load_np(filename, lpickle=False):
         print("load_np: Error loading", filename)
         raise
     return np_out
+
+
+def ecube_to_epoch(e_time_string):
+
+    '''
+    Convert ecube time string to epoch
+
+    ecube_to_epoch(e_time_string)
+
+    Parameters
+    ----------
+    e_time_string : ecube time string
+
+    Returns
+    -------
+    unix time, or seconds/milliseconds since the 1970 epoch
+
+    Raises
+    ------
+
+    See Also
+    --------
+
+    Notes
+    -----
+
+    Examples
+    --------
+    t_seconds = ecube_to_epoch('2019-07-01_00-40-01')
+
+    '''
+
+    dt = datetime.strptime(e_time_string.replace("_", " "),
+                           "%Y-%m-%d %H-%M-%S")
+    return time.mktime(dt.timetuple())
 
 
 class Neuron:
