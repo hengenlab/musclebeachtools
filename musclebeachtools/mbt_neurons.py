@@ -109,12 +109,12 @@ def load_np(filename, lpickle=False):
     return np_out
 
 
-def ecube_to_epoch(e_time_string):
+def ecube_realtimestring_to_epoch(e_time_string):
 
     '''
     Convert ecube time string to epoch
 
-    ecube_to_epoch(e_time_string)
+    ecube_realtimestring_to_epoch(e_time_string)
 
     Parameters
     ----------
@@ -135,7 +135,7 @@ def ecube_to_epoch(e_time_string):
 
     Examples
     --------
-    t_seconds = ecube_to_epoch('2019-07-01_00-40-01')
+    t_seconds = ecube_realtimestring_to_epoch('2019-07-01_00-40-01')
 
     '''
 
