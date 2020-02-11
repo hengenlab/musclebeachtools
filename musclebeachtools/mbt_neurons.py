@@ -164,7 +164,9 @@ class Neuron:
                  fs=25000, start_time=0, end_time=12 * 60 * 60,
                  mwft=None,
                  sex=None, age=None, species=None,
-                 on_time=None, off_time=None):
+                 on_time=None, off_time=None,
+                 rstart_time=None, rend_time=None,
+                 estart_time=None, eend_time=None):
         '''
         The constructor for Neuron class.
 
@@ -190,6 +192,10 @@ class Neuron:
         species : "r" for rat or "m" for mouse
         on_time : start times of cell was activity
         off_time : end times of cell activity
+        rstart_time : real start time of recorded file in this block, string
+        rend_time : real end time of last recorded file in this block, string
+        estart_time : start time in nano seconds ecube
+        eend_time : end time in nano seconds ecube
 
 
         Returns
@@ -232,6 +238,10 @@ class Neuron:
         # Give on_time and off_time default values from start_time and end_time
         self.on_times = list([start_time])
         self.off_times = list([end_time])
+        self.rstart_time = str(rstart_time)
+        self.rend_time = str(rend_time)
+        self.estart_time = np.int64(estart_time)
+        self.eend_time = np.int64(eend_time)
         self.cell_type, self.mean_amplitude = \
             self.__find_celltypewithmeanamplitude()
 
