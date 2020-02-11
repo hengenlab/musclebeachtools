@@ -818,6 +818,12 @@ class Neuron:
                         axbox = plt.axes([0.068, 0.048, 0.2, 0.2])
                         radio = RadioButtons(axbox, ('1', '2', '3', '4'),
                                              active=(0, 0, 0, 0))
+                        if self.quality in list([1, 2, 3, 4]):
+                            radio.set_active((self.quality - 1))
+                            logger.info('Quality is now %d',
+                                         self.quality)
+                        else:
+                            logger.info('Quality not set')
                         radio.on_clicked(self.set_qual)
                         col.set_ylabel('Select quality')
                         col.set_xlabel("Press 'q' to exit")
