@@ -816,7 +816,8 @@ class Neuron:
                         col.spines['bottom'].set_visible(False)
                         col.spines['left'].set_visible(False)
                         axbox = plt.axes([0.068, 0.048, 0.2, 0.2])
-                        radio = RadioButtons(axbox, ('1', '2', '3', '4'))
+                        radio = RadioButtons(axbox, ('1', '2', '3', '4'),
+                                             active=(0, 0, 0, 0))
                         radio.on_clicked(self.set_qual)
                         col.set_ylabel('Select quality')
                         col.set_xlabel("Press 'q' to exit")
