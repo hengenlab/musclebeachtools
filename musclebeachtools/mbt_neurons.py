@@ -785,6 +785,10 @@ class Neuron:
 
                     # plot FR
                     elif i == 1:
+                        total_fr =\
+                            (len(self.spike_time)/
+                            (self.end_time - self.start_time))
+                        logger.info('Total FR is %f', total_fr)
                         if self.end_time > 3600 * 4:
                             hzcount, xbins = self.plotFR(lplot=0)
                             col.plot(xbins[:-1], hzcount, color='#703be7')
@@ -799,6 +803,14 @@ class Neuron:
                             col.set_xlim(left=self.start_time)
                             col.set_xlabel('Time')
                             col.set_ylabel('Firing rate (Hz)')
+                        col.text(0.082, 0.82, 'Total Fr {:6.4f}'
+                                 .format(total_fr),
+                                 horizontalalignment='center',
+                                 verticalalignment='center',
+                                 transform = col.transAxes,
+                                 color='blue',
+                                 fontsize=11,
+                                 fontstyle='oblique')
                     elif i == 2:
                         if self.waveform_tetrodes is not None:
                             col.plot(self.waveform_tetrodes, color='#6a88f7')
