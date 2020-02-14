@@ -786,9 +786,13 @@ class Neuron:
                     # plot FR
                     elif i == 1:
                         total_fr =\
-                            (len(self.spike_time)/
-                            (self.end_time - self.start_time))
+                            (len(self.spike_time) /
+                                (self.end_time - self.start_time))
                         logger.info('Total FR is %f', total_fr)
+                        p_tmp, _ = np.histogram((self.spike_time/self.fs),
+                                            np.linspace(self.start_time,
+                                            self.end_time, 101))
+                        presence_ratio = (np.sum(p_tmp > 0) / 100)
                         if self.end_time > 3600 * 4:
                             hzcount, xbins = self.plotFR(lplot=0)
                             col.plot(xbins[:-1], hzcount, color='#703be7')
@@ -807,10 +811,19 @@ class Neuron:
                                  .format(total_fr),
                                  horizontalalignment='center',
                                  verticalalignment='center',
-                                 transform = col.transAxes,
+                                 transform=col.transAxes,
                                  color='blue',
                                  fontsize=11,
                                  fontstyle='oblique')
+                        col.text(0.9, 0.82, 'Presence ratio {:6.4f}'
+                                 .format(presence_ratio),
+                                 horizontalalignment='center',
+                                 verticalalignment='center',
+                                 transform=col.transAxes,
+                                 color='blue',
+                                 fontsize=11,
+                                 fontstyle='oblique')
+
                     elif i == 2:
                         if self.waveform_tetrodes is not None:
                             col.plot(self.waveform_tetrodes, color='#6a88f7')
@@ -833,7 +846,7 @@ class Neuron:
                         if self.quality in list([1, 2, 3, 4]):
                             radio.set_active((self.quality - 1))
                             logger.info('Quality is now %d',
-                                         self.quality)
+                                        self.quality)
                         else:
                             logger.info('Quality not set')
                         radio.on_clicked(self.set_qual)
