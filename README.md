@@ -71,6 +71,9 @@ n1[4].isi_hist()
 # plot firing rate of 4th neuron
 n1[4].plotFR()
 
+# Calculate presence ratio
+n1[4].presence_ratio()
+
 # Change quality of neuron n[0] to 1
 # qual : Quality values should be 1, 2, 3 or 4
 #        1 : Good
