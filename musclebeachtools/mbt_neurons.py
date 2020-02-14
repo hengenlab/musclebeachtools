@@ -314,6 +314,41 @@ class Neuron:
 
         return cell_type, mean_amplitude
 
+    @property
+    def spike_time_sec(self):
+
+        '''
+        This will convert spike_time to seconds
+
+        spike_time_sec(self)
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+        spike_time_sec : spike_time in seconds
+
+        Raises
+        ------
+
+        See Also
+        --------
+
+        Notes
+        -----
+
+        Examples
+        --------
+
+        '''
+
+        logger.debug('Converting spike_time to seconds')
+        # Sample time to time in seconds
+        time_s = (self.spike_time / self.fs)
+
+        return time_s
+
     def get_behavior(self):
         '''
         Get sleep wake behavioral states of animal

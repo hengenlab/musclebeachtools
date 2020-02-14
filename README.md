@@ -8,39 +8,43 @@ This package used to analyze neuronal data, from basic plotting
 ## Installation
 
 ### Download musclebeachtools
+```
 git clone https://github.com/hengenlab/musclebeachtools_hlab.git   
-Enter your username and password
-
+```
 ### Using pip
+```
 cd locationofmusclebeachtools_hlab/musclebeachtools/  
 pip install .
-
+```
 
 ---
 ### Installation by adding to path
 
 ##### Windows
+```
 My Computer > Properties > Advanced System Settings > Environment Variables >  
 In system variables, create a new variable  
     Variable name  : PYTHONPATH  
     Variable value : location where musclebeachtools_hlab is located  
     Click OK
-
+```
 
 ##### Linux
+```
 If you are using bash shell  
 In terminal open .barshrc or .bash_profile  
 add this line  
 export PYTHONPATH=/location_of_musclebeachtools_hlab:$PYTHONPATH
-
+```
 
 ##### Mac
+```
 If you are using bash shell  
 In terminal cd ~/  
 then open  .profile using your favourite text editor  
 add this line  
 export PYTHONPATH=/location_of_musclebeachtools_hlab:$PYTHONPATH
-
+```
 
 ---
 ### Test import
@@ -61,6 +65,33 @@ n1 = mbt.ksout(datadir, filenum=0, prbnum=4, filt=[])
 # Get basic info of a neuron, here 6th in list n1
 print(n1[6])
 Neuron with (clust_idx=6, quality=1, peak_channel=6)
+
+# Get sampling rate for 4th neuron
+n1[4].fs
+
+# Get sample time for 4th neuron
+n1[4].spike_time
+
+# Get spike time in seconds for 4th neuron
+n1[4].spike_time_sec
+
+# Other properties
+n1[4].start_time
+n1[4].end_time
+n1[4].on_times
+n1[4].off_times
+n1[4].peak_channel
+n1[4].quality
+n1[4].region
+n1[4].age
+n1[4].sex
+n1[4].species
+n1[4].waveform
+n1[4].waveform_tetrodes
+n1[4].waveforms
+n1[4].mean_amplitude
+n1[4].cell_type
+n1[4].clust_idx
 
 # Plot mean waveform of 4th neuron
 n1[4].plot_wf()
@@ -110,6 +141,18 @@ print(n[2].quality)
 mbt.n_save_modified_neuron_list(n, '/home/kbn/neuron_mod.npy')
 
 ```
+
+## FAQ
+```
+1. spike_time vs spike_time_sec
+Property spike_time is in sample times.
+To to get spike time in seconds
+please use spike_time_sec, n1[4].spike_time_sec
+or
+For example for 4th neuron n1[4].spike_time/n1[4].fs
+
+```
+
 ## Issues
 
 ```Please slack Kiran ```
