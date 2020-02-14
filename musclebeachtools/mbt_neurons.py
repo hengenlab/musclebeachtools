@@ -447,7 +447,7 @@ class Neuron:
         start : Start time (default self.start_time)
         end : End time (default self.end_time)
         isi_thresh : isi threshold (default 0.1)
-        nbin : Number of bins (default 101)
+        nbins : Number of bins (default 101)
         lplot : To plot or not (default lplot=1, plot isi)
 
         Returns
@@ -576,6 +576,56 @@ class Neuron:
         sns.despine()
         # plt.show()
         return hzcount, xbins
+
+    def presence_ratio(self, nbins=101, start=False, end=False):
+
+        '''
+        This will calculate ratio of time an unit is present in this block
+        Unless otherwise specified  start and end are in seconds
+
+        presence_ratio(self, nbins=101, start=False, end=False)
+
+        Parameters
+        ----------
+        nbins : Number of bins (default 101)
+        start : Start time (default self.start_time)
+        end : End time (default self.end_time)
+
+        Returns
+        -------
+        presence_ratio : ratio of time an unit is present in this block
+
+        Raises
+        ------
+
+        See Also
+        --------
+
+        Notes
+        -----
+
+        Examples
+        --------
+        n1[0].presence_ratio(nbins=101, start=False, end=False)
+
+        '''
+
+        logger.info('Calculating presence ratio')
+        # Sample time to time in seconds
+        time_s = (self.spike_time / self.fs)
+
+        if start is False:
+            start = self.start_time
+        if end is False:
+            end = self.end_time
+        logger.debug('start and end is %s and %s', start, end)
+
+        # Calculation
+        p_tmp, _ = np.histogram(time_s, np.linspace(start, end, nbins))
+        presence_ratio = (np.sum(p_tmp > 0) / (nbins - 1))
+        logger.info('Prescence ratio is %f', presence_ratio)
+
+        return presence_ratio
 
     def set_qual(self, qual):
 
@@ -789,10 +839,7 @@ class Neuron:
                             (len(self.spike_time) /
                                 (self.end_time - self.start_time))
                         logger.info('Total FR is %f', total_fr)
-                        p_tmp, _ = np.histogram((self.spike_time/self.fs),
-                                            np.linspace(self.start_time,
-                                            self.end_time, 101))
-                        presence_ratio = (np.sum(p_tmp > 0) / 100)
+                        presence_ratio = self.presence_ratio()
                         if self.end_time > 3600 * 4:
                             hzcount, xbins = self.plotFR(lplot=0)
                             col.plot(xbins[:-1], hzcount, color='#703be7')
