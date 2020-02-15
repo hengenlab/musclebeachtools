@@ -592,6 +592,10 @@ class Neuron:
             end = self.end_time
         logger.debug('start and end is %s and %s', start, end)
 
+        # range
+        idx = np.where(np.logical_and(time_s >= start, time_s <= end))[0]
+        time_s = time_s[idx]
+
         edges = np.arange(start, end + binsz, binsz)
         bins = np.histogram(time_s, edges)
         hzcount = bins[0]/binsz
@@ -611,6 +615,80 @@ class Neuron:
         sns.despine()
         # plt.show()
         return hzcount, xbins
+
+    def isi_contamination(self, cont_thresh_list=None,
+                          time_limit=np.inf,
+                          start=False, end=False):
+
+        '''
+        This function calculates isi contamination of a neuron
+        from cont_thresh_list
+        unless otherwise specified cont_thresh_list, time_limit,
+        start and end are in seconds
+
+        isi_contamination(self, cont_thresh_list=[0.003],
+                          time_limit=np.inf,
+                          start=False, end=False)
+
+        Parameters
+        ----------
+        cont_thresh_list : threshold lists for calculating isi contamination
+        time_limit : count spikes upto, default np.inf. Try also 100 ms, 0.1
+        start : Start time (default self.start_time)
+        end : End time (default self.end_time)
+
+        Returns
+        -------
+        isi_contamin : contamination percentage based on cont_thresh_list
+
+        Raises
+        ------
+
+        See Also
+        --------
+
+        Notes
+        -----
+
+        Examples
+        --------
+        n1[0].isi_contamination(cont_thresh_list=[0.003, 0.004],
+                                time_limit=0.1,
+                                start=False, end=False)
+
+        '''
+
+        logger.info('Calculating isi contamination')
+
+        # check cont_thresh_list is not empty
+        if (len(cont_thresh_list) == 0):
+            raise ValueError('cont_thresh_list list is empty')
+
+        # Sample time to time in seconds
+        time_s = (self.spike_time / self.fs)
+
+        if start is False:
+            start = self.start_time
+        if end is False:
+            end = self.end_time
+        logger.debug('start and end is %s and %s', start, end)
+
+        # range
+        idx = np.where(np.logical_and(time_s >= start, time_s <= end))[0]
+        time_s = time_s[idx]
+
+        # Calculate isi
+        isi = np.diff(time_s)
+
+        # Loop and calculate contamination at various cont_thesh
+        isi_contamin = []
+        for cont_thresh in cont_thresh_list:
+            isi_contamin.append(100.0 * (np.sum(isi < cont_thresh) /
+                                         np.sum(isi < time_limit)))
+
+        logger.info('isi contaminations {}'.format(isi_contamin))
+
+        return isi_contamin
 
     def presence_ratio(self, nbins=101, start=False, end=False):
 
@@ -654,6 +732,9 @@ class Neuron:
         if end is False:
             end = self.end_time
         logger.debug('start and end is %s and %s', start, end)
+
+        # range
+        time_s = time_s[(time_s >= start) & (time_s <= end)]
 
         # Calculation
         p_tmp, _ = np.histogram(time_s, np.linspace(start, end, nbins))

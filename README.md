@@ -105,6 +105,10 @@ n1[4].plotFR()
 # Calculate presence ratio
 n1[4].presence_ratio()
 
+# Calculate isi contamination at various thresholds, 2 and 4 ms
+n1[4].isi_contamination(cont_thresh_list=[0.002, 0.004], time_limit=np.inf)
+
+
 # Change quality of neuron n[0] to 1
 # qual : Quality values should be 1, 2, 3 or 4
 #        1 : Good
