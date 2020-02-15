@@ -980,6 +980,7 @@ class Neuron:
                             col.set_xlabel('Time')
                             col.set_ylabel('Firing rate (Hz)')
                         fr_stats_str = '\n'.join((
+                            r'$Nspikes=%d$' % (len(self.spike_time), ),
                             r'$TotalFr=%.2f$' % (total_fr, ),
                             r'$Pratio=%.2f$' % (prsc_ratio, )))
                         props = dict(boxstyle='round', facecolor='wheat',
