@@ -945,6 +945,7 @@ class Neuron:
                         col.set_xlim(left=0)
                         col.set_ylim(bottom=0)
                         col.set_xlim(left=0, right=101)
+                        col.axvline(1, linewidth=2, linestyle='--', color='r')
                         isi_contamin_str = '\n'.join((
                             r'$@1ms=%.2f$' % (isi_contamin[0], ),
                             r'$@2ms=%.2f$' % (isi_contamin[1], ),
