@@ -933,21 +933,29 @@ class Neuron:
 
                         _, edges, hist_isi = self.isi_hist(lplot=0)
 
-                        isi_thresh = 0.1
-                        nbins = 101
-                        contamination = 100*(sum(hist_isi[0]
-                                             [0:int((0.1/isi_thresh) *
-                                              (nbins-1)/50)]) /
-                                             sum(hist_isi[0]))
-                        contamination = round(contamination, 2)
+                        isi_contamin = \
+                            self.isi_contamination(cont_thresh_list=[0.001,
+                                                                     0.002,
+                                                                     0.003,
+                                                                     0.005])
                         col.bar(edges[1:]*1000-0.5, hist_isi[0],
                                 color='#0b559f')
-                        col.text(60, 4, 'ISI Cont: {}'.format(contamination))
                         col.set_xlabel('ISI (ms)')
                         col.set_ylabel('Number of intervals')
                         col.set_xlim(left=0)
                         col.set_ylim(bottom=0)
                         col.set_xlim(left=0, right=101)
+                        isi_contamin_str = '\n'.join((
+                            r'$@1ms=%.2f$' % (isi_contamin[0], ),
+                            r'$@2ms=%.2f$' % (isi_contamin[1], ),
+                            r'$@3ms=%.2f$' % (isi_contamin[2], ),
+                            r'$@5ms=%.2f$' % (isi_contamin[3], )))
+                        props = dict(boxstyle='round', facecolor='wheat',
+                                     alpha=0.5)
+                        col.text(0.73, 0.95, isi_contamin_str,
+                                 transform=col.transAxes,
+                                 fontsize=8,
+                                 verticalalignment='top', bbox=props)
 
                     # plot FR
                     elif i == 1:
@@ -970,22 +978,15 @@ class Neuron:
                             col.set_xlim(left=self.start_time)
                             col.set_xlabel('Time')
                             col.set_ylabel('Firing rate (Hz)')
-                        col.text(0.091, 0.82, 'Total Fr {:6.4f}'
-                                 .format(total_fr),
-                                 horizontalalignment='center',
-                                 verticalalignment='center',
+                        fr_stats_str = '\n'.join((
+                            r'$TotalFr=%.2f$' % (total_fr, ),
+                            r'$Pratio=%.2f$' % (prsc_ratio, )))
+                        props = dict(boxstyle='round', facecolor='wheat',
+                                     alpha=0.5)
+                        col.text(0.73, 0.95, fr_stats_str,
                                  transform=col.transAxes,
-                                 color='blue',
-                                 fontsize=11,
-                                 fontstyle='oblique')
-                        col.text(0.9, 0.82, 'Presence ratio {:6.4f}'
-                                 .format(prsc_ratio),
-                                 horizontalalignment='center',
-                                 verticalalignment='center',
-                                 transform=col.transAxes,
-                                 color='blue',
-                                 fontsize=11,
-                                 fontstyle='oblique')
+                                 fontsize=8,
+                                 verticalalignment='top', bbox=props)
 
                     elif i == 2:
                         if self.waveform_tetrodes is not None:
@@ -993,7 +994,7 @@ class Neuron:
                         else:
                             col.plot(self.waveform, color='#6a88f7')
                         col.set_xlabel('Time')
-                        col.set_ylabel('Amplitude')
+                        col.set_ylabel('Amplitude', labelpad=-3)
                         col.set_xlim(left=0, right=75)
                     elif i == 3:
                         col.plot([1], [2])
