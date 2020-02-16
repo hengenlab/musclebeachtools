@@ -144,6 +144,15 @@ print(n[2].quality)
 # Save a modified neuron list
 mbt.n_save_modified_neuron_list(n, '/home/kbn/neuron_mod.npy')
 
+# Load spike amplitudes from spikeinteface output
+import numpy as np
+import musclebeachtools as mbt
+n = np.load('neurons_group0.npy', allow_pickle=True)
+n_amp = mbt.load_spike_amplitudes(n, '/home/kbn/amplitudes0.npy')
+# For 4th neuron, by neuron.clust_idx
+n_amp[4].spike_amplitude
+
+
 ```
 
 ## FAQ

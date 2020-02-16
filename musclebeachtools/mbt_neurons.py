@@ -166,7 +166,8 @@ class Neuron:
                  sex=None, age=None, species=None,
                  on_time=None, off_time=None,
                  rstart_time=None, rend_time=None,
-                 estart_time=None, eend_time=None):
+                 estart_time=None, eend_time=None,
+                 sp_amp=None):
         '''
         The constructor for Neuron class.
 
@@ -242,6 +243,7 @@ class Neuron:
         self.rend_time = str(rend_time)
         self.estart_time = np.int64(estart_time)
         self.eend_time = np.int64(eend_time)
+        self.spike_amplitude = np.int32(sp_amp)
         self.cell_type, self.mean_amplitude = \
             self.__find_celltypewithmeanamplitude()
 
@@ -1219,6 +1221,70 @@ def n_save_modified_neuron_list(neuron_list, file_name):
     # Save
     np.save(file_name, neuron_list)
     logger.info('Saved modified neuron_list, %s.', file_name)
+
+
+def load_spike_amplitudes(neuron_list, file_name):
+
+    '''
+    Get spike amplitudes from numpy list
+
+    load_spike_amplitudes(neuron_list, file_name)
+
+    Parameters
+    ----------
+    neuron_list : List of neurons from (usually output from ksout)
+    file_name : Filename with path, '/home/kbn/neuron_amplitudes.npy',
+                output from spike_interface
+
+    Returns
+    -------
+    neuron_list_with_amplitudes : neuron list with amplitudes in
+                                  n[ ].spike_amplitude field
+
+    Raises
+    ------
+    ValueError if neuron list is empty
+    FileNotFoundError if file_name not found
+    ValueError if each clusters spike_time and spike_amplitude
+               has different lengths
+
+    See Also
+    --------
+
+    Notes
+    -----
+
+    Examples
+    --------
+    neuron_list_with_amplitudes = \
+            load_spike_amplitudes(neuron_list,
+                                  '/home/kbn/neuron_amplitudes.npy')
+
+    '''
+    logger.info('Updating spike_amplitude')
+
+    # check neuron_list is not empty
+    if (len(neuron_list) == 0):
+        raise ValueError('Neuron list is empty')
+
+    # check file exist
+    if not (op.exists(file_name) and op.isfile(file_name)):
+        raise FileNotFoundError("File {} not found".format(file_name))
+
+    # Load file, loop and update
+    sp_amp = load_np(file_name, lpickle=True)
+    for neuron in neuron_list:
+        len_sp_amp = len(sp_amp[neuron.clust_idx])
+        len_sp_t = len(neuron.spike_time)
+        if (len_sp_amp != len_sp_t):
+            raise \
+                ValueError('Clust {} length of spike_time {} != amplitudes {}'
+                           .format(neuron.clust_idx,
+                                   len_sp_amp,
+                                   len_sp_t))
+        neuron.spike_amplitude = sp_amp[neuron.clust_idx]
+
+    return neuron_list
 
 
 # loading function
