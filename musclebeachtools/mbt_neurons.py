@@ -167,14 +167,21 @@ class Neuron:
                  on_time=None, off_time=None,
                  rstart_time=None, rend_time=None,
                  estart_time=None, eend_time=None,
-                 sp_amp=None):
+                 sp_amp=None,
+                 region_loc=None):
         '''
         The constructor for Neuron class.
 
         __init__(self, sp_c, sp_t, qual, mwf, mwfs, max_channel,
                  fs=25000, start_time=0, end_time=12 * 60 * 60,
                  mwft=None,
-                 sex=None, age=None, species=None)
+                 sex=None, age=None, species=None,
+                 on_time=None, off_time=None,
+                 rstart_time=None, rend_time=None,
+                 estart_time=None, eend_time=None,
+                 sp_amp=None,
+                 region_loc=None)
+
 
         Parameters
         ----------
@@ -197,6 +204,8 @@ class Neuron:
         rend_time : real end time of last recorded file in this block, string
         estart_time : start time in nano seconds ecube
         eend_time : end time in nano seconds ecube
+        sp_amp : spike amplitudes
+        region_loc : implant location
 
 
         Returns
@@ -216,7 +225,12 @@ class Neuron:
         (Neuron(sp_c, sp_t, qual, mwf, mwfs, max_channel,
                 fs=25000, start_time=0, end_time=12 * 60 * 60,
                 mwft=None,
-                sex=None, age=None, species=None))
+                sex=None, age=None, species=None,
+                on_time=None, off_time=None,
+                rstart_time=None, rend_time=None,
+                estart_time=None, eend_time=None,
+                sp_amp=None,
+                region_loc=None)
 
         '''
 
@@ -235,15 +249,41 @@ class Neuron:
         self.waveforms = mwfs
         self.waveform_tetrodes = mwft
         self.peak_channel = np.int16(max_channel)[0]
-        self.region = str("")
+
+        if region_loc is None:
+            self.region = None
+        else:
+            self.region = region_loc
         # Give on_time and off_time default values from start_time and end_time
-        self.on_times = list([start_time])
-        self.off_times = list([end_time])
-        self.rstart_time = str(rstart_time)
-        self.rend_time = str(rend_time)
-        self.estart_time = np.int64(estart_time)
-        self.eend_time = np.int64(eend_time)
-        self.spike_amplitude = np.int32(sp_amp)
+        if on_time is None:
+            self.on_times = list([start_time])
+        else:
+            self.on_times = on_time
+        if off_time is None:
+            self.off_times = list([end_time])
+        else:
+            self.off_times = off_time
+        if rstart_time is None:
+            iself.rstart_time = None
+        else:
+            self.rstart_time = str(rstart_time)
+        if rend_time is None:
+            self.rend_time = None
+        else:
+            self.rend_time = str(rend_time)
+        if estart_time is None:
+            self.estart_time = None
+        else:
+            self.estart_time = np.int64(estart_time)
+        if eend_time is None:
+            self.eend_time = None
+        else:
+            self.eend_time = np.int64(eend_time)
+        if sp_amp is None:
+            self.spike_amplitude = None
+        else:
+            self.spike_amplitude = np.int32(sp_amp)
+
         self.cell_type, self.mean_amplitude = \
             self.__find_celltypewithmeanamplitude()
 

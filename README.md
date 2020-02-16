@@ -86,6 +86,7 @@ n1[4].region
 n1[4].age
 n1[4].sex
 n1[4].species
+n1[4].region
 n1[4].waveform
 n1[4].waveform_tetrodes
 n1[4].waveforms
