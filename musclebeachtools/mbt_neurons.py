@@ -1041,14 +1041,24 @@ class Neuron:
                         col.set_ylabel('Amplitude', labelpad=-3)
                         col.set_xlim(left=0, right=75)
                     elif i == 3:
-                        if self.spike_amplitude is not None:
-                            col.plot(self.spike_amplitude, 'bo',
-                                     markersize=1.9)
-                            col.set_xlabel('Time')
-                            col.set_ylabel('Amplitudes', labelpad=-3)
-                            col.set_xlim(left=self.start_time,
-                                         right=self.end_time)
-                        else:
+                        try:
+                            if self.spike_amplitude is not None:
+                                col.plot(self.spike_amplitude, 'bo',
+                                         markersize=1.9)
+                                col.set_xlabel('Time')
+                                col.set_ylabel('Amplitudes', labelpad=-3)
+                                col.set_xlim(left=self.start_time,
+                                             right=self.end_time)
+                            else:
+                                col.plot([1], [2])
+                                plt.xticks([], [])
+                                plt.yticks([], [])
+                                col.spines['right'].set_visible(False)
+                                col.spines['top'].set_visible(False)
+                                col.spines['bottom'].set_visible(False)
+                                col.spines['left'].set_visible(False)
+                                col.axis('off')
+                        except Exception as e:
                             col.plot([1], [2])
                             plt.xticks([], [])
                             plt.yticks([], [])
@@ -1057,6 +1067,8 @@ class Neuron:
                             col.spines['bottom'].set_visible(False)
                             col.spines['left'].set_visible(False)
                             col.axis('off')
+                            print("Error ", e)
+                            logger.info('Error: no neruon.spike_amplitude')
 
                     elif i == 4:
                         col.plot([1], [2])
