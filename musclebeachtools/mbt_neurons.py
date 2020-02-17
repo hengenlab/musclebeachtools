@@ -235,25 +235,27 @@ class Neuron:
         '''
 
         logger.debug('Neuron %d', sp_c)
-        self.fs = fs
-        self.start_time = start_time
-        self.end_time = end_time
-        self.sex = sex
-        self.age = age
-        self.species = species
-
         self.clust_idx = np.int16(sp_c)[0]
         self.spike_time = np.int64(sp_t)
         self.quality = np.int8(qual)
         self.waveform = mwf
         self.waveforms = mwfs
-        self.waveform_tetrodes = mwft
         self.peak_channel = np.int16(max_channel)[0]
 
-        if region_loc is None:
-            self.region = None
-        else:
-            self.region = region_loc
+        self.fs = fs
+        self.start_time = start_time
+        self.end_time = end_time
+
+        if mwft is None:
+            self.waveform_tetrodes = mwft
+
+        if sex is not None:
+            self.sex = sex
+        if age is not None:
+            self.age = age
+        if species is not None:
+            self.species = species
+
         # Give on_time and off_time default values from start_time and end_time
         if on_time is None:
             self.on_times = list([start_time])
@@ -263,26 +265,22 @@ class Neuron:
             self.off_times = list([end_time])
         else:
             self.off_times = off_time
-        if rstart_time is None:
-            iself.rstart_time = None
-        else:
+
+        if rstart_time is not None:
             self.rstart_time = str(rstart_time)
-        if rend_time is None:
-            self.rend_time = None
-        else:
+        if rend_time is not None:
             self.rend_time = str(rend_time)
-        if estart_time is None:
-            self.estart_time = None
-        else:
+
+        if estart_time is not None:
             self.estart_time = np.int64(estart_time)
-        if eend_time is None:
-            self.eend_time = None
-        else:
+        if eend_time is not None:
             self.eend_time = np.int64(eend_time)
-        if sp_amp is None:
-            self.spike_amplitude = None
-        else:
+
+        if sp_amp is not None:
             self.spike_amplitude = np.int32(sp_amp)
+
+        if region_loc is not None:
+            self.region = region_loc
 
         self.cell_type, self.mean_amplitude = \
             self.__find_celltypewithmeanamplitude()
@@ -1059,8 +1057,6 @@ class Neuron:
                             col.spines['bottom'].set_visible(False)
                             col.spines['left'].set_visible(False)
                             col.axis('off')
-
-
 
                     elif i == 4:
                         col.plot([1], [2])
