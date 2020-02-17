@@ -246,7 +246,7 @@ class Neuron:
         self.start_time = start_time
         self.end_time = end_time
 
-        if mwft is None:
+        if mwft is not None:
             self.waveform_tetrodes = mwft
 
         if sex is not None:
@@ -782,6 +782,55 @@ class Neuron:
         logger.info('Prescence ratio is %f', prsc_ratio)
 
         return prsc_ratio
+
+    def signal_to_noise(self, file_name):
+
+        '''
+        This function will calculate singal to noise ratio from the output of
+        spike interface rec_channels_std*.npy file
+
+        signal_to_noise(self, file_name)
+
+        Parameters
+        ----------
+        file_name : Output of spike interface rec_channels_std*.npy
+                    file with path
+
+        Returns
+        -------
+        signal_to_noise : ratio of time an unit is present in this block
+
+        Raises
+        ------
+        FileNotFoundError if file_name not found
+
+        See Also
+        --------
+
+        Notes
+        -----
+
+        Examples
+        --------
+        n1[0].signal_to_noise('/home/kbn/rec_channels_std0.npy')
+
+        '''
+
+        logger.info('Calculating signal to noise ratio')
+
+        # check file exist
+        if not (op.exists(file_name) and op.isfile(file_name)):
+            raise FileNotFoundError("File {} not found".format(file_name))
+
+        # Load rec_channels_std
+        rec_channels_std = load_np(file_name, lpickle=True)
+
+        sn_ratio = (np.max(np.abs(self.waveform)) /
+                    rec_channels_std[self.peak_channel])
+
+        logger.info('Signal to noise ratio is %f', sn_ratio)
+
+        return sn_ratio
 
     def set_qual(self, qual):
 
