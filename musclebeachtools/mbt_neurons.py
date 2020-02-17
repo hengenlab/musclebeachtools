@@ -962,11 +962,13 @@ class Neuron:
 
         # sharex=True, sharey=True,  figsize=(4, 4),
         with plt.style.context('seaborn-dark-palette'):
-            fig, ax = plt.subplots(nrows=4, ncols=1, squeeze=False,
-                                   sharex=False, sharey=False,  figsize=(8, 8),
+            fig, ax = plt.subplots(nrows=5, ncols=1, squeeze=False,
+                                   sharex=False, sharey=False,
+                                   figsize=(8, 9),
                                    num=1, dpi=100, facecolor='w',
                                    edgecolor='w')
-            fig.tight_layout(pad=1.0)
+            # fig.tight_layout(pad=1.0)
+            fig.tight_layout(pad=1.2)
             for i, row in enumerate(ax):
                 for j, col in enumerate(row):
 
@@ -1041,6 +1043,26 @@ class Neuron:
                         col.set_ylabel('Amplitude', labelpad=-3)
                         col.set_xlim(left=0, right=75)
                     elif i == 3:
+                        if self.spike_amplitude is not None:
+                            col.plot(self.spike_amplitude, 'bo',
+                                     markersize=1.9)
+                            col.set_xlabel('Time')
+                            col.set_ylabel('Amplitudes', labelpad=-3)
+                            col.set_xlim(left=self.start_time,
+                                         right=self.end_time)
+                        else:
+                            col.plot([1], [2])
+                            plt.xticks([], [])
+                            plt.yticks([], [])
+                            col.spines['right'].set_visible(False)
+                            col.spines['top'].set_visible(False)
+                            col.spines['bottom'].set_visible(False)
+                            col.spines['left'].set_visible(False)
+                            col.axis('off')
+
+
+
+                    elif i == 4:
                         col.plot([1], [2])
                         plt.xticks([], [])
                         plt.yticks([], [])
@@ -1048,7 +1070,7 @@ class Neuron:
                         col.spines['top'].set_visible(False)
                         col.spines['bottom'].set_visible(False)
                         col.spines['left'].set_visible(False)
-                        axbox = plt.axes([0.068, 0.048, 0.2, 0.2])
+                        axbox = plt.axes([0.07, 0.04, 0.17, 0.17])
                         radio = RadioButtons(axbox, ('1', '2', '3', '4'),
                                              active=(0, 0, 0, 0))
                         if self.quality in list([1, 2, 3, 4]):
@@ -1060,7 +1082,7 @@ class Neuron:
                         radio.on_clicked(self.set_qual)
                         col.set_ylabel('Select quality')
                         col.set_xlabel("Press 'q' to exit")
-                        col.xaxis.set_label_coords(0.073, -0.01)
+                        col.xaxis.set_label_coords(0.1, -0.1)
 
             plt.show()
 
