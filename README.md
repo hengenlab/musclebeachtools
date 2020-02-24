@@ -56,12 +56,28 @@ Open powershell/terminal
 ---
 
 ## Usage
+
+#### Load data from ntksortingb
 ```
 import musclebeachtools as mbt
 
 datadir = "/hlabhome/kiranbn/neuronclass/t_lit_EAB50final/"
 n1 = mbt.ksout(datadir, filenum=0, prbnum=4, filt=[])
+```
 
+
+#### Load spike amplitudes from spikeinteface output
+```
+import numpy as np
+import musclebeachtools as mbt
+n = np.load('neurons_group0.npy', allow_pickle=True)
+n_amp = mbt.load_spike_amplitudes(n, '/home/kbn/amplitudes0.npy')
+# For 4th neuron, by neuron.clust_idx
+n_amp[4].spike_amplitude
+```
+
+#### Usage of properties and functions
+```
 # Get basic info of a neuron, here 6th in list n1
 print(n1[6])
 Neuron with (clust_idx=6, quality=1, peak_channel=6)
@@ -144,14 +160,6 @@ print(n[2].quality)
 
 # Save a modified neuron list
 mbt.n_save_modified_neuron_list(n, '/home/kbn/neuron_mod.npy')
-
-# Load spike amplitudes from spikeinteface output
-import numpy as np
-import musclebeachtools as mbt
-n = np.load('neurons_group0.npy', allow_pickle=True)
-n_amp = mbt.load_spike_amplitudes(n, '/home/kbn/amplitudes0.npy')
-# For 4th neuron, by neuron.clust_idx
-n_amp[4].spike_amplitude
 
 
 ```
