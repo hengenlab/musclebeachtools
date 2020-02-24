@@ -1130,7 +1130,7 @@ class Neuron:
                         col.set_xlabel("Press 'q' to exit")
                         col.xaxis.set_label_coords(0.1, -0.1)
 
-            plt.show()
+            plt.show(block=True)
 
 
 def n_getspikes(neuron_list, start=False, end=False):
