@@ -22,7 +22,8 @@ setup(
    url="https://github.com/hengenlab/musclebeachtools",
    download_url="https://github.com/hengenlab/musclebeachtools",
    packages=['musclebeachtools'],
-   install_requires=['numpy', 'matplotlib', 'seaborn', 'pandas'],
+   install_requires=['ipython', 'numpy', 'matplotlib', 'seaborn', 'pandas',
+                     'scipy'],
    classifiers=[
         'Development Status :: 1 - Pre-Alpha',
         'Natural Language :: English',
