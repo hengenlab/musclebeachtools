@@ -158,6 +158,9 @@ n[2].checkqual()
 # Check quality is changed also there is a log from checkqual
 print(n[2].quality)
 
+# Remove spikes for neuron with large amplitudes
+n[4].remove_large_amplitude_spikes(1000)
+
 # Save a modified neuron list
 mbt.n_save_modified_neuron_list(n, '/home/kbn/neuron_mod.npy')
 

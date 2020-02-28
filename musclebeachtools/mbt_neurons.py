@@ -783,6 +783,62 @@ class Neuron:
 
         return prsc_ratio
 
+    def remove_large_amplitude_spikes(self, threshold,
+                                      start=False, end=False):
+
+        '''
+        This function will remove large spike time from large amplitude spikes
+        based on threshold
+
+        remove_large_amplitude_spikes(self, threshold,
+                                      start=False, end=False)
+
+        Parameters
+        ----------
+        threshold : Threshold
+        start : Start time (default self.start_time)
+        end : End time (default self.end_time)
+
+        Returns
+        -------
+
+        Raises
+        ------
+
+        See Also
+        --------
+
+        Notes
+        -----
+
+        Examples
+        --------
+        n1[0].remove_large_amplitude_spikes(threshold,
+                                            start=False, end=False)
+
+        '''
+
+        logger.info('Removing large amplitude spikes')
+        # Sample time to time in seconds
+        time_s = (self.spike_time / self.fs)
+
+        if start is False:
+            start = self.start_time
+        if end is False:
+            end = self.end_time
+        logger.debug('start and end is %s and %s', start, end)
+
+        # range
+        time_s = time_s[(time_s >= start) & (time_s <= end)]
+
+        # Remove spikes based on threshold
+        len_spks = len(self.spike_time)
+        idx_largeamps = np.where(self.spike_amplitude < threshold)[0]
+        self.spike_time = self.spike_time[idx_largeamps]
+        self.spike_amplitude = self.spike_amplitude[idx_largeamps]
+        logger.info('Removed %d spikes',
+                    (len_spks - len(idx_largeamps)))
+
     def signal_to_noise(self, file_name):
 
         '''
@@ -1188,6 +1244,7 @@ def n_getspikes(neuron_list, start=False, end=False):
 
         # get spiketimes for each cell and append
         spiketimes = neuron_list[i].spike_time / neuron_list[i].fs
+        # spiketimes = _.spike_time / _.fs
         spiketimes = spiketimes[(spiketimes > start) & (spiketimes < end)]
         spiketimes_allcells.append(spiketimes)
 
