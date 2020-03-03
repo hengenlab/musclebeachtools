@@ -1240,7 +1240,7 @@ def n_getspikes(neuron_list, start=False, end=False):
 
     # Loop through and get spike times
     for idx, neuron_l in enumerate(neuron_list):
-        logger.debug('Getting spiketimes for cell %d', str(i))
+        logger.debug('Getting spiketimes for cell %d', str(idx))
 
         # get spiketimes for each cell and append
         spiketimes = neuron_l.spike_time / neuron_l.fs
