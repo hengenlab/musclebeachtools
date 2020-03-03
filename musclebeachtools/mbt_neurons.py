@@ -1239,13 +1239,12 @@ def n_getspikes(neuron_list, start=False, end=False):
     spiketimes_allcells = []
 
     # Loop through and get spike times
-    for i, _ in enumerate(neuron_list):
+    for idx, neuron_l in enumerate(neuron_list):
         logger.debug('Getting spiketimes for cell %d', str(i))
 
         # get spiketimes for each cell and append
-        spiketimes = neuron_list[i].spike_time / neuron_list[i].fs
-        # spiketimes = _.spike_time / _.fs
-        spiketimes = spiketimes[(spiketimes > start) & (spiketimes < end)]
+        spiketimes = neuron_l.spike_time / neuron_l.fs
+        spiketimes = spiketimes[(spiketimes >= start) & (spiketimes <= end)]
         spiketimes_allcells.append(spiketimes)
 
     return spiketimes_allcells
@@ -1320,7 +1319,7 @@ def n_spiketimes_to_spikewords(neuron_list, binsz=0.02,
     binsz = binsz * conv_mills
 
     # startime in bins
-    binrange = np.arange(start, end, binsz)
+    binrange = np.arange(start, (end + binsz), binsz)
     n_cells = len(spiketimes)
 
     # initialize array
