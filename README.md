@@ -108,6 +108,7 @@ n1[4].waveform_tetrodes
 n1[4].waveforms
 n1[4].mean_amplitude
 n1[4].cell_type
+n1[4].peaklatency
 n1[4].clust_idx
 
 # Plot mean waveform of 4th neuron

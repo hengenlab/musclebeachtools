@@ -389,6 +389,59 @@ class Neuron:
 
         return time_s
 
+    @property
+    def peaklatency(self):
+        '''
+        Calculate peaklatency from mean waveform
+
+        peaklatency(self)
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+        peaklatency : peaklatency of neuron waveform
+
+        Raises
+        ------
+
+        See Also
+        --------
+
+        Notes
+        -----
+
+        Examples
+        --------
+
+        '''
+
+        temp = self.waveform
+        fs = self.fs
+
+        # To deal with both positive and negative spikes
+        maxvalueidx = np.argmax(np.abs(temp))
+        if temp[maxvalueidx] <= 0:
+            bottom = np.argmin(temp)
+            top = np.argmax(temp[bottom:]) + bottom
+            peaklatency = ((top - bottom) * 1e3) / fs
+            # Find mean amplitude
+            # mean_amplitude = np.abs(temp[bottom])
+            # mean_amplitude = temp[top] - temp[bottom]
+        elif temp[maxvalueidx] > 0:
+            bottom = np.argmax(temp)
+            top = np.argmin(temp[bottom:]) + bottom
+            peaklatency = ((top - bottom) * 1e3) / fs
+            # Find mean amplitude
+            # mean_amplitude = np.abs(temp[bottom])
+            # mean_amplitude = temp[bottom] - temp[top]
+
+        # Find cell type @Keith's paper
+        # cell_type = 'RSU' if peaklatency >= 0.4 else 'FS'
+
+        return peaklatency
+
     def get_behavior(self):
         '''
         Get sleep wake behavioral states of animal
