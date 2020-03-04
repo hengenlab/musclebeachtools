@@ -1139,12 +1139,39 @@ class Neuron:
 
                     elif i == 2:
                         if hasattr(self, 'waveform_tetrodes'):
-                            col.plot(self.waveform_tetrodes, color='#6a88f7')
+                            wf_sh = self.waveform_tetrodes.shape[0]
+                            col.plot(np.linspace(0, (wf_sh * 1000.0) / self.fs,
+                                                 wf_sh),
+                                     self.waveform_tetrodes,
+                                     color='#6a88f7')
+                            col.plot(np.linspace(0, (wf_sh * 1000.0) / self.fs,
+                                                 wf_sh),
+                                     self.waveform,
+                                     'g*')
+
                         else:
-                            col.plot(self.waveform, color='#6a88f7')
-                        col.set_xlabel('Time')
+                            wf_sh = self.waveform.shape[0]
+                            col.plot(np.linspace(0, (wf_sh * 1000.0) / self.fs,
+                                                 wf_sh),
+                                     self.waveform,
+                                     color='#6a88f7')
+                            col.plot(np.linspace(0, (wf_sh * 1000.0) / self.fs,
+                                                 wf_sh),
+                                     self.waveform,
+                                     'g*')
+
+                        col.set_xlabel('Time (ms)')
                         col.set_ylabel('Amplitude', labelpad=-3)
-                        col.set_xlim(left=0, right=75)
+                        col.set_xlim(left=0,
+                                     right=((wf_sh * 1000.0) / self.fs))
+                        wf_stats_str = '\n'.join((
+                            r'$Cluster Id=%d$' % (self.clust_idx, ),))
+                        props = dict(boxstyle='round', facecolor='wheat',
+                                     alpha=0.5)
+                        col.text(0.73, 0.99, wf_stats_str,
+                                 transform=col.transAxes,
+                                 fontsize=8,
+                                 verticalalignment='top', bbox=props)
                     elif i == 3:
                         if hasattr(self, 'spike_amplitude'):
                             col.plot((self.spike_time / self.fs),
