@@ -109,6 +109,63 @@ def load_np(filename, lpickle=False):
     return np_out
 
 
+def wf_comparison(waveform_1, waveform_2):
+
+    '''
+    This function calculate wf wf_comparison of same size
+
+    sse, mse, rmse = wf_comparison(waveform_1, waveform_2)
+
+    Parameters
+    ----------
+    waveform_1 : First waveform
+    waveform_2 : Second waveform
+
+    Returns
+    -------
+    sse, mse, rmse
+
+    Raises
+    ------
+    ValueError
+
+    See Also
+    --------
+
+    Notes
+    -----
+
+    Examples
+    --------
+    sse, mse, rmse = wf_comparison(waveform_1, waveform_2)
+
+    '''
+
+    logger.info('Calculating waveform comparison')
+
+    # Waveform size is not zero
+    if (waveform_1.size == 0):
+        raise ValueError('waveform_1 size is 0')
+    if (waveform_2.size == 0):
+        raise ValueError('waveform_2 size is 0')
+    # Waveform shape is 1
+    if (waveform_1.ndim != 1):
+        raise ValueError('waveform_1 shape is not 1')
+    if (waveform_2.ndim != 1):
+        raise ValueError('waveform_2 shape is not 1')
+    # Check wf has same length
+    if (waveform_1.shape[0] != waveform_2.shape[0]):
+        raise ValueError('waveform_1 and waveform_2 are not same shape')
+
+    # Calculate all
+    # ckbn todo add more properties
+    sse = np.sum((waveform_1 - waveform_2)**2)
+    mse = ((waveform_1 - waveform_2)**2).mean(axis=0)
+    rmse = np.sqrt(np.mean((waveform_1 - waveform_2)**2))
+
+    return sse, mse, rmse
+
+
 def ecube_realtimestring_to_epoch(e_time_string):
 
     '''
