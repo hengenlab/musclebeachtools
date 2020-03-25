@@ -112,7 +112,7 @@ def load_np(filename, lpickle=False):
 def wf_comparison(waveform_1, waveform_2):
 
     '''
-    This function calculate wf wf_comparison of same size
+    This function calculate wf comparison of same size
 
     sse, mse, rmse = wf_comparison(waveform_1, waveform_2)
 
@@ -127,7 +127,9 @@ def wf_comparison(waveform_1, waveform_2):
 
     Raises
     ------
-    ValueError
+    ValueError : waveform shapes are not equal
+    ValueError : waveform shape not 1
+    ValueError : waveform size is 0
 
     See Also
     --------
@@ -1275,7 +1277,9 @@ class Neuron:
                         col.set_xlim(left=0,
                                      right=((wf_sh * 1000.0) / self.fs))
                         wf_stats_str = '\n'.join((
-                            r'$Cluster Id=%d$' % (self.clust_idx, ),))
+                            r'$Cluster Id=%d$' % (self.clust_idx, ),
+                            r'$Channel=%d$' % (self.peak_channel, )))
+                        print("wf_stats_str ", wf_stats_str)
                         props = dict(boxstyle='round', facecolor='wheat',
                                      alpha=0.5)
                         col.text(0.73, 0.99, wf_stats_str,
