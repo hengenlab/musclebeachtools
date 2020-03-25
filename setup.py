@@ -19,8 +19,8 @@ setup(
    maintainer='Kiran Bhaskaran-Nair, Sahara Ensley, Keith Hengen,\
            (Hengen Lab Washington University in St. Louis)',
    maintainer_email='',
-   url="https://github.com/hengenlab/musclebeachtools",
-   download_url="https://github.com/hengenlab/musclebeachtools",
+   url="https://github.com/hengenlab/musclebeachtools_hlab",
+   download_url="https://github.com/hengenlab/musclebeachtools_hlab",
    packages=['musclebeachtools'],
    install_requires=['ipython', 'numpy', 'matplotlib', 'seaborn', 'pandas',
                      'scipy'],
