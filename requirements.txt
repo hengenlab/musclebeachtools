@@ -4,3 +4,5 @@ matplotlib
 pandas
 scipy
 seaborn
+sklearn
+xgboost

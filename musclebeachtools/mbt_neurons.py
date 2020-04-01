@@ -35,7 +35,17 @@ import logging
 import re
 from datetime import datetime
 import time
-
+try:
+    from sklearn import datasets
+    from sklearn.model_selection import train_test_split
+    from sklearn.metrics import precision_score
+    from sklearn.externals import joblib
+except ImportError:
+    raise ImportError('Run command : pip install sklearn')
+try:
+    import xgboost as xgb
+except ImportError:
+    raise ImportError('Run command : pip install xgboost')
 
 # start logger
 logger = logging.getLogger(__name__)
