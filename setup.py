@@ -23,7 +23,7 @@ setup(
    download_url="https://github.com/hengenlab/musclebeachtools_hlab",
    packages=['musclebeachtools'],
    install_requires=['ipython', 'numpy', 'matplotlib', 'seaborn', 'pandas',
-                     'scipy', 'sklearn', 'xgboost'],
+                     'joblib', 'scipy', 'sklearn', 'xgboost'],
    classifiers=[
         'Development Status :: 1 - Pre-Alpha',
         'Natural Language :: English',

@@ -1,8 +1,9 @@
 ipython
 numpy
 matplotlib
-pandas
-scipy
 seaborn
+pandas
+joblib
+scipy
 sklearn
 xgboost
