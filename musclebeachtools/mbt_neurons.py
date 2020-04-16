@@ -36,10 +36,14 @@ import re
 from datetime import datetime
 import time
 try:
+    import joblib
+except ImportError:
+    raise ImportError('Run command : pip install joblib')
+try:
     from sklearn import datasets
     from sklearn.model_selection import train_test_split
     from sklearn.metrics import precision_score
-    from sklearn.externals import joblib
+    # from sklearn.externals import joblib
 except ImportError:
     raise ImportError('Run command : pip install sklearn')
 try:
