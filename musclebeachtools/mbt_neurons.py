@@ -910,20 +910,30 @@ class Neuron:
         return prsc_ratio
 
     def remove_large_amplitude_spikes(self, threshold,
-                                      start=False, end=False):
+                                      lstd_deviation=True,
+                                      start=False, end=False,
+                                      lplot=True):
 
         '''
         This function will remove large spike time from large amplitude spikes
         based on threshold
 
         remove_large_amplitude_spikes(self, threshold,
-                                      start=False, end=False)
+                                      lstd_deviation=True,
+                                      start=False, end=False,
+                                      lplot=True)
 
         Parameters
         ----------
-        threshold : Threshold
+        threshold : Threshold, based on lstd_deviation
+        lstd_deviation : If True (default) threshold is
+            in standard deviation 1.5 for example. If
+            lstd_deviation is False then threshold is value
+            above which amplitudes are to be remove.
         start : Start time (default self.start_time)
         end : End time (default self.end_time)
+        lplot : Show plots (default True) allows selection
+            else remove amplitudes above threshold without plotting
 
         Returns
         -------
@@ -940,7 +950,9 @@ class Neuron:
         Examples
         --------
         n1[0].remove_large_amplitude_spikes(threshold,
-                                            start=False, end=False)
+                                            lstd_deviation=True,
+                                            start=False, end=False,
+                                            lplot=True)
 
         '''
 
@@ -957,13 +969,82 @@ class Neuron:
         # range
         time_s = time_s[(time_s >= start) & (time_s <= end)]
 
+        # amp = amp[abs(amp - np.mean(amp)) < 1.5 * np.std(amp)]
         # Remove spikes based on threshold
         len_spks = len(self.spike_time)
-        idx_largeamps = np.where(self.spike_amplitude < threshold)[0]
-        self.spike_time = self.spike_time[idx_largeamps]
-        self.spike_amplitude = self.spike_amplitude[idx_largeamps]
-        logger.info('Removed %d spikes',
-                    (len_spks - len(idx_largeamps)))
+        amps = self.spike_amplitude * 1.0
+        if lstd_deviation:
+            amps_m = abs(amps - np.mean(amps))
+            idx_largeamps = np.where(amps_m < (threshold * np.std(amps)))[0]
+
+        else:
+            idx_largeamps = np.where(amps < threshold)[0]
+        if lplot:
+            with plt.style.context('seaborn-dark-palette'):
+                fig, ax = plt.subplots(nrows=3, ncols=1, squeeze=False,
+                                       sharex=False, sharey=False,
+                                       figsize=(8, 9),
+                                       num=1, dpi=100, facecolor='w',
+                                       edgecolor='w')
+                # fig.tight_layout(pad=1.0)
+                fig.tight_layout(pad=5.0)
+                for i, row in enumerate(ax):
+                    for j, col in enumerate(row):
+                        if i == 0:
+                            col.plot(amps, 'b.')
+                            # col.set_xlim(left=-100, right=len(amps) + 100)
+                            col.set_title('With large amplitudes')
+                            col.set_xlabel('Time')
+                            col.set_ylabel('Amplitude')
+                        elif i == 1:
+                            col.plot(amps[idx_largeamps], 'g.')
+                            # col.set_xlim(left=-100,
+                            #             right=len(amps[idx_largeamps]) + 100)
+                            if lstd_deviation:
+                                col.set_title('With large amplitudes removed '
+                                              + 'above standard deviation ' +
+                                              str(threshold))
+                            else:
+                                col.set_title('With large amplitudes removed '
+                                              + ' above threshold ' +
+                                              str(threshold))
+                            col.set_xlabel('Time')
+                            col.set_ylabel('Amplitude')
+                        elif i == 2:
+                            col.plot([1], [2])
+                            plt.xticks([], [])
+                            plt.yticks([], [])
+                            col.spines['right'].set_visible(False)
+                            col.spines['top'].set_visible(False)
+                            col.spines['bottom'].set_visible(False)
+                            col.spines['left'].set_visible(False)
+                            axbox = plt.axes([0.128, 0.04, 0.17, 0.17])
+                            radio = RadioButtons(axbox, ('Yes', 'No'),
+                                                 active=(0, 0))
+
+                            def remove_ampl(yes_no):
+                                if yes_no == 'Yes':
+                                    self.spike_time = \
+                                        self.spike_time[idx_largeamps]
+                                    self.spike_amplitude = \
+                                        self.spike_amplitude[idx_largeamps]
+                                    logger.info('Removed %d spikes',
+                                                (len_spks -
+                                                 len(idx_largeamps)))
+                            radio.on_clicked(remove_ampl)
+
+                            col.yaxis.set_label_coords(0.0, 0.15)
+                            col.set_ylabel('Apply changes?')
+                            col.set_xlabel("Press 'q' to exit")
+                            col.xaxis.set_label_coords(0.1, -0.37)
+
+                plt.show(block=True)
+        else:
+            self.spike_time = \
+                self.spike_time[idx_largeamps]
+            self.spike_amplitude = \
+                self.spike_amplitude[idx_largeamps]
+            logger.info('Removed %d spikes', (len_spks - len(idx_largeamps)))
 
     def signal_to_noise(self, file_name):
 
