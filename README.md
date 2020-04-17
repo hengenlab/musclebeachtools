@@ -160,7 +160,12 @@ n[2].checkqual()
 print(n[2].quality)
 
 # Remove spikes for neuron with large amplitudes
-n[4].remove_large_amplitude_spikes(1000)
+# Default method based on standard deviation, for example 1.5
+n[4].remove_large_amplitude_spikes(1.5, lstd_deviation=True, start=False, end=False, lplot=True)
+# Based on threshold value, for example 1000
+n[4].remove_large_amplitude_spikes(1000, lstd_deviation=False, start=False, end=False, lplot=True)
+If you are sure and do not want to check plots
+ to confirm change lplot=False (not recommended)
 
 # Save a modified neuron list
 mbt.n_save_modified_neuron_list(n, '/home/kbn/neuron_mod.npy')
