@@ -35,14 +35,18 @@ import logging
 import re
 from datetime import datetime
 import time
+# try:
+#     import joblib
+# except ImportError:
+#     raise ImportError('Run command : pip install joblib')
 try:
-    import joblib
-except ImportError:
-    raise ImportError('Run command : pip install joblib')
-try:
-    from sklearn import datasets
+    # from sklearn import datasets
     from sklearn.model_selection import train_test_split
-    from sklearn.metrics import precision_score
+    # from sklearn.metrics import precision_score
+    from sklearn.metrics import accuracy_score
+    # from sklearn.model_selection import GridSearchCV
+    # from sklearn.model_selection import StratifiedKFold
+    # from sklearn.model_selection import cross_val_score
     # from sklearn.externals import joblib
 except ImportError:
     raise ImportError('Run command : pip install sklearn')
@@ -1424,6 +1428,225 @@ class Neuron:
                         col.xaxis.set_label_coords(0.1, -0.1)
 
             plt.show(block=True)
+
+
+def autoqual(neuron_list, model_file,
+             ltrain=0):
+
+    '''
+    Find automatic quality of a neuron
+
+    quality_predictions, cluster_idx = \
+        autoqual(neuron_list, model_file
+                 ltrain=0)
+
+    Parameters
+    ----------
+    neuron_list : List of neurons from (usually output from ksout)
+    model_file : model file with path
+        '/media/HlabShare/models/xgboost_autoqual'
+    ltrain : 0 (default 0) predict quality, 1 update model only
+        update model if accuracy is above 90%. Please remember
+        original model was created using a large dataset using
+        gridsearch not using this function.
+
+    Returns
+    -------
+    quality_predictions : quality predicted from model
+    cluster_idx : cluster ids corresponding to quality_predictions
+
+    Raises
+    ------
+    ValueError if neuron list is empty
+    FileNotFoundError if model_file does not exists
+
+
+    See Also
+    --------
+    set_qual : neuron[0].set_qual(qual)
+
+    Notes
+    -----
+
+    Examples
+    --------
+    quality_predictions, cluster_idx = \
+    autoqual(neuron_list, model_file)
+
+    '''
+
+    logger.info('Plotting figures for checking quality')
+
+    # check neuron_list is not empty
+    if (len(neuron_list) == 0):
+        raise ValueError('Neuron list is empty')
+
+    # check file exist
+    if not (op.exists(model_file) and op.isfile(model_file)):
+        raise FileNotFoundError("File {} not found".format(model_file))
+
+    # Initialize the features and qual
+    # 8 isicont + + 1 peak latency + 1 mean amplitude  +
+    # 1 Total Fr + 1 presence ratio +
+    # 1  Energy + 1 peaks
+    # 75 wf
+    nfet = (8 + 1 + 1 +
+            1 + 1 +
+            1 + 1 +
+            75)
+    neuron_features = np.zeros((len(neuron_list), nfet))
+    neuron_qual = np.zeros((len(neuron_list)), dtype='int8')
+    neuron_indices = np.zeros((len(neuron_list)), dtype='int16')
+
+    # print("sh neuron_features ", neuron_features.shape)
+    # print("sh neuron_qual ", neuron_qual.shape)
+
+    for idx, i in enumerate(neuron_list):
+        # assign quality
+        if ltrain:
+            neuron_qual[idx] = i.quality - 1
+        # else:
+        #     neuron_qual[idx] = i.quality - 1
+
+        # print("i.quality ", i.quality)
+        # print("i.quality ", type(i.quality))
+        neuron_indices[idx] = i.clust_idx
+        fet_idx = 0
+
+        # ISI contamination
+        tmp_fet = None
+        tmp_isi = i.isi_contamination(cont_thresh_list=[0.001, 0.002, 0.003,
+                                                        0.004, 0.005, 0.010,
+                                                        0.020, 0.030])
+        # print("tmp_isi ", tmp_isi)
+        # print("sh tmp_isi ", len(tmp_isi))
+        tmp_fet = np.asarray(tmp_isi)
+        # print("sh tmp_fet ", tmp_fet.shape)
+        # print("fet_idx1 ", fet_idx)
+        neuron_features[idx, fet_idx:tmp_fet.shape[0]] = tmp_fet
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        # print("fet_idx2 ", fet_idx)
+
+        # Peak latency
+        tmp_fet = None
+        tmp_fet = np.array([i.peaklatency])
+        # print("tmp_fet ", tmp_fet)
+        # print("sh tmp_fet ", tmp_fet.shape)
+        neuron_features[idx, fet_idx:tmp_fet.shape[0]] = tmp_fet
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        # print("fet_idx3 ", fet_idx)
+
+        # Wf amplitude
+        tmp_fet = None
+        tmp_fet = np.array([i.mean_amplitude])
+        # print("tmp_fet ", tmp_fet)
+        # print("sh tmp_fet ", tmp_fet.shape)
+        neuron_features[idx, fet_idx:tmp_fet.shape[0]] = tmp_fet
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        # print("fet_idx3 ", fet_idx)
+
+        # Total Fr
+        total_fr =\
+            (len(i.spike_time) /
+                (i.end_time - i.start_time))
+        tmp_fet = None
+        tmp_fet = np.array([total_fr])
+        # print("tmp_fet ", tmp_fet)
+        # print("sh tmp_fet ", tmp_fet.shape)
+        neuron_features[idx, fet_idx:tmp_fet.shape[0]] = tmp_fet
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        # print("fet_idx3 ", fet_idx)
+
+        # Presence ratio
+        tmp_fet = None
+        tmp_fet = np.array([i.presence_ratio()])
+        # print("tmp_fet ", tmp_fet)
+        # print("sh tmp_fet ", tmp_fet.shape)
+        neuron_features[idx, fet_idx:tmp_fet.shape[0]] = tmp_fet
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        # print("fet_idx3 ", fet_idx)
+
+        # Normalize WF
+        tmp_fet_wf = None
+        tmp_fet_wf = np.asarray(i.waveform)
+        tmp_fet_wf = tmp_fet_wf / np.linalg.norm(tmp_fet_wf)
+
+        # Calculate energy
+        tmp_fet = None
+        tmp_fet = np.array([np.sum(tmp_fet_wf**2, axis=0)])
+        # print("tmp_fet ", tmp_fet)
+        # print("sh tmp_fet ", tmp_fet.shape)
+        neuron_features[idx, fet_idx:tmp_fet.shape[0]] = tmp_fet
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        # print("fet_idx3 ", fet_idx)
+
+        # wf make sure if they are not 75 we have to make them 75 todo
+        tmp_fet = None
+        tmp_fet = tmp_fet_wf * 1.0
+        neuron_features[idx, fet_idx:fet_idx + tmp_fet.shape[0]] = tmp_fet
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        # print("fet_idx ", fet_idx)
+
+    if ltrain:
+        (neuron_features_train, neuron_features_test,
+            neuron_qual_train, neuron_qual_test,
+            neuron_indices_train, neuron_indices_test) = \
+            train_test_split(neuron_features, neuron_qual,
+                             neuron_indices,
+                             test_size=0.2, random_state=42)
+        dtrain = xgb.DMatrix(neuron_features_train, label=neuron_qual_train)
+        dtest = xgb.DMatrix(neuron_features_test, label=neuron_qual_test)
+    else:
+        (neuron_features_test,
+            neuron_qual_test,
+            neuron_indices_test) = \
+            (neuron_features, neuron_qual,
+             neuron_indices)
+
+        # print("neuron_qual ", neuron_qual)
+        # print("neuron_qual_test ", neuron_qual_test)
+        dtest = xgb.DMatrix(neuron_features_test, label=neuron_qual_test)
+
+    if ltrain:
+        params = {
+                  'eta': 0.3,
+                  'max_depth': 16,
+                  'min_child_weight': 2,
+                  'gamma': 0,
+                  'objective': 'multi:softmax',
+                  'num_class': 4
+                 }
+        # print("params ", params)
+        mxgb_model = xgb.XGBClassifier(objective='multi:softmax')
+        mxgb_model = xgb.train(params, dtrain, num_boost_round=1000,
+                               xgb_model=model_file)
+        # early_stopping_rounds=50,
+        # eval_metric=["auc", "error", "logloss"]
+        # print("dir mxgb_model ", dir(mxgb_model))
+        preds = mxgb_model.predict(dtest)
+        accuracy = accuracy_score(neuron_qual_test, preds)
+        logger.info('Accuracy of predictions is {}'
+                    .format(accuracy))
+        if accuracy > 0.90:
+            mxgb_model.save_model(model_file)
+        else:
+            # print('less accurate')
+            logger.info('Not saving model as accuracy is lower than 90%')
+
+        preds = preds + 1
+        # return accuracy, neuron_features, neuron_qual
+        return preds, neuron_indices_test
+    else:
+        mxgb_model = xgb.Booster()
+        mxgb_model.load_model(model_file)
+        preds = mxgb_model.predict(dtest)
+        # print("neuron qual ", neuron_qual + 1)
+        # print("preds ", preds + 1)
+        # accuracy = accuracy_score(neuron_qual_test, preds)
+        # logger.info('Accuracy of predictions is {}'
+        #             .format(accuracy))
+        preds = preds + 1
+        return preds, neuron_indices_test
 
 
 def n_getspikes(neuron_list, start=False, end=False):
