@@ -245,7 +245,8 @@ class Neuron:
                  rstart_time=None, rend_time=None,
                  estart_time=None, eend_time=None,
                  sp_amp=None,
-                 region_loc=None):
+                 region_loc=None,
+                 wf_b=None, wf_e=None):
         '''
         The constructor for Neuron class.
 
@@ -257,7 +258,8 @@ class Neuron:
                  rstart_time=None, rend_time=None,
                  estart_time=None, eend_time=None,
                  sp_amp=None,
-                 region_loc=None)
+                 region_loc=None,
+                 wf_b=None, wf_e=None)
 
 
         Parameters
@@ -283,6 +285,8 @@ class Neuron:
         eend_time : end time in nano seconds ecube
         sp_amp : spike amplitudes
         region_loc : implant location
+        wf_b : waveforms begin
+        wf_e : waveforms end
 
 
         Returns
@@ -307,7 +311,8 @@ class Neuron:
                 rstart_time=None, rend_time=None,
                 estart_time=None, eend_time=None,
                 sp_amp=None,
-                region_loc=None)
+                region_loc=None,
+                wf_b=None, wf_e=None)
 
         '''
 
@@ -358,6 +363,11 @@ class Neuron:
 
         if region_loc is not None:
             self.region = region_loc
+
+        if wf_b is not None:
+            self.wf_b = wf_b
+        if wf_e is not None:
+            self.wf_e = wf_e
 
         self.cell_type, self.mean_amplitude = \
             self.__find_celltypewithmeanamplitude()
