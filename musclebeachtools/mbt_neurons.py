@@ -1921,6 +1921,90 @@ def load_spike_amplitudes(neuron_list, file_name):
     return neuron_list
 
 
+def load_spike_waveforms_be(neuron_list, file_name):
+
+    '''
+    Get spike waveforms_be from numpy list
+
+    load_spike_waveforms_be(neuron_list, file_name)
+
+    Parameters
+    ----------
+    neuron_list : List of neurons from (usually output from ksout)
+    file_name : Filename with path,
+                '/home/kbn/neuron_b_waveforms_group0.npy',
+                or
+                '/home/kbn/neuron_e_waveforms_group0.npy',
+                output from spike_interface
+
+    Returns
+    -------
+    neuron_list_with_waveforms_be : neuron list with waveform_bes in
+                                  n[ ].spike_waveform_be field
+
+    Raises
+    ------
+    ValueError if neuron list is empty
+    FileNotFoundError if file_name not found
+    ValueError if filename does not contain _b_waveforms_ or _e_waveforms_
+    ValueError if length of neuron list not same as length of waveform list
+
+    See Also
+    --------
+
+    Notes
+    -----
+
+    Examples
+    --------
+    neuron_list_with_waveform_bes = \
+            load_spike_waveform_bes(neuron_list,
+                                  '/home/kbn/neuron_b_waveforms_group0.npy')
+
+    '''
+
+    logger.info('Updating neurons[].wf_b/e')
+
+    # check neuron_list is not empty
+    if (len(neuron_list) == 0):
+        raise ValueError('Neuron list is empty')
+
+    # check file exist
+    if not (op.exists(file_name) and op.isfile(file_name)):
+        raise FileNotFoundError("File {} not found".format(file_name))
+
+    # Check _b_ or _e_
+    if "_b_waveforms_" in file_name:
+        logger.debug("_b_waveforms_")
+    elif "_e_waveforms_" in file_name:
+        logger.debug("_e_waveforms_")
+    else:
+        raise \
+            ValueError('Filename error: not _b_waveforms_ or _e_waveforms_')
+
+    # Load file, loop and update
+    sp_wf = load_np(file_name, lpickle=True)
+
+    # check length of neuron list and waveform list same
+    if (len(sp_wf) != len(neuron_list)):
+        raise \
+            ValueError('Length of neuron list {} != length of waveform list {}'
+                       .format(len(sp_wf),
+                               len(neuron_list)))
+
+    for neuron in neuron_list:
+        if "_b_waveforms_" in file_name:
+            neuron.wf_b = sp_wf[neuron.clust_idx]
+        elif "_e_waveforms_" in file_name:
+            neuron.wf_e = sp_wf[neuron.clust_idx]
+
+    if "_b_waveforms_" in file_name:
+        logger.info('Updated neurons[].wf_b')
+    if "_e_waveforms_" in file_name:
+        logger.info('Updated neurons[].wf_e')
+    return neuron_list
+
+
 # loading function
 def ksout(datadir, filenum=0, prbnum=1, filt=None):
     '''
