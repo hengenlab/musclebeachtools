@@ -2098,9 +2098,9 @@ def load_spike_waveforms_be(neuron_list, file_name):
 
     for neuron in neuron_list:
         if "_b_waveforms_" in file_name:
-            neuron.wf_b = sp_wf[neuron.clust_idx]
+            neuron.wf_b = np.asarray(sp_wf[neuron.clust_idx]).T
         elif "_e_waveforms_" in file_name:
-            neuron.wf_e = sp_wf[neuron.clust_idx]
+            neuron.wf_e = np.asarray(sp_wf[neuron.clust_idx]).T
 
     if "_b_waveforms_" in file_name:
         logger.info('Updated neurons[].wf_b')
