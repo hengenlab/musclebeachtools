@@ -797,11 +797,39 @@ class Neuron:
         return hzcount, xbins
 
     def isi_contamination_over_time(self, cont_thresh_list, binsz=300):
-        """
-        this function will take a recording block and return the 
-        isi_contamination over time of the recording
 
-        """
+        '''
+        This function calculates isi contamination of a neuron over time
+        from cont_thresh_list
+        Unless otherwise specified cont_thresh_list is in seconds
+
+        isi_contamination_over_time(self, cont_thresh_list=[0.003],
+                                    binsz=300)
+
+        Parameters
+        ----------
+        cont_thresh_list : threshold lists for calculating isi contamination
+        binsz : binsize
+
+        Returns
+        -------
+        isi_contamin : contamination over time
+
+        Raises
+        ------
+
+        See Also
+        --------
+
+        Notes
+        -----
+
+        Examples
+        --------
+        n1[0].isi_contamination_over_time(cont_thresh_list=[0.003, 0.004])
+
+        '''
+
         logger.info("Calculating isi contamination over time")
 
         # check cont_thresh_list is not empty
@@ -809,23 +837,25 @@ class Neuron:
             raise ValueError('cont_thresh_list list is empty')
 
         # Sample time to time in seconds
-        time_s = (self.spike_time / self.fs) # these are the spikes
+        time_s = (self.spike_time / self.fs)  # these are the spikes
 
-        start_times = np.arange(0, time_s[-1], binsz) # finds the bin edges
+        start_times = np.arange(0, time_s[-1], binsz)  # finds the bin edges
         end_times = np.append(start_times[1:], start_times[-1]+binsz)
-        
-        all_values=[]
+        all_values = []
         for idx in range(len(start_times)):
-            isi_cont = self.isi_contamination(cont_thresh_list=cont_thresh_list, start=start_times[idx], end=end_times[idx])
+            isi_cont = \
+                self.isi_contamination(cont_thresh_list=cont_thresh_list,
+                                       start=start_times[idx],
+                                       end=end_times[idx])
             all_values.append(isi_cont)
 
         all_cont = np.array(all_values)
 
-        cont_lines=[]
+        cont_lines = []
         for idx in np.arange(len(cont_thresh_list)):
-            cont_lines.append(all_cont[:,idx])
+            cont_lines.append(all_cont[:, idx])
 
-        cont_lines=np.array(cont_lines)
+        cont_lines = np.array(cont_lines)
 
         return cont_lines
 
@@ -1320,16 +1350,17 @@ class Neuron:
 
         # sharex=True, sharey=True,  figsize=(4, 4),
         with plt.style.context('seaborn-dark-palette'):
-            fig = plt.figure(constrained_layout=True, figsize=(11, 8)) # unsure what the constrained layout thing does
-            gs = fig.add_gridspec(4,3)
+            # unsure what the constrained layout thing does
+            fig = plt.figure(constrained_layout=True, figsize=(11, 8))
+            gs = fig.add_gridspec(4, 3)
 
             waveform_ax = fig.add_subplot(gs[1:, 0])
             waveform_ax.set_title("Waveform")
 
-            isi_ax = fig.add_subplot(gs[0,1:])
+            isi_ax = fig.add_subplot(gs[0, 1:])
             isi_ax.set_title("ISI Hist")
 
-            amp_ax = fig.add_subplot(gs[-1,1:])
+            amp_ax = fig.add_subplot(gs[-1, 1:])
             amp_ax.set_title("Amplitudes")
 
             fr_ax = fig.add_subplot(gs[1, 1:])
@@ -1338,25 +1369,24 @@ class Neuron:
             isi_time_ax = fig.add_subplot(gs[-2, 1:])
             isi_time_ax.set_title("Isi Contamination over time")
 
-            qual_ax = fig.add_subplot(gs[0,0])
+            qual_ax = fig.add_subplot(gs[0, 0])
             qual_ax.set_title("Set Quality")
 
             # raw_ax = fig.add_subplot(gs[1:, -1])
             # raw_ax.set_title("Raw Trace")
-
 
             # ISI HIST plot
             _, edges, hist_isi = self.isi_hist(lplot=0)
 
             isi_contamin = \
                 self.isi_contamination(cont_thresh_list=[0.001,
-                                                            0.002,
-                                                            0.003,
-                                                            0.005])
-            r=np.arange(0,100)                                               
-            colors=np.where(r<5, "orangered", '#0b559f')
+                                                         0.002,
+                                                         0.003,
+                                                         0.005])
+            r = np.arange(0, 100)
+            colors = np.where(r < 5, "orangered", '#0b559f')
             isi_ax.bar(edges[1:]*1000-0.5, hist_isi[0],
-                    color=colors)
+                       color=colors)
             isi_ax.set_xlabel('ISI (ms)')
             isi_ax.set_ylabel('Number of intervals')
             isi_ax.set_xlim(left=0)
@@ -1369,14 +1399,11 @@ class Neuron:
                 r'$@3ms=%.2f$' % (isi_contamin[2], ),
                 r'$@5ms=%.2f$' % (isi_contamin[3], )))
             props = dict(boxstyle='round', facecolor='wheat',
-                            alpha=0.5)
+                         alpha=0.5)
             isi_ax.text(0.73, 0.95, isi_contamin_str,
                         transform=isi_ax.transAxes,
                         fontsize=8,
                         verticalalignment='top', bbox=props)
-
-
-
 
             # FR plot
             total_fr =\
@@ -1403,69 +1430,70 @@ class Neuron:
                 r'$TotalFr=%.2f$' % (total_fr, ),
                 r'$Pratio=%.2f$' % (prsc_ratio, )))
             props = dict(boxstyle='round', facecolor='wheat',
-                            alpha=0.5)
+                         alpha=0.5)
             fr_ax.text(0.73, 0.95, fr_stats_str,
-                        transform=fr_ax.transAxes,
-                        fontsize=8,
-                        verticalalignment='top', bbox=props)
+                       transform=fr_ax.transAxes,
+                       fontsize=8,
+                       verticalalignment='top', bbox=props)
 
-            #ISI TIME plot
+            # ISI TIME plot
             contamination_lines =  \
                 self.isi_contamination_over_time(cont_thresh_list=[0.001,
-                                                                    0.002,
-                                                                    0.003,
-                                                                    0.005])
+                                                                   0.002,
+                                                                   0.003,
+                                                                   0.005])
 
             isi_time_ax.plot(contamination_lines.T)
-            isi_time_ax.set_ylim((0,50))
+            isi_time_ax.set_ylim((0, 50))
             isi_time_ax.set_xlim((self.start_time, self.end_time/300))
             isi_time_ax.set_xlabel('Time(hr)')
             isi_time_ax.set_ylabel('Perc. contamination')
-            isi_time_ax.legend(['@1ms', '@2ms', '@3ms', '@5ms'], loc="upper right", fontsize="small")
-            isi_time_ax.set_xticks(np.arange(self.start_time, self.end_time/300, 12))  
+            isi_time_ax.legend(['@1ms', '@2ms', '@3ms', '@5ms'],
+                               loc="upper right", fontsize="small")
+            isi_time_ax.set_xticks(np.arange(self.start_time,
+                                             self.end_time/300, 12))
             isi_time_ax.set_xticklabels(np.arange(0, int(self.end_time/3600)))
 
             # WAVEFORM plot
             if hasattr(self, 'waveform_tetrodes'):
                 wf_sh = self.waveform_tetrodes.shape[0]
                 waveform_ax.plot(np.linspace(0, (wf_sh * 1000.0) / self.fs,
-                                        wf_sh),
-                            self.waveform_tetrodes,
-                            color='#6a88f7')
+                                             wf_sh),
+                                 self.waveform_tetrodes,
+                                 color='#6a88f7')
                 waveform_ax.plot(np.linspace(0, (wf_sh * 1000.0) / self.fs,
-                                        wf_sh),
-                            self.waveform,
-                            'g*')
+                                             wf_sh),
+                                 self.waveform,
+                                 'g*')
 
             else:
                 wf_sh = self.waveform.shape[0]
                 waveform_ax.plot(np.linspace(0, (wf_sh * 1000.0) / self.fs,
-                                        wf_sh),
-                            self.waveform,
-                            color='#6a88f7')
+                                             wf_sh),
+                                 self.waveform,
+                                 color='#6a88f7')
                 waveform_ax.plot(np.linspace(0, (wf_sh * 1000.0) / self.fs,
-                                        wf_sh),
-                            self.waveform,
-                            'g*')
+                                             wf_sh),
+                                 self.waveform,
+                                 'g*')
 
             waveform_ax.set_xlabel('Time (ms)')
             waveform_ax.set_ylabel('Amplitude', labelpad=-3)
             waveform_ax.set_xlim(left=0,
-                            right=((wf_sh * 1000.0) / self.fs))
+                                 right=((wf_sh * 1000.0) / self.fs))
             wf_stats_str = '\n'.join((
                 r'$Cluster Id=%d$' % (self.clust_idx, ),
                 r'$Channel=%d$' % (self.peak_channel, )))
             # print("wf_stats_str ", wf_stats_str)
             props = dict(boxstyle='round', facecolor='wheat',
-                            alpha=0.5)
-            waveform_ax.text(0.73, 0.99, wf_stats_str, \
-                            transform=waveform_ax.transAxes,
-                            fontsize=8,
-                            verticalalignment='top', bbox=props)
-
+                         alpha=0.5)
+            waveform_ax.text(0.73, 0.99, wf_stats_str,
+                             transform=waveform_ax.transAxes,
+                             fontsize=8,
+                             verticalalignment='top', bbox=props)
 
             # RAW TRACE plot
-            
+
             # AMP plot
             if hasattr(self, 'spike_amplitude'):
                 amp_ax.plot((self.spike_time / self.fs),
@@ -1486,7 +1514,6 @@ class Neuron:
                 amp_ax.axis('off')
                 logger.info('No attribute .spike_amplitude')
 
-
             # SET QUAL plot
             qual_ax.plot([1], [2])
             plt.xticks([], [])
@@ -1497,7 +1524,7 @@ class Neuron:
             qual_ax.spines['left'].set_visible(False)
             axbox = plt.axes(qual_ax)
             radio = RadioButtons(axbox, ('1', '2', '3', '4'),
-                                    active=(0, 0, 0, 0))
+                                 active=(0, 0, 0, 0))
             if self.quality in list([1, 2, 3, 4]):
                 radio.set_active((self.quality - 1))
                 logger.info('Quality is now %d',
