@@ -1755,6 +1755,11 @@ def autoqual(neuron_list, model_file,
         # logger.info('Accuracy of predictions is {}'
         #             .format(accuracy))
         preds = preds + 1
+
+        # assign quality
+        for idx, i in enumerate(neuron_list):
+            i.set_qual(preds[idx])
+
         return preds, neuron_indices_test
 
 
