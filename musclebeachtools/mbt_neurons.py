@@ -529,6 +529,82 @@ class Neuron:
 
         return peaklatency
 
+    @property
+    def mean_wf_b(self):
+
+        '''
+        Calculate mean waveform from wf_b
+
+        mean_wf_b(self)
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+        mean_wf_b : calculate mean waveform from wf_b
+
+        Raises
+        ------
+
+        See Also
+        --------
+
+        Notes
+        -----
+
+        Examples
+        --------
+
+        '''
+
+        logger.debug('Calculate mean waveform from wf_b')
+
+        # Mean waveform
+        if hasattr(self, 'wf_b'):
+            mean_wf_b = np.mean(self.wf_b, axis=1)
+            return mean_wf_b
+        else:
+            raise ValueError('No attribute wf_b')
+
+    @property
+    def mean_wf_e(self):
+
+        '''
+        Calculate mean waveform from wf_e
+
+        mean_wf_e(self)
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+        mean_wf_e : calculate mean waveform from wf_e
+
+        Raises
+        ------
+
+        See Also
+        --------
+
+        Notes
+        -----
+
+        Examples
+        --------
+
+        '''
+
+        logger.debug('Calculate mean waveform from wf_e')
+
+        # Mean waveform
+        if hasattr(self, 'wf_e'):
+            mean_wf_e = np.mean(self.wf_e, axis=1)
+            return mean_wf_e
+        else:
+            raise ValueError('No attribute wf_e')
+
     def get_behavior(self):
         '''
         Get sleep wake behavioral states of animal
@@ -2106,6 +2182,7 @@ def load_spike_waveforms_be(neuron_list, file_name):
         logger.info('Updated neurons[].wf_b')
     if "_e_waveforms_" in file_name:
         logger.info('Updated neurons[].wf_e')
+
     return neuron_list
 
 
