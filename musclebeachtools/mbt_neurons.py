@@ -546,6 +546,7 @@ class Neuron:
 
         Raises
         ------
+        ValueError if neuron has not attribute wf_b
 
         See Also
         --------
@@ -584,6 +585,7 @@ class Neuron:
 
         Raises
         ------
+        ValueError if neuron has not attribute wf_e
 
         See Also
         --------
