@@ -34,6 +34,7 @@ except ImportError:
 import logging
 import re
 from datetime import datetime
+import sys
 import time
 # try:
 #     import joblib
@@ -53,7 +54,18 @@ except ImportError:
 try:
     import xgboost as xgb
 except ImportError:
-    raise ImportError('Run command : pip install xgboost')
+    m = 'https://raw.githubusercontent.com/Homebrew/install/master/install.sh'
+    if sys.platform == "darwin":
+        print('\n\nIn mac please install brew and gcc first')
+        print('bash -c "$(curl -fsSL', m, ')"')
+        print('Run command : brew install gcc@5')
+        print('Run command : conda install -c conda-forge xgboost\n\n')
+        raise \
+            ImportError('Run: conda install -c conda-forge xgboost'
+                        + '\nFirst check message above install brew and gcc')
+    else:
+        raise \
+            ImportError('Run: conda install -c conda-forge xgboost')
 
 # start logger
 logger = logging.getLogger(__name__)
