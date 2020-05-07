@@ -1019,7 +1019,7 @@ class Neuron:
             isi_contamin.append(100.0 * (np.sum(isi < cont_thresh) /
                                          np.sum(isi < time_limit)))
 
-        logger.info('isi contaminations {}'.format(isi_contamin))
+        logger.debug('isi contaminations {}'.format(isi_contamin))
 
         return isi_contamin
 
@@ -1533,8 +1533,8 @@ class Neuron:
                                                                    0.003,
                                                                    0.005])
 
-            isi_time_ax.plot(contamination_lines.T)
-            isi_time_ax.set_ylim((0, 50))
+            isi_time_ax.plot(contamination_lines.T, alpha=0.7)
+            isi_time_ax.set_ylim((0, 20))
             isi_time_ax.set_xlim((self.start_time, self.end_time/300))
             isi_time_ax.set_xlabel('Time(hr)')
             isi_time_ax.set_ylabel('Perc. contamination')
