@@ -36,6 +36,10 @@ import re
 from datetime import datetime
 import sys
 import time
+try:
+    import scipy as sc
+except ImportError:
+    raise ImportError('Run command : pip install scipy')
 # try:
 #     import joblib
 # except ImportError:
@@ -1586,8 +1590,15 @@ class Neuron:
 
             # AMP plot
             if hasattr(self, 'spike_amplitude'):
+                # calculate zscore
+                th_zs = 2
+                z = np.abs(sc.stats.zscore(self.spike_amplitude))
                 amp_ax.plot((self.spike_time / self.fs),
                             self.spike_amplitude, 'bo',
+                            markersize=1.9, alpha=0.2)
+                amp_ax.plot((self.spike_time[np.where(z > th_zs)] / self.fs),
+                            self.spike_amplitude[np.where(z > th_zs)],
+                            'ro',
                             markersize=1.9, alpha=0.2)
                 amp_ax.set_xlabel('Time (s)')
                 amp_ax.set_ylabel('Amplitudes', labelpad=-3)
