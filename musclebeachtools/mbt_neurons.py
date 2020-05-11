@@ -2126,6 +2126,84 @@ def load_spike_amplitudes(neuron_list, file_name):
     return neuron_list
 
 
+def load_spike_waveform_tet(neuron_list, file_name):
+
+    '''
+    Get spike waveforms from numpy list and update waveform_tetrodes
+
+    load_spike_waveform_tet(neuron_list, file_name)
+
+    Parameters
+    ----------
+    neuron_list : List of neurons
+    file_name : Filename with path,
+                '/home/kbn/neuron_waveforms_group0.npy',
+                output from spike_interface
+
+    Returns
+    -------
+    neuron_list_with_waveform : neuron list with waveform in
+                                  n[ ].waveform field
+
+    Raises
+    ------
+    ValueError if neuron list is empty
+    FileNotFoundError if file_name not found
+    ValueError if filename does not contain _waveforms_group
+    ValueError if length of neuron list not same as length of waveform list
+
+    See Also
+    --------
+
+    Notes
+    -----
+
+    Examples
+    --------
+    neuron_list_with_waveform = \
+            load_spike_waveform_tet(neuron_list,
+                                  '/home/kbn/neuron_waveforms_group0.npy')
+    '''
+
+    logger.info('Updating neurons[].waveform_tetrodes')
+
+    # check neuron_list is not empty
+    if (len(neuron_list) == 0):
+        raise ValueError('Neuron list is empty')
+
+    # check file exist
+    if not (op.exists(file_name) and op.isfile(file_name)):
+        raise FileNotFoundError("File {} not found".format(file_name))
+
+    # Check _waveforms_group
+    if "_waveforms_group" in file_name:
+        logger.debug("_waveforms_group")
+    else:
+        raise \
+            ValueError('Filename error: not _waveforms_group')
+
+    # Load file, loop and update
+    sp_wft = load_np(file_name, lpickle=True)
+
+    # check length of neuron list and waveform list same
+    if (len(sp_wft) != len(neuron_list)):
+        raise \
+            ValueError('Length of neuron list {} != length of waveform list {}'
+                       .format(len(sp_wft),
+                               len(neuron_list)))
+
+    for neuron in neuron_list:
+        if "_waveforms_group" in file_name:
+            logger.debug('Neuron %s', neuron.clust_idx)
+            neuron.waveform_tetrodes = \
+                np.mean(np.asarray(sp_wft[neuron.clust_idx]).T, axis=2)
+
+    if "_waveforms_group" in file_name:
+        logger.info('Updated neurons[].waveform_tetrodes')
+
+    return neuron_list
+
+
 def load_spike_waveforms_be(neuron_list, file_name):
 
     '''
