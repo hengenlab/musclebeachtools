@@ -924,7 +924,7 @@ class Neuron:
 
         '''
 
-        logger.info("Calculating isi contamination over time")
+        logger.debug("Calculating isi contamination over time")
 
         # check cont_thresh_list is not empty
         if (len(cont_thresh_list) == 0):
@@ -995,7 +995,7 @@ class Neuron:
 
         '''
 
-        logger.info('Calculating isi contamination')
+        logger.debug('Calculating isi contamination')
 
         # check cont_thresh_list is not empty
         if (len(cont_thresh_list) == 0):
@@ -1593,6 +1593,8 @@ class Neuron:
                 # calculate zscore
                 th_zs = 2
                 z = np.abs(sc.stats.zscore(self.spike_amplitude))
+                amp_mean = np.mean((self.spike_amplitude))
+                # print("amp_mean ", amp_mean)
                 amp_ax.plot((self.spike_time / self.fs),
                             self.spike_amplitude, 'bo',
                             markersize=1.9, alpha=0.2)
@@ -1604,6 +1606,24 @@ class Neuron:
                 amp_ax.set_ylabel('Amplitudes', labelpad=-3)
                 amp_ax.set_xlim(left=(self.start_time),
                                 right=(self.end_time))
+                # print(max((amp_mean - 50), np.min(self.spike_amplitude)))
+                # print(min((amp_mean + 100), np.max(self.spike_amplitude)))
+                amp_ax.set_ylim(bottom=(max((amp_mean - 50),
+                                                np.min(self.spike_amplitude))),
+                                top=(min((amp_mean + 100),
+                                              np.max(self.spike_amplitude))))
+                amp_stats_str = '\n'.join((
+                    r'$Min=%d$' % (np.min(self.spike_amplitude), ),
+                    r'$Max=%d$' % (np.max(self.spike_amplitude), ),
+                    r'$Mean=%d$' % (np.mean(self.spike_amplitude), )))
+                # print("amp_stats_str ", amp_stats_str)
+                props = dict(boxstyle='round', facecolor='wheat',
+                             alpha=0.5)
+                amp_ax.text(0.73, 0.99, amp_stats_str,
+                            transform=amp_ax.transAxes,
+                            fontsize=8,
+                            verticalalignment='top', bbox=props)
+
             else:
                 amp_ax.plot([1], [2])
                 plt.xticks([], [])
