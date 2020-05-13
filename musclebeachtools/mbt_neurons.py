@@ -1577,6 +1577,7 @@ class Neuron:
                                  right=((wf_sh * 1000.0) / self.fs))
             wf_stats_str = '\n'.join((
                 r'$Cluster Id=%d$' % (self.clust_idx, ),
+                r'$Cell type=%s$' % (self.cell_type, ),
                 r'$Channel=%d$' % (self.peak_channel, )))
             # print("wf_stats_str ", wf_stats_str)
             props = dict(boxstyle='round', facecolor='wheat',
