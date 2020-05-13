@@ -1506,7 +1506,7 @@ class Neuron:
             logger.info('Total FR is %f', total_fr)
             prsc_ratio = self.presence_ratio()
             if self.end_time > 3600 * 4:
-                hzcount, xbins = self.plotFR(lplot=0)
+                hzcount, xbins = self.plotFR(binsz=300, lplot=0)
                 fr_ax.plot(xbins[:-1], hzcount, color='#703be7')
                 fr_ax.set_xlim(left=self.start_time)
                 fr_ax.set_xlabel('Time(hr)')
@@ -1582,7 +1582,7 @@ class Neuron:
             # print("wf_stats_str ", wf_stats_str)
             props = dict(boxstyle='round', facecolor='wheat',
                          alpha=0.5)
-            waveform_ax.text(0.73, 0.99, wf_stats_str,
+            waveform_ax.text(0.53, 0.10, wf_stats_str,
                              transform=waveform_ax.transAxes,
                              fontsize=8,
                              verticalalignment='top', bbox=props)
@@ -1594,8 +1594,6 @@ class Neuron:
                 # calculate zscore
                 th_zs = 2
                 z = np.abs(sc.stats.zscore(self.spike_amplitude))
-                amp_mean = np.mean((self.spike_amplitude))
-                # print("amp_mean ", amp_mean)
                 amp_ax.plot((self.spike_time / self.fs),
                             self.spike_amplitude, 'bo',
                             markersize=1.9, alpha=0.2)
@@ -1607,20 +1605,18 @@ class Neuron:
                 amp_ax.set_ylabel('Amplitudes', labelpad=-3)
                 amp_ax.set_xlim(left=(self.start_time),
                                 right=(self.end_time))
-                # print(max((amp_mean - 50), np.min(self.spike_amplitude)))
-                # print(min((amp_mean + 100), np.max(self.spike_amplitude)))
-                amp_ax.set_ylim(bottom=(max((amp_mean - 50),
-                                                np.min(self.spike_amplitude))),
-                                top=(min((amp_mean + 100),
-                                              np.max(self.spike_amplitude))))
+                amp_ax.set_ylim(bottom=0,
+                                top=(min((np.mean(self.spike_amplitude) +
+                                          (3*np.std(self.spike_amplitude))),
+                                         np.max(self.spike_amplitude))))
                 amp_stats_str = '\n'.join((
-                    r'$Min=%d$' % (np.min(self.spike_amplitude), ),
-                    r'$Max=%d$' % (np.max(self.spike_amplitude), ),
-                    r'$Mean=%d$' % (np.mean(self.spike_amplitude), )))
-                # print("amp_stats_str ", amp_stats_str)
+                    r'$Min: %d, Max: %d$' % (np.min(self.spike_amplitude),
+                                             np.max(self.spike_amplitude), ),
+                    r'$Mean:%d, Std:%d$' % (np.mean(self.spike_amplitude),
+                                            np.std(self.spike_amplitude), )))
                 props = dict(boxstyle='round', facecolor='wheat',
                              alpha=0.5)
-                amp_ax.text(0.73, 0.99, amp_stats_str,
+                amp_ax.text(0.73, 0.27, amp_stats_str,
                             transform=amp_ax.transAxes,
                             fontsize=8,
                             verticalalignment='top', bbox=props)
