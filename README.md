@@ -159,6 +159,19 @@ n[2].checkqual()
 # Check quality is changed also there is a log from checkqual
 print(n[2].quality)
 
+# Find quality using xgboost
+import numpy as np
+import musclebeachtools as mbt
+# Load neurons
+neurons = \
+    np.load('H_2020-04-09_09-11-37_2020-04-10_01-06-37_neurons_group0.npy',
+            allow_pickle=True)
+# Find quality
+mbt.autoqual(neurons, '/media/HlabShare/models/xgb_model')
+# Verify quality is correct using checkqual
+for neuron in neurons:
+    neuron.checkqual()
+
 # Remove spikes for neuron with large amplitudes
 # Default method based on standard deviation, for example 1.5
 n[4].remove_large_amplitude_spikes(1.5, lstd_deviation=True, start=False, end=False, lplot=True)
