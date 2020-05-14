@@ -1060,7 +1060,7 @@ class Neuron:
 
         '''
 
-        logger.info('Calculating presence ratio')
+        logger.debug('Calculating presence ratio')
         # Sample time to time in seconds
         time_s = (self.spike_time / self.fs)
 
@@ -1076,7 +1076,7 @@ class Neuron:
         # Calculation
         p_tmp, _ = np.histogram(time_s, np.linspace(start, end, nbins))
         prsc_ratio = (np.sum(p_tmp > 0) / (nbins - 1))
-        logger.info('Prescence ratio is %f', prsc_ratio)
+        logger.debug('Prescence ratio is %f', prsc_ratio)
 
         return prsc_ratio
 
