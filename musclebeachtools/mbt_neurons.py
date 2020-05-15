@@ -1509,7 +1509,8 @@ class Neuron:
                 hzcount, xbins = self.plotFR(binsz=300, lplot=0)
                 fr_ax.plot(xbins[:-1], hzcount, color='#703be7')
                 fr_ax.set_xlim(left=self.start_time)
-                fr_ax.set_xlabel('Time(hr)')
+                fr_ax.set_xticks([], [])
+                fr_ax.set_xlabel('Time')
                 fr_ax.set_ylabel('Firing rate (Hz)')
             else:
                 hzcount, xbins = \
@@ -1517,6 +1518,7 @@ class Neuron:
                                 lplot=0)
                 fr_ax.plot(xbins[:-1], hzcount, color='#703be7')
                 fr_ax.set_xlim(left=self.start_time)
+                fr_ax.set_xticks([], [])
                 fr_ax.set_xlabel('Time')
                 fr_ax.set_ylabel('Firing rate (Hz)')
             fr_stats_str = '\n'.join((
@@ -1540,7 +1542,7 @@ class Neuron:
             isi_time_ax.plot(contamination_lines.T, alpha=0.7)
             isi_time_ax.set_ylim((0, 20))
             isi_time_ax.set_xlim((self.start_time, self.end_time/300))
-            isi_time_ax.set_xlabel('Time(hr)')
+            isi_time_ax.set_xlabel('Time')
             isi_time_ax.set_ylabel('Perc. contamination')
             isi_time_ax.legend(['@1ms', '@2ms', '@3ms', '@5ms'],
                                loc="upper right", fontsize="small")
