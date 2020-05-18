@@ -15,6 +15,12 @@ git clone https://github.com/hengenlab/musclebeachtools_hlab.git
 ```
 cd locationofmusclebeachtools_hlab/musclebeachtools/  
 pip install .
+# In Linux and windows
+pip install xgboost
+# In mac, install brew,gcc then install xgboost
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+brew install gcc@5
+conda install -c conda-forge xgboost
 ```
 
 ---
