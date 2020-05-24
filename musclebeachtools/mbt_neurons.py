@@ -1614,8 +1614,10 @@ class Neuron:
                 amp_stats_str = '\n'.join((
                     r'$Min: %d, Max: %d$' % (np.min(self.spike_amplitude),
                                              np.max(self.spike_amplitude), ),
-                    r'$Mean:%d, Std:%d$' % (np.mean(self.spike_amplitude),
-                                            np.std(self.spike_amplitude), )))
+                    r'$Mean:%d, Med:%d, Std:%d$'
+                    % (np.mean(self.spike_amplitude),
+                       np.median(self.spike_amplitude),
+                       np.std(self.spike_amplitude), )))
                 props = dict(boxstyle='round', facecolor='wheat',
                              alpha=0.5)
                 amp_ax.text(0.73, 0.27, amp_stats_str,
