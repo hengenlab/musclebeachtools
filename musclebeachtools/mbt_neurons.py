@@ -18,6 +18,7 @@ ksout(datadir, filenum=0, prbnum=1, filt=None)
 
 import os.path as op
 import glob
+import os
 # import copy
 try:
     import numpy as np
@@ -1411,7 +1412,8 @@ class Neuron:
         self.on_times = ontimes
         self.off_times = offtimes
 
-    def checkqual(self, binsz=3600, start=False, end=False):
+    def checkqual(self, binsz=3600, start=False, end=False, lsavepng=0,
+                  png_outdir=None):
         # copied from musclebeachtools
 
         '''
@@ -1426,6 +1428,10 @@ class Neuron:
         binsz : Bin size (default 3600)
         start : Start time (default self.start_time)
         end : End time (default self.end_time)
+        lsavepng : Save checkqual results as png's
+        png_outdir : Directory to save png files
+                     if lsavepng=1 and png_outdir=None
+                     png's will be saved in current working directory
 
         Returns
         -------
@@ -1446,6 +1452,12 @@ class Neuron:
         '''
 
         logger.info('Plotting figures for checking quality')
+        if lsavepng:
+            if png_outdir is not None:
+                if not os.path.exists(png_outdir):
+                    raise \
+                        NotADirectoryError('Folder {} not found'
+                                           .format(png_outdir))
 
         # sharex=True, sharey=True,  figsize=(4, 4),
         with plt.style.context('seaborn-dark-palette'):
@@ -1663,7 +1675,21 @@ class Neuron:
             qual_ax.set_xlabel("Press 'q' to exit")
             qual_ax.xaxis.set_label_coords(0.1, -0.1)
 
-            plt.show(block=True)
+            if lsavepng:
+                if png_outdir is None:
+                    png_outdir = os.getcwd()
+                try:
+                    png_filename = \
+                        op.join(png_outdir,
+                                str('checkqual_clust_idx_') +
+                                str(self.clust_idx) +
+                                str('.png'))
+                    plt.savefig(png_filename)
+                except Exception as e:
+                    print("Error ", e)
+                    raise RuntimeError('Error saving {}'.format(png_filename))
+            else:
+                plt.show(block=True)
 
 
 def autoqual(neuron_list, model_file,

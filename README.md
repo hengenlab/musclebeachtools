@@ -174,9 +174,14 @@ neurons = \
             allow_pickle=True)
 # Find quality
 mbt.autoqual(neurons, '/media/HlabShare/models/xgb_model')
+
 # Verify quality is correct using checkqual
+# lsavepng : Save checkqual results as png's, default 0
+# png_outdir : Directory to save png files
+#              if lsavepng=1 and png_outdir=None
+#              png's will be saved in current working directory
 for neuron in neurons:
-    neuron.checkqual()
+    neuron.checkqual(savepng=0, png_outdir=None)
 
 # Remove spikes for neuron with large amplitudes
 # Default method based on standard deviation, for example 1.5
