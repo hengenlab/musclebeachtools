@@ -186,6 +186,12 @@ n[4].remove_large_amplitude_spikes(1000, lstd_deviation=False, start=False, end=
 If you are sure and do not want to check plots
  to confirm change lplot=False (not recommended)
 
+# Update behavior
+# behavior has a value of np.zeros(2,6) by default to update behaviour of all cells
+# behavior is 2d array with first one with time in each state and second one with
+# behavioral states,
+n[0].update_behavior(behavior))
+
 # Save a modified neuron list
 mbt.n_save_modified_neuron_list(n, '/home/kbn/neuron_mod.npy')
 
