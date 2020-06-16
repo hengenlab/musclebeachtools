@@ -251,7 +251,12 @@ class Neuron:
     # age = np.int16(0)
     # start_time = 0
     # end_time = 12 * 60 * 60
-    behavior = None
+    # behavior = None
+    behavior = np.zeros((2, 6))
+
+    @classmethod
+    def update_behavior(cls, behavior):
+        cls.behavior = behavior
 
     def __init__(self, sp_c, sp_t, qual, mwf, mwfs, max_channel,
                  fs=25000, start_time=0, end_time=12 * 60 * 60,
@@ -1707,6 +1712,7 @@ def autoqual(neuron_list, model_file,
     '''
 
     logger.info('Plotting figures for checking quality')
+    lmake_xgbdata = 0
 
     # check neuron_list is not empty
     if (len(neuron_list) == 0):
@@ -1741,8 +1747,8 @@ def autoqual(neuron_list, model_file,
         # assign quality
         if ltrain:
             neuron_qual[idx] = i.quality - 1
-        # else:
-        #     neuron_qual[idx] = i.quality - 1
+        if lmake_xgbdata:
+            neuron_qual[idx] = i.quality - 1
 
         # print("i.quality ", i.quality)
         # print("i.quality ", type(i.quality))
@@ -1906,6 +1912,8 @@ def autoqual(neuron_list, model_file,
             (neuron_features, neuron_qual,
              neuron_indices)
 
+        if lmake_xgbdata:
+            return neuron_qual_test, neuron_features_test
         # print("neuron_qual ", neuron_qual)
         # print("neuron_qual_test ", neuron_qual_test)
         dtest = xgb.DMatrix(neuron_features_test, label=neuron_qual_test)
