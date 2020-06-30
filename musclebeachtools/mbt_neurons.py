@@ -1413,7 +1413,7 @@ class Neuron:
         self.off_times = offtimes
 
     def checkqual(self, binsz=3600, start=False, end=False, lsavepng=0,
-                  png_outdir=None):
+                  png_outdir=None, fix_amp_ylim=False):
         # copied from musclebeachtools
 
         '''
@@ -1577,7 +1577,7 @@ class Neuron:
                 waveform_ax.plot(np.linspace(0, (wf_sh * 1000.0) / self.fs,
                                              wf_sh),
                                  self.waveform,
-                                 'g*')
+                                 'green')
 
             else:
                 wf_sh = self.waveform.shape[0]
@@ -1588,7 +1588,7 @@ class Neuron:
                 waveform_ax.plot(np.linspace(0, (wf_sh * 1000.0) / self.fs,
                                              wf_sh),
                                  self.waveform,
-                                 'g*')
+                                 'green')
 
             waveform_ax.set_xlabel('Time (ms)')
             waveform_ax.set_ylabel('Amplitude', labelpad=-3)
@@ -1624,10 +1624,13 @@ class Neuron:
                 amp_ax.set_ylabel('Amplitudes', labelpad=-3)
                 amp_ax.set_xlim(left=(self.start_time),
                                 right=(self.end_time))
-                amp_ax.set_ylim(bottom=0,
-                                top=(min((np.mean(self.spike_amplitude) +
-                                          (3*np.std(self.spike_amplitude))),
-                                         np.max(self.spike_amplitude))))
+                if fix_amp_ylim:
+                    amp_ax.set_ylim(bottom=0, top=500)
+                else:
+                    amp_ax.set_ylim(bottom=0,
+                                    top=(min((np.mean(self.spike_amplitude) +
+                                             (3*np.std(self.spike_amplitude))),
+                                             np.max(self.spike_amplitude))))
                 amp_stats_str = '\n'.join((
                     r'$Min: %d, Max: %d$' % (np.min(self.spike_amplitude),
                                              np.max(self.spike_amplitude), ),
