@@ -180,8 +180,10 @@ mbt.autoqual(neurons, '/media/HlabShare/models/xgb_model')
 # png_outdir : Directory to save png files
 #              if lsavepng=1 and png_outdir=None
 #              png's will be saved in current working directory
+# fix_amp_ylim=0 : Default off
+# fix_amp_ylim=500, to change amplitude plot ylim from 0 to 500.
 for neuron in neurons:
-    neuron.checkqual(savepng=0, png_outdir=None)
+    neuron.checkqual(savepng=0, png_outdir=None, fix_amp_ylim=500)
 
 # Remove spikes for neuron with large amplitudes
 # Default method based on standard deviation, for example 1.5
