@@ -203,6 +203,48 @@ def wf_comparison(waveform_1, waveform_2):
     return sse, mse, rmse
 
 
+def wf_sim(wf1, wf2, ltype=1):
+
+    '''
+    Find similarity between two waveforms
+
+    wf_sim(wf1, wf2, ltype=1)
+
+    Parameters
+    ----------
+    wf1 : First waveform
+    wf2 : Second waveform
+    ltype : Default 1 (ks_2samp), 2 corrcoef
+
+    Returns
+    -------
+    sim_fact : Similarity factor
+
+    Raises
+    ------
+
+    See Also
+    --------
+
+    Notes
+    -----
+
+    Examples
+    --------
+    sim_fact = wf_sim(wf1, wf2, ltype=1)
+
+    '''
+
+    if ltype == 1:
+        w, p = sc.stats.ks_2samp(wf1, wf2)
+        return p
+    elif ltype == 2:
+        p = np.corrcoef(wf1, wf2)[0][1]
+        return p
+    else:
+        raise ValueError('Unknown ltype {}'.format(ltype))
+
+
 def ecube_realtimestring_to_epoch(e_time_string):
 
     '''
