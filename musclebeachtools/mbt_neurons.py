@@ -310,7 +310,8 @@ class Neuron:
                  estart_time=None, eend_time=None,
                  sp_amp=None,
                  region_loc=None,
-                 wf_b=None, wf_e=None):
+                 wf_b=None, wf_e=None,
+                 key=None):
         '''
         The constructor for Neuron class.
 
@@ -323,7 +324,8 @@ class Neuron:
                  estart_time=None, eend_time=None,
                  sp_amp=None,
                  region_loc=None,
-                 wf_b=None, wf_e=None)
+                 wf_b=None, wf_e=None,
+                 key=None)
 
 
         Parameters
@@ -351,6 +353,7 @@ class Neuron:
         region_loc : implant location
         wf_b : waveforms begin
         wf_e : waveforms end
+        key : link clusters
 
 
         Returns
@@ -376,7 +379,8 @@ class Neuron:
                 estart_time=None, eend_time=None,
                 sp_amp=None,
                 region_loc=None,
-                wf_b=None, wf_e=None)
+                wf_b=None, wf_e=None,
+                key=None)
 
         '''
 
@@ -432,6 +436,11 @@ class Neuron:
             self.wf_b = wf_b
         if wf_e is not None:
             self.wf_e = wf_e
+
+        if key is not None:
+            self.key = np.int16(key)
+        else:
+            self.key = np.int16(-1)
 
         self.cell_type, self.mean_amplitude = \
             self.__find_celltypewithmeanamplitude()
