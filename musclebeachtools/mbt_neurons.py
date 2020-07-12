@@ -1378,90 +1378,246 @@ class Neuron:
         logger.info('Changing quality of unit {} is now {}'
                     .format(self.clust_idx, self.quality))
 
-    def set_onofftimes(self, ontimes, offtimes):
+    def set_onofftimes(self):
+        '''GUI based approach to setting on/off times for a neuron. 
+                   Based on PLOT_SETONOFF_TIMES.PY. Function that allows a user to manually label times in which recordings should be considered "on" and "off" in a GUI based format. This program assumes that the user is loading a .npy file with multiple "neuron" class objects that should have fields for spike times, spike amplitudes, and cell quality. The user can either manually enter the file name and location or a GUI file selector will automatically pop up. 
 
-        '''
-        This function allows to change on off time of neuron
+            NB: this is all very slow because it's built in matplotlib, but due to the necessity of matplotlib on everyone's machines, this should run without much trouble on almost any system within the lab. ''' 
+        import seaborn as sns
+        # KIRAN we need to test this function. 
+        plt.ion()
+        global nidx, subp, subp1, tag#, cid1, cid2
+        nidx = 0 # This will index the selected neurons from tcells
+        tag = np.NaN
 
-        set_onofftimes(self, ontimes, offtimes)
+        sp_t = []
 
-        Parameters
-        ----------
-        ontimes : list of ontimes
-        offtimes : list of offtimes
+        def onclick(event):
+            # capture the x coordinate (time) of the user click input. This will only matter if the user has already made a keyboard press to indicate on or off time (1 or 0, respectively).
+            global ix, iy, tag
+            ix, iy = event.xdata, event.ydata
+            print("ix ", ix, " iy ", iy)
 
-        Returns
-        -------
+            ylims = subp.get_ylim()
+            ylims1 = subp1.get_ylim()
 
-        Raises
-        ------
-        ValueError if on off times is empty
-        ValueError if on off time has not equal size
-        ValueError if ontime > offtime
-        ValueError if ontime or offtime list not contain integer or float
+            if tag == 'on':
+                subp.vlines(ix, ylims[0], ylims[1], colors = 'xkcd:seafoam' )
+                subp1.vlines(ix, ylims1[0], ylims1[1], colors = 'xkcd:seafoam' )
+                #plt.pause(0.01)
+                sp_t.append([ix,1])
+                tag = np.NaN
+                tag_event()
 
-        See Also
-        --------
+            elif tag == 'off':
+                subp.vlines(ix, ylims[0], ylims[1], colors = 'xkcd:vermillion' )
+                subp1.vlines(ix, ylims1[0], ylims1[1], colors = 'xkcd:vermillion' )
+                #plt.pause(0.01)
+                sp_t.append([ix,0])
+                tag = np.NaN
+                tag_event()
 
-        Notes
-        -----
+        def press(event):
+            # Respond to the user's keyboard input. User can select right or left keys to advance/retreat through the individual neurons that meet the initial filtering criteria. User can also press 1 to indicate ON time and 0 to indicate OFF time. Pressing 0 or 1 will then make the code "listen" for a mouse input that is used to log the on/off timestamp. Alternatively, the user can press "z" to delete the most recent time input (mouse click). 
+            sys.stdout.flush()
 
-        Examples
-        --------
-        n[0].set_onofftimes(ontimes, offtimes)
+            global nidx, subp, ky, tag#, cid1, cid2
+            ky = event.key
 
-        '''
+            if ky =='0':
+                tag = 'off'
+                tag_event()
+                # set off time
 
-        logger.info('Changing on off times')
+            elif ky=='1':
+                tag = 'on'
+                tag_event()
+            #     # set on time
+                
+            elif ky=='z':
+                tag = 'del'
+                tag_event()
 
-        # numpy array to list
-        if isinstance(ontimes, np.ndarray):
-            ontimes = ontimes.tolist()
-        if isinstance(offtimes, np.ndarray):
-            offtimes = offtimes.tolist()
-        print("ontimes type ", type(ontimes))
-        print("offtimes type ", type(offtimes))
+            elif ky=='d':
+                # This button will save the indicated on/off times to the applicable neurons
+                savefunc()
 
-        # convert to list
-        if not isinstance(ontimes, list):
-            if ((isinstance(ontimes, float)) or (isinstance(ontimes, int))):
-                ontimes = list([ontimes])
-            elif (len(ontimes) > 1):
-                ontimes = list(ontimes)
-            logger.info('ontimes type type(ontimes)')
-        if not isinstance(offtimes, list):
-            if ((isinstance(offtimes, float)) or
-                    (isinstance(offtimes, int))):
-                offtimes = list([offtimes])
-            elif (len(offtimes) > 1):
-                offtimes = list(offtimes)
-            logger.info('ontimes type type(offtimes)')
+        def savefunc():
+            # KIRAN - Does this work? Save func was a way to exit the program and save the data. In this case, the user should be able to enter a bunch of on off times and then press "D" to complete the process and exit the GUI with the new on/off times added to the base dataset
+            return (self)
 
-        # check ontimes is not empty
-        if (len(ontimes) == 0):
-            raise ValueError('Error : ontimes is empty')
-        if (len(offtimes) == 0):
-            raise ValueError('Error : offtimes is empty')
+        def tag_event():
+            # Change the sup title at the top of the window to reflect the user's recent selection. This is mostly to show the user that the code has registered their input, however, if the user has selected "z" (delete most recent time stamp), this will clear the last entry in the time stamp list and call the plotting code to refresh the data w/ timestamp deleted.
+            global tag
 
-        # Check ontimes has a corresponding offtimes value
-        if not ((len(ontimes)) == (len(offtimes))):
-            raise \
-                ValueError('Error: on off times not same size given {} and {}'
-                           .format(len(ontimes), len(offtimes)))
+            if tag=='off':
+                top_title.update({'text':'Click OFF time.'})
+                plt.pause(0.01)
+            elif tag=='on':
+                top_title.update({'text':'Click ON time.'})
+                plt.pause(0.01)
+            elif tag=='del':
+                del sp_t[-1]
+                subp.cla()
+                subp1.cla()
+                top_title.update({'text':'Deleted last time selection.'})
+                plotcell(self)
+            elif np.isnan(tag):
+                top_title.update({'text':'Ready to continue.'})
+                plt.pause(0.01)
+                
+        def plotcell(neuron):
+            # Core plotting code to show two subplots. Top subplot is amplitude versus time, and the bottom is firing rate versus time. If there are on/off times, this will also process those and display them accordingly. 
 
-        # Check time is ascending
-        for on_tmp, off_tmp in zip(ontimes, offtimes):
-            if (on_tmp > off_tmp):
-                raise ValueError('Error: ontime {} > offtime {}'
-                                 .format(on_tmp, off_tmp))
-            if not ((isinstance(on_tmp, float)) or (isinstance(on_tmp, int))):
-                raise ValueError('Error: ontime values not float')
-            if not ((isinstance(off_tmp, float))
-                    or (isinstance(off_tmp, int))):
-                raise ValueError('Error: ontime values not float')
+            # Amplitudes subplot:
+            meanamp = np.mean(neuron.spike_amplitude)
+            stdevamp = np.std(neuron.spike_amplitude)
+            
+            subp.scatter(neuron.spike_time_sec/3600, neuron.spike_amplitude, color = (0.5,0.5,0.5), marker = '.', alpha = 0.075)
+            # set reasonable x and y lims for display. y min is 3rd percentile and max is 5 std
+            subp.set_ylim(np.percentile(neuron.spike_amplitude, 3), meanamp+4*stdevamp)
+            subp.set_xlim(np.floor(neuron.spike_time_sec[0]/3600), neuron.spike_time_sec[-1]/3600 )
 
-        self.on_times = ontimes
-        self.off_times = offtimes
+            xlims = subp.get_xlim()
+            ylims = subp.get_ylim()
+
+            txtx = xlims[0]+0.1*(xlims[1] - xlims[0])
+            txty = ylims[0]+0.5*(ylims[1] - ylims[0])
+            subp.text(txtx,txty, f'cluster index: {neuron.clust_idx}')
+            subp.set_xlabel('Time (hours)')
+            subp.set_ylabel('Amplitude (uV)')
+            sns.despine()
+            #plt.draw()
+            
+            # Firing rate subplot:
+            t0 = neuron.spike_time_sec[0] / 3600
+            t1 = neuron.spike_time_sec[-1] / 3600
+            step = 120
+            edges = np.arange(t0,t1, step / 3600)
+            fr = np.histogram(neuron.spike_time_sec/3600, edges)
+            subp1.plot(fr[1][0:-1],fr[0]/step, color = 'xkcd:periwinkle', linewidth = 3)
+            subp1.set_ylim(0, np.ceil( (np.max (fr[0])/step )*1.05) )  # Set the limits so they stop drifting when adding vertical lines. 
+            subp1.set_xlabel('Time (hours)')
+            subp1.set_ylabel('Firing Rate (Hz)')
+            sns.despine()
+
+            if np.size(sp_t)>0:
+                # Add on/off lines if they exist
+                # take the list of on/off times and convert to an array for searching.
+                oots = np.stack(sp_t, axis=0)
+                tempons = np.squeeze(np.where(oots[:,1]==1))
+                tempoffs = np.squeeze(np.where(oots[:,1]==0))
+                # pull ylims for the FR plot
+                ylims1 = subp1.get_ylim()
+                # add the lines to the amplitude plot
+                subp.vlines(oots[tempons,0], ylims[0], ylims[1], colors = 'xkcd:seafoam' )
+                subp1.vlines(oots[tempons,0], ylims1[0], ylims1[1], colors = 'xkcd:seafoam' )
+                # and add the same x vals to the FR plot with the proper ylims
+                subp.vlines(oots[tempoffs,0], ylims[0], ylims[1], colors = 'xkcd:vermillion' )
+                subp1.vlines(oots[tempoffs,0], ylims1[0], ylims1[1], colors = 'xkcd:vermillion' )
+            else:
+                pass
+
+            plt.draw()
+
+        # Set up the figure and connect it to click and press utilities.
+        fig = plt.figure(constrained_layout=True, figsize=(14, 7))
+        top_title = fig.suptitle('Placeholder', fontsize=14)
+        fig.canvas.mpl_connect('key_press_event', press)
+        fig.canvas.mpl_connect('button_press_event', onclick)
+        gs = fig.add_gridspec(2, 1)
+        subp = fig.add_subplot(gs[0, 0])
+        subp1 = fig.add_subplot(gs[1, 0], sharex = subp)
+
+        # Call the initial plotting:
+        plotcell(self)
+
+
+
+
+        
+        # OLD VERSION, COMMENTED OUT BY KBH 7/12/2020'''
+        # This function allows to change on off time of neuron
+
+        # set_onofftimes(self, ontimes, offtimes)
+
+        # Parameters
+        # ----------
+        # ontimes : list of ontimes
+        # offtimes : list of offtimes
+
+        # Returns
+        # -------
+
+        # Raises
+        # ------
+        # ValueError if on off times is empty
+        # ValueError if on off time has not equal size
+        # ValueError if ontime > offtime
+        # ValueError if ontime or offtime list not contain integer or float
+
+        # See Also
+        # --------
+
+        # Notes
+        # -----
+
+        # Examples
+        # --------
+        # n[0].set_onofftimes(ontimes, offtimes)
+
+        # '''
+
+        # logger.info('Changing on off times')
+
+        # # numpy array to list
+        # if isinstance(ontimes, np.ndarray):
+        #     ontimes = ontimes.tolist()
+        # if isinstance(offtimes, np.ndarray):
+        #     offtimes = offtimes.tolist()
+        # print("ontimes type ", type(ontimes))
+        # print("offtimes type ", type(offtimes))
+
+        # # convert to list
+        # if not isinstance(ontimes, list):
+        #     if ((isinstance(ontimes, float)) or (isinstance(ontimes, int))):
+        #         ontimes = list([ontimes])
+        #     elif (len(ontimes) > 1):
+        #         ontimes = list(ontimes)
+        #     logger.info('ontimes type type(ontimes)')
+        # if not isinstance(offtimes, list):
+        #     if ((isinstance(offtimes, float)) or
+        #             (isinstance(offtimes, int))):
+        #         offtimes = list([offtimes])
+        #     elif (len(offtimes) > 1):
+        #         offtimes = list(offtimes)
+        #     logger.info('ontimes type type(offtimes)')
+
+        # # check ontimes is not empty
+        # if (len(ontimes) == 0):
+        #     raise ValueError('Error : ontimes is empty')
+        # if (len(offtimes) == 0):
+        #     raise ValueError('Error : offtimes is empty')
+
+        # # Check ontimes has a corresponding offtimes value
+        # if not ((len(ontimes)) == (len(offtimes))):
+        #     raise \
+        #         ValueError('Error: on off times not same size given {} and {}'
+        #                    .format(len(ontimes), len(offtimes)))
+
+        # # Check time is ascending
+        # for on_tmp, off_tmp in zip(ontimes, offtimes):
+        #     if (on_tmp > off_tmp):
+        #         raise ValueError('Error: ontime {} > offtime {}'
+        #                          .format(on_tmp, off_tmp))
+        #     if not ((isinstance(on_tmp, float)) or (isinstance(on_tmp, int))):
+        #         raise ValueError('Error: ontime values not float')
+        #     if not ((isinstance(off_tmp, float))
+        #             or (isinstance(off_tmp, int))):
+        #         raise ValueError('Error: ontime values not float')
+
+        # self.on_times = ontimes
+        # self.off_times = offtimes
 
     def checkqual(self, binsz=3600, start=False, end=False, lsavepng=0,
                   png_outdir=None, fix_amp_ylim=0):
