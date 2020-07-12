@@ -1,7 +1,7 @@
+
 import numpy as np
 import matplotlib.pyplot as plt
-import musclebeachtools_hlab.musclebeachtools as mbt
-import easygui #pip install easygui
+import easygui
 import sys
 import seaborn as sns
 
@@ -16,7 +16,7 @@ Three modes of on/off setting can be used.
 
 
 plt.ion()
-global nidx, n, subp, subp1, tag, cid1, cid2
+global nidx, n, subp, subp1, tag#, cid1, cid2
 nidx = 0 # This will index the selected neurons from tcells
 tag = np.NaN
 
@@ -61,7 +61,7 @@ def press(event):
     # Respond to the user's keyboard input. User can select right or left keys to advance/retreat through the individual neurons that meet the initial filtering criteria. User can also press 1 to indicate ON time and 0 to indicate OFF time. Pressing 0 or 1 will then make the code "listen" for a mouse input that is used to log the on/off timestamp. Alternatively, the user can press "z" to delete the most recent time input (mouse click). 
     sys.stdout.flush()
 
-    global nidx, subp, ky, n, tag, cid1, cid2
+    global nidx, subp, ky, n, tag#, cid1, cid2
     ky = event.key
 
     if ky=='right':
@@ -95,7 +95,7 @@ def press(event):
     elif ky=='d':
     # This button will save the indicated on/off times to the applicable neurons
         savefunc()
- 
+
 
 def savefunc():
     # write the user provided on/off times to all of the relevant neurons and save the data at the source. This should only be called if the user has selected 'Y' or 'y' after pressing 'q' to quit the program.   
@@ -112,7 +112,7 @@ def savefunc():
     np.save(datfile, n)
     plt.close('all')
     print(f'Data are saved to {datfile}')
- 
+
 def tag_event():
     # Change the sup title at the top of the window to reflect the user's recent selection. This is mostly to show the user that the code has registered their input, however, if the user has selected "z" (delete most recent time stamp), this will clear the last entry in the time stamp list and call the plotting code to refresh the data w/ timestamp deleted.
     global tag
