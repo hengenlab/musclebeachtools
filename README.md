@@ -202,6 +202,11 @@ n[0].update_behavior(behavior))
 # Save a modified neuron list
 mbt.n_save_modified_neuron_list(n, '/home/kbn/neuron_mod.npy')
 
+# To create neuron list from spikeinteface output folder in spikeinterface environmnet
+import numpy as np
+import glob
+import musclebeachtools_hlab.musclebeachtools as mbt
+n = mbt.mbt_spkinterface_out('/home/kbn/co/')
 
 ```
 
