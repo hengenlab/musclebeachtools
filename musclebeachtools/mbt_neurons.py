@@ -2351,7 +2351,10 @@ def n_spiketimes_to_spikewords(neuron_list, binsz=0.02,
             counts[counts > 0] = 1
         spikewords_array[i, :] = counts
 
-    return(spikewords_array.astype(np.int16))
+    if binarize == 1:
+        return(spikewords_array.astype(np.int8))
+    elif binarize == 0:
+        return(spikewords_array.astype(np.int32))
 
 
 def n_save_modified_neuron_list(neuron_list, file_name):
