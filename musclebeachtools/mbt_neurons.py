@@ -1796,6 +1796,8 @@ class Neuron:
                                              wf_sh),
                                  self.waveform,
                                  'green')
+                waveform_ax.plot(np.linspace(0, (wf_sh * 1000.0) / self.fs,
+                                             wf_sh), self.waveform, 'g.')
 
             else:
                 wf_sh = self.waveform.shape[0]
