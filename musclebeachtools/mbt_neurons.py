@@ -1776,14 +1776,17 @@ class Neuron:
 
             isi_time_ax.plot(contamination_lines.T, alpha=0.7)
             isi_time_ax.set_ylim((0, 20))
-            isi_time_ax.set_xlim((self.start_time, self.end_time/300))
+            # isi_time_ax.set_xlim((self.start_time, self.end_time/300))
+            isi_time_ax.set_xlim(left=self.start_time)
             isi_time_ax.set_xlabel('Time')
             isi_time_ax.set_ylabel('Perc. contamination')
             isi_time_ax.legend(['@1ms', '@2ms', '@3ms', '@5ms'],
                                loc="upper right", fontsize="small")
-            isi_time_ax.set_xticks(np.arange(self.start_time,
-                                             self.end_time/300, 12))
-            isi_time_ax.set_xticklabels(np.arange(0, int(self.end_time/3600)))
+            # isi_time_ax.set_xticks(np.arange(self.start_time,
+            #                                  self.end_time/300, 12))
+            # isi_time_ax.set_xticklabels(np.arange(0,
+            #                                       int(self.end_time/3600)))
+            isi_time_ax.set_xticks([], [])
 
             # WAVEFORM plot
             if hasattr(self, 'waveform_tetrodes'):
