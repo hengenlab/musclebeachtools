@@ -951,7 +951,8 @@ class Neuron:
                 ax.set_xlabel('Time (hours)')
                 ax.set_ylabel('Firing rate (Hz)')
 
-        sns.despine()
+        if lplot:
+            sns.despine()
         # plt.show()
         return hzcount, xbins
 
