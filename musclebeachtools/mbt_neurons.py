@@ -1541,92 +1541,90 @@ class Neuron:
         # Call the initial plotting:
         plotcell(self)
 
+    def set_onofftimes_from_list(self, ontimes, offtimes):
+        '''
+        This function allows to change on off time of neuron
 
+        set_onofftimes_from_list(self, ontimes, offtimes)
 
+        Parameters
+        ----------
+        ontimes : list of ontimes
+        offtimes : list of offtimes
 
-        
-        # OLD VERSION, COMMENTED OUT BY KBH 7/12/2020'''
-        # This function allows to change on off time of neuron
+        Returns
+        -------
 
-        # set_onofftimes(self, ontimes, offtimes)
+        Raises
+        ------
+        ValueError if on off times is empty
+        ValueError if on off time has not equal size
+        ValueError if ontime > offtime
+        ValueError if ontime or offtime list not contain integer or float
 
-        # Parameters
-        # ----------
-        # ontimes : list of ontimes
-        # offtimes : list of offtimes
+        See Also
+        --------
 
-        # Returns
-        # -------
+        Notes
+        -----
 
-        # Raises
-        # ------
-        # ValueError if on off times is empty
-        # ValueError if on off time has not equal size
-        # ValueError if ontime > offtime
-        # ValueError if ontime or offtime list not contain integer or float
+        Examples
+        --------
+        n[0].set_onofftimes_from_list(ontimes, offtimes)
 
-        # See Also
-        # --------
+        '''
 
-        # Notes
-        # -----
+        logger.info('Changing on off times from list')
 
-        # Examples
-        # --------
-        # n[0].set_onofftimes(ontimes, offtimes)
+        # numpy array to list
+        if isinstance(ontimes, np.ndarray):
+            ontimes = ontimes.tolist()
+        if isinstance(offtimes, np.ndarray):
+            offtimes = offtimes.tolist()
+        print("ontimes type ", type(ontimes))
+        print("offtimes type ", type(offtimes))
 
-        # '''
+        # convert to list
+        if not isinstance(ontimes, list):
+            if ((isinstance(ontimes, float)) or (isinstance(ontimes, int))):
+                ontimes = list([ontimes])
+            elif (len(ontimes) > 1):
+                ontimes = list(ontimes)
+            logger.info('ontimes type type(ontimes)')
+        if not isinstance(offtimes, list):
+            if ((isinstance(offtimes, float)) or
+                    (isinstance(offtimes, int))):
+                offtimes = list([offtimes])
+            elif (len(offtimes) > 1):
+                offtimes = list(offtimes)
+            logger.info('ontimes type type(offtimes)')
 
-        # logger.info('Changing on off times')
+        # check ontimes is not empty
+        if (len(ontimes) == 0):
+            raise ValueError('Error : ontimes is empty')
+        if (len(offtimes) == 0):
+            raise ValueError('Error : offtimes is empty')
 
-        # # numpy array to list
-        # if isinstance(ontimes, np.ndarray):
-        #     ontimes = ontimes.tolist()
-        # if isinstance(offtimes, np.ndarray):
-        #     offtimes = offtimes.tolist()
-        # print("ontimes type ", type(ontimes))
-        # print("offtimes type ", type(offtimes))
+        # Check ontimes has a corresponding offtimes value
+        if not ((len(ontimes)) == (len(offtimes))):
+            raise \
+                ValueError('Error: on off times not same size given {} and {}'
+                           .format(len(ontimes), len(offtimes)))
 
-        # # convert to list
-        # if not isinstance(ontimes, list):
-        #     if ((isinstance(ontimes, float)) or (isinstance(ontimes, int))):
-        #         ontimes = list([ontimes])
-        #     elif (len(ontimes) > 1):
-        #         ontimes = list(ontimes)
-        #     logger.info('ontimes type type(ontimes)')
-        # if not isinstance(offtimes, list):
-        #     if ((isinstance(offtimes, float)) or
-        #             (isinstance(offtimes, int))):
-        #         offtimes = list([offtimes])
-        #     elif (len(offtimes) > 1):
-        #         offtimes = list(offtimes)
-        #     logger.info('ontimes type type(offtimes)')
+        # Check time is ascending
+        for on_tmp, off_tmp in zip(ontimes, offtimes):
+            if (on_tmp > off_tmp):
+                raise ValueError('Error: ontime {} > offtime {}'
+                                 .format(on_tmp, off_tmp))
+            if not ((isinstance(on_tmp, float)) or (isinstance(on_tmp, int))):
+                raise ValueError('Error: ontime values not float')
+            if not ((isinstance(off_tmp, float))
+                    or (isinstance(off_tmp, int))):
+                raise ValueError('Error: ontime values not float')
 
-        # # check ontimes is not empty
-        # if (len(ontimes) == 0):
-        #     raise ValueError('Error : ontimes is empty')
-        # if (len(offtimes) == 0):
-        #     raise ValueError('Error : offtimes is empty')
+        self.on_times = ontimes
+        self.off_times = offtimes
 
-        # # Check ontimes has a corresponding offtimes value
-        # if not ((len(ontimes)) == (len(offtimes))):
-        #     raise \
-        #         ValueError('Error: on off times not same size given {} and {}'
-        #                    .format(len(ontimes), len(offtimes)))
-
-        # # Check time is ascending
-        # for on_tmp, off_tmp in zip(ontimes, offtimes):
-        #     if (on_tmp > off_tmp):
-        #         raise ValueError('Error: ontime {} > offtime {}'
-        #                          .format(on_tmp, off_tmp))
-        #     if not ((isinstance(on_tmp, float)) or (isinstance(on_tmp, int))):
-        #         raise ValueError('Error: ontime values not float')
-        #     if not ((isinstance(off_tmp, float))
-        #             or (isinstance(off_tmp, int))):
-        #         raise ValueError('Error: ontime values not float')
-
-        # self.on_times = ontimes
-        # self.off_times = offtimes
 
     def checkqual(self, binsz=3600, start=False, end=False, lsavepng=0,
                   png_outdir=None, fix_amp_ylim=0):
