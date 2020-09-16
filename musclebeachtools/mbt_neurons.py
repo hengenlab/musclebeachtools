@@ -605,14 +605,19 @@ class Neuron:
             # print("g0 ", good_times)
             # print("g1 ", np.asarray(good_times).flatten())
             # print("g2 ", np.int64(np.asarray(good_times).flatten()))
-            good_times = np.int64(np.asarray(good_times).flatten())
-            # print("g0 ", good_times)
-            good_times = good_times[(np.where(good_times > 0)[0])]
-            # print("g0 ", good_times)
-            # time_s_onoff = time_s_onoff[np.int64(np.asarray(good_times).flatten())]
-            time_s_onoff = time_s_onoff[np.int64(good_times)]
 
-            return time_s_onoff
+            # check good_times is not zero
+            if len(good_times) < 1:
+                raise ValueError('No spikes for this cell with onoff times')
+            else:
+                good_times = np.int64(np.asarray(good_times).flatten())
+                # print("g0 ", good_times)
+                good_times = good_times[(np.where(good_times > 0)[0])]
+                # print("g0 ", good_times)
+                # time_s_onoff = time_s_onoff[np.int64(np.asarray(good_times).flatten())]
+                time_s_onoff = time_s_onoff[np.int64(good_times)]
+
+                return time_s_onoff
         else:
             raise AttributeError('No attribute on_times or off_times')
 
