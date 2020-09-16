@@ -558,6 +558,60 @@ class Neuron:
         return time_s
 
     @property
+    def spike_time_sec_onoff(self):
+
+        '''
+        This will convert spike_time to seconds and
+        remove spikes based on off times
+
+        spike_time_sec(self)
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+        spike_time_sec : spike_time in seconds and
+        remove spikes based on off times
+
+        Raises
+        ------
+
+        See Also
+        --------
+
+        Notes
+        -----
+
+        Examples
+        --------
+
+        '''
+
+        logger.debug('Converting spike_time to seconds and apply on off times')
+
+        # Sample time to time in seconds
+        time_s_onoff = self.spike_time / self.fs
+        good_times = None
+        good_times = []
+        if (hasattr(self, 'on_times') and hasattr(self, 'off_times')):
+            for on_1, off_1 in zip(self.on_times, self.off_times):
+                # print(on_1, " ", off_1)
+                # a = np.delete(a, np.logical_and(a >= on_1, a <= off_1), 0)
+                # a = np.delete(a, np.where((a >= on_1) & (a <= off_1))[0], 0)
+                good_times.append(np.argwhere((time_s_onoff >= on_1) &
+                                              (time_s_onoff < off_1)))
+                # print(good_times)
+            time_s_onoff = time_s_onoff[np.asarray(good_times).flatten()]
+
+            # time_s_onoff = (self.spike_time / self.fs)
+            # time_s_onoff = (time_s_onoff / self.fs)
+
+            return time_s_onoff
+        else:
+            raise AttributeError('No attribute on_times or off_times')
+
+    @property
     def peaklatency(self):
         '''
         Calculate peaklatency from mean waveform
