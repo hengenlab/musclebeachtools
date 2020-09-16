@@ -604,9 +604,6 @@ class Neuron:
                 # print(good_times)
             time_s_onoff = time_s_onoff[np.asarray(good_times).flatten()]
 
-            # time_s_onoff = (self.spike_time / self.fs)
-            # time_s_onoff = (time_s_onoff / self.fs)
-
             return time_s_onoff
         else:
             raise AttributeError('No attribute on_times or off_times')
@@ -858,7 +855,7 @@ class Neuron:
         sns.despine()
 
     def isi_hist(self, start=False, end=False, isi_thresh=0.1, nbins=101,
-                 lplot=1):
+                 lplot=1, lonoff=1):
         # copied from musclebeachtools
         '''
         Return a histogram of the interspike interval (ISI) distribution.
@@ -877,6 +874,7 @@ class Neuron:
         isi_thresh : isi threshold (default 0.1)
         nbins : Number of bins (default 101)
         lplot : To plot or not (default lplot=1, plot isi)
+        lonoff : Apply on off times (default on, 1)
 
         Returns
         -------
@@ -902,7 +900,10 @@ class Neuron:
 
         logger.info('Calculating ISI')
         # Sample time to time in seconds
-        time_s = self.spike_time/self.fs
+        if lonoff:
+            time_s = self.spike_time_sec_onoff
+        else:
+            time_s = self.spike_time_sec
 
         if start is False:
             start = self.start_time
@@ -941,7 +942,7 @@ class Neuron:
         return ISI, edges, hist_isi
 
     def plotFR(self, binsz=3600, start=False, end=False,
-               lplot=1):
+               lplot=1, lonoff=1):
         # copied from musclebeachtools
         '''
         This will produce a firing rate plot for all loaded spike times
@@ -955,6 +956,7 @@ class Neuron:
         start : Start time (default self.start_time)
         end : End time (default self.end_time)
         lplot : To plot or not (default lplot=1, plot firing rate)
+        lonoff : Apply on off times (default on, 1)
 
         Returns
         -------
@@ -977,7 +979,10 @@ class Neuron:
 
         logger.info('Plotting firing rate')
         # Sample time to time in seconds
-        time_s = (self.spike_time / self.fs)
+        if lonoff:
+            time_s = self.spike_time_sec_onoff
+        else:
+            time_s = self.spike_time_sec
 
         if start is False:
             start = self.start_time
@@ -1010,7 +1015,8 @@ class Neuron:
         # plt.show()
         return hzcount, xbins
 
-    def isi_contamination_over_time(self, cont_thresh_list, binsz=300):
+    def isi_contamination_over_time(self, cont_thresh_list, binsz=300,
+                                    lonoff=1):
 
         '''
         This function calculates isi contamination of a neuron over time
@@ -1024,6 +1030,7 @@ class Neuron:
         ----------
         cont_thresh_list : threshold lists for calculating isi contamination
         binsz : binsize
+        lonoff : Apply on off times (default on, 1)
 
         Returns
         -------
@@ -1051,7 +1058,10 @@ class Neuron:
             raise ValueError('cont_thresh_list list is empty')
 
         # Sample time to time in seconds
-        time_s = (self.spike_time / self.fs)  # these are the spikes
+        if lonoff:
+            time_s = self.spike_time_sec_onoff
+        else:
+            time_s = self.spike_time_sec
 
         start_times = np.arange(0, time_s[-1], binsz)  # finds the bin edges
         end_times = np.append(start_times[1:], start_times[-1]+binsz)
@@ -1075,7 +1085,8 @@ class Neuron:
 
     def isi_contamination(self, cont_thresh_list=None,
                           time_limit=np.inf,
-                          start=False, end=False):
+                          start=False, end=False,
+                          lonoff=1):
 
         '''
         This function calculates isi contamination of a neuron
@@ -1093,6 +1104,7 @@ class Neuron:
         time_limit : count spikes upto, default np.inf. Try also 100 ms, 0.1
         start : Start time (default self.start_time)
         end : End time (default self.end_time)
+        lonoff : Apply on off times (default on, 1)
 
         Returns
         -------
@@ -1122,7 +1134,10 @@ class Neuron:
             raise ValueError('cont_thresh_list list is empty')
 
         # Sample time to time in seconds
-        time_s = (self.spike_time / self.fs)
+        if lonoff:
+            time_s = self.spike_time_sec_onoff
+        else:
+            time_s = self.spike_time_sec
 
         if start is False:
             start = self.start_time
@@ -1147,7 +1162,8 @@ class Neuron:
 
         return isi_contamin
 
-    def presence_ratio(self, nbins=101, start=False, end=False):
+    def presence_ratio(self, nbins=101, start=False, end=False,
+                       lonoff=1):
 
         '''
         This will calculate ratio of time an unit is present in this block
@@ -1160,6 +1176,7 @@ class Neuron:
         nbins : Number of bins (default 101)
         start : Start time (default self.start_time)
         end : End time (default self.end_time)
+        lonoff : Apply on off times (default on, 1)
 
         Returns
         -------
@@ -1182,7 +1199,10 @@ class Neuron:
 
         logger.debug('Calculating presence ratio')
         # Sample time to time in seconds
-        time_s = (self.spike_time / self.fs)
+        if lonoff:
+            time_s = self.spike_time_sec_onoff
+        else:
+            time_s = self.spike_time_sec
 
         if start is False:
             start = self.start_time
@@ -1203,7 +1223,7 @@ class Neuron:
     def remove_large_amplitude_spikes(self, threshold,
                                       lstd_deviation=True,
                                       start=False, end=False,
-                                      lplot=True):
+                                      lplot=True, lonoff=0):
 
         '''
         This function will remove large spike time from large amplitude spikes
@@ -1225,6 +1245,7 @@ class Neuron:
         end : End time (default self.end_time)
         lplot : Show plots (default True) allows selection
             else remove amplitudes above threshold without plotting
+        lonoff : Apply on off times (default off, 0)
 
         Returns
         -------
@@ -1249,7 +1270,10 @@ class Neuron:
 
         logger.info('Removing large amplitude spikes')
         # Sample time to time in seconds
-        time_s = (self.spike_time / self.fs)
+        if lonoff:
+            time_s = self.spike_time_sec_onoff
+        else:
+            time_s = self.spike_time_sec
 
         if start is False:
             start = self.start_time
