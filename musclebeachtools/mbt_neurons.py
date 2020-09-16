@@ -599,10 +599,18 @@ class Neuron:
                 # print(on_1, " ", off_1)
                 # a = np.delete(a, np.logical_and(a >= on_1, a <= off_1), 0)
                 # a = np.delete(a, np.where((a >= on_1) & (a <= off_1))[0], 0)
-                good_times.append(np.argwhere((time_s_onoff >= on_1) &
+                good_times.extend(np.argwhere((time_s_onoff >= on_1) &
                                               (time_s_onoff < off_1)))
                 # print(good_times)
-            time_s_onoff = time_s_onoff[np.asarray(good_times).flatten()]
+            # print("g0 ", good_times)
+            # print("g1 ", np.asarray(good_times).flatten())
+            # print("g2 ", np.int64(np.asarray(good_times).flatten()))
+            good_times = np.int64(np.asarray(good_times).flatten())
+            # print("g0 ", good_times)
+            good_times = good_times[(np.where(good_times > 0)[0])]
+            # print("g0 ", good_times)
+            # time_s_onoff = time_s_onoff[np.int64(np.asarray(good_times).flatten())]
+            time_s_onoff = time_s_onoff[np.int64(good_times)]
 
             return time_s_onoff
         else:
@@ -2360,7 +2368,7 @@ def n_getspikes(neuron_list, start=False, end=False, lonoff=1):
 
 def n_spiketimes_to_spikewords(neuron_list, binsz=0.02,
                                start=False, end=False,
-                               binarize=0):
+                               binarize=0, lonoff=1):
     '''
     This function converts spiketimes to spikewords
     Unless otherwise specified binsz, start, end are in seconds
@@ -2375,6 +2383,7 @@ def n_spiketimes_to_spikewords(neuron_list, binsz=0.02,
     end : End time (default self.end_time)
     binarize : Get counts (default 0) in bins,
     if binarize is 1,binarize to 0 and 1
+    lonoff : Apply on off times (default on, 1)
 
     Returns
     -------
@@ -2419,7 +2428,8 @@ def n_spiketimes_to_spikewords(neuron_list, binsz=0.02,
     logger.debug('start and end is %s and %s', start, end)
 
     # Get spiketime list
-    spiketimes = n_getspikes(neuron_list, start=start, end=end)
+    spiketimes = n_getspikes(neuron_list, start=start, end=end,
+                             lonoff=lonoff)
 
     # convert time to milli seconds
     start = start * conv_mills

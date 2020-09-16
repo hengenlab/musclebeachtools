@@ -205,7 +205,7 @@ mbt.n_save_modified_neuron_list(n, '/home/kbn/neuron_mod.npy')
 # To create neuron list from spikeinteface output folder in spikeinterface environmnet
 import numpy as np
 import glob
-import musclebeachtools_hlab.musclebeachtools as mbt
+import musclebeachtools as mbt
 n = mbt.mbt_spkinterface_out('/home/kbn/co/')
 
 ```
@@ -218,6 +218,7 @@ To to get spike time in seconds
 please use spike_time_sec, n1[4].spike_time_sec
 or
 For example for 4th neuron n1[4].spike_time/n1[4].fs
+Also spike_time_sec_onoff filters spike_time_sec based on on/off times
 
 ```
 
