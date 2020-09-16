@@ -1697,6 +1697,15 @@ class Neuron:
                 ValueError('Error: on off times not same size given {} and {}'
                            .format(len(ontimes), len(offtimes)))
 
+        # Check on off is ascending
+        allonofftimes = None
+        allonofftimes = []
+        for on_tmp, off_tmp in zip(ontimes, offtimes):
+            allonofftimes.extend([on_tmp, off_tmp])
+            if sorted(allonofftimes) != allonofftimes:
+                raise ValueError('Error: on {} off {} times not ascending'
+                                 .format(ontimes, offtimes))
+
         # Check time is ascending
         for on_tmp, off_tmp in zip(ontimes, offtimes):
             if (on_tmp > off_tmp):
