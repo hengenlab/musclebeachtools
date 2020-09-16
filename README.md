@@ -151,7 +151,7 @@ n = np.load('neurons_group0.npy', allow_pickle=True)
 sw = mbt.n_spiketimes_to_spikewords(n)
 
 # Set on off times
-n[2].set_onofftimes([0, 3600], [900, 7200])
+n[2].set_onofftimes_from_list([0, 3600], [900, 7200])
 print(n[2].on_times)
 [0, 3600]
 print(n[2].off_times)
