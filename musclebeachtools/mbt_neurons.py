@@ -2270,7 +2270,7 @@ def autoqual(neuron_list, model_file,
         return preds, neuron_indices_test
 
 
-def n_getspikes(neuron_list, start=False, end=False):
+def n_getspikes(neuron_list, start=False, end=False, lonoff=1):
 
     '''
     Extracts spiketimes to a list from neuron_list
@@ -2283,6 +2283,7 @@ def n_getspikes(neuron_list, start=False, end=False):
     neuron_list : List of neurons from (usually output from ksout)
     start : Start time (default self.start_time)
     end : End time (default self.end_time)
+    lonoff : Apply on off times (default on, 1)
 
     Returns
     -------
@@ -2323,7 +2324,10 @@ def n_getspikes(neuron_list, start=False, end=False):
         logger.debug('Getting spiketimes for cell %d', str(idx))
 
         # get spiketimes for each cell and append
-        spiketimes = neuron_l.spike_time / neuron_l.fs
+        if lonoff:
+            spiketimes = neuron_l.spike_time_sec_onoff / neuron_l.fs
+        else:
+            spiketimes = neuron_l.spike_time_sec
         spiketimes = spiketimes[(spiketimes >= start) & (spiketimes <= end)]
         spiketimes_allcells.append(spiketimes)
 
