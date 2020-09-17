@@ -1939,13 +1939,17 @@ class Neuron:
                 # calculate zscore
                 th_zs = 2
                 z = np.abs(sc.stats.zscore(self.spike_amplitude))
-                amp_ax.plot((self.spike_time / self.fs),
-                            self.spike_amplitude, 'bo',
-                            markersize=1.9, alpha=0.2)
+                # amp_ax.plot((self.spike_time / self.fs),
+                #             self.spike_amplitude, 'bo',
+                #             markersize=1.9, alpha=0.2)
+                amp_ax.plot((self.spike_time[np.where(z <= th_zs)] / self.fs),
+                            self.spike_amplitude[np.where(z <= th_zs)],
+                            'bo',
+                            markersize=1.0, alpha=0.1)
                 amp_ax.plot((self.spike_time[np.where(z > th_zs)] / self.fs),
                             self.spike_amplitude[np.where(z > th_zs)],
                             'ro',
-                            markersize=1.9, alpha=0.2)
+                            markersize=1.0, alpha=0.1)
                 amp_ax.set_xlabel('Time (s)')
                 amp_ax.set_ylabel('Amplitudes', labelpad=-3)
                 amp_ax.set_xlim(left=(self.start_time),
