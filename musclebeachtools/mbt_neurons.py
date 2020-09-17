@@ -1950,6 +1950,13 @@ class Neuron:
                             self.spike_amplitude[np.where(z > th_zs)],
                             'ro',
                             markersize=1.0, alpha=0.1)
+                if (hasattr(self, 'on_times') and hasattr(self, 'off_times')):
+                    for on_1, off_1 in zip(self.on_times, self.off_times):
+                        # print(on_1, " ", off_1)
+                        amp_ax.axvspan(on_1, off_1, ymin=0, ymax=0.1,
+                                       facecolor='turquoise', alpha=0.7,
+                                       zorder=10)
+
                 amp_ax.set_xlabel('Time (s)')
                 amp_ax.set_ylabel('Amplitudes', labelpad=-3)
                 amp_ax.set_xlim(left=(self.start_time),
