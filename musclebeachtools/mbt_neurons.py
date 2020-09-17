@@ -612,12 +612,16 @@ class Neuron:
             else:
                 good_times = np.int64(np.asarray(good_times).flatten())
                 # print("g0 ", good_times)
-                good_times = good_times[(np.where(good_times > 0)[0])]
+                good_times = good_times[(np.where(good_times >= 0)[0])]
                 # print("g0 ", good_times)
                 # time_s_onoff = time_s_onoff[np.int64(np.asarray(good_times).flatten())]
                 time_s_onoff = time_s_onoff[np.int64(good_times)]
-
-                return time_s_onoff
+                # print("time_s_onoff ", time_s_onoff)
+                # check whether length of on off time is greater
+                if (len(time_s_onoff) > len(self.spike_time)):
+                    raise RuntimeError('Error: more spikes after on/off times')
+                else:
+                    return time_s_onoff
         else:
             raise AttributeError('No attribute on_times or off_times')
 
