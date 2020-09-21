@@ -97,6 +97,9 @@ n1[4].spike_time
 # Get spike time in seconds for 4th neuron
 n1[4].spike_time_sec
 
+# Get spike time in seconds for 4th neuron from on off times
+n1[4].spike_time_sec_onoff
+
 # Other properties
 n1[4].start_time
 n1[4].end_time
@@ -121,17 +124,40 @@ n1[4].clust_idx
 n1[4].plot_wf()
 
 # Plot isi of 4th neuron
-n1[4].isi_hist()
+#  start : Start time (default self.start_time)
+#  end : End time (default self.end_time)
+#  isi_thresh : isi threshold (default 0.1)
+#  nbins : Number of bins (default 101)
+#  lplot : To plot or not (default lplot=1, plot isi)
+#  lonoff : Apply on off times (default on, 1)
+n1[4].isi_hist(start=False, end=False, isi_thresh=0.1, nbins=101,
+               lplot=1, lonoff=1)
 
 # plot firing rate of 4th neuron
-n1[4].plotFR()
+# binsz : Bin size (default 3600)
+# start : Start time (default self.start_time)
+# end : End time (default self.end_time)
+# lplot : To plot or not (default lplot=1, plot firing rate)
+# lonoff : Apply on off times (default on, 1)
+n1[4].plotFR(binsz=3600, start=False, end=False,
+             lplot=1, lonoff=1)
 
 # Calculate presence ratio
-n1[4].presence_ratio()
+# nbins : Number of bins (default 101)
+# start : Start time (default self.start_time)
+# end : End time (default self.end_time)
+# lonoff : Apply on off times (default on, 1)
+n1[4].presence_ratio(nbins=101, start=False, end=False,
+                     lonoff=1)
 
 # Calculate isi contamination at various thresholds, 2 and 4 ms
+# cont_thresh_list : threshold lists for calculating isi contamination
+# time_limit : count spikes upto, default np.inf. Try also 100 ms, 0.1
+# start : Start time (default self.start_time)
+# end : End time (default self.end_time)
+# lonoff : Apply on off times (default on, 1)
 n1[4].isi_contamination(cont_thresh_list=[0.002, 0.004], time_limit=np.inf)
-
+                        start=False, end=False, lonoff=1)
 
 # Change quality of neuron n[0] to 1
 # qual : Quality values should be 1, 2, 3 or 4
@@ -161,7 +187,20 @@ print(n[2].off_times)
 import numpy as np
 import musclebeachtools as mbt
 n = np.load('neurons_group0.npy', allow_pickle=True)
-n[2].checkqual()
+
+# binsz : Bin size (default 3600)
+# start : Start time (default self.start_time)
+# end : End time (default self.end_time)
+# lsavepng : Save checkqual results as png's
+# png_outdir : Directory to save png files
+#              if lsavepng=1 and png_outdir=None
+#              png's will be saved in current working directory
+# fix_amp_ylim : default 0, yaxis max in amplitude plot.
+#                For example can be fix_amp_ylim=500 to see from 0 to 500
+#                in amplitude plot.
+n[2].checkqual(binsz=3600, start=False, end=False, lsavepng=0,
+               png_outdir=None, fix_amp_ylim=0)
+
 # Check quality is changed also there is a log from checkqual
 print(n[2].quality)
 
@@ -172,7 +211,10 @@ import musclebeachtools as mbt
 neurons = \
     np.load('H_2020-04-09_09-11-37_2020-04-10_01-06-37_neurons_group0.npy',
             allow_pickle=True)
+
 # Find quality
+# neuron_list : List of neurons from (usually output from ksout)
+# model_file : model file with path
 mbt.autoqual(neurons, '/media/HlabShare/models/xgb_model')
 
 # Verify quality is correct using checkqual
