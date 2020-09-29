@@ -446,9 +446,9 @@ class Neuron:
             self.wf_e = wf_e
 
         if key is not None:
-            self.key = np.int16(key)
+            self.key = np.asarray([np.int16(key[0]), np.int16(key[1]), str(key[2]))
         else:
-            self.key = np.int16(-1)
+            self.key = np.asarray([np.int16(-1), np.int16(-1), str(""))
 
         self.cell_type, self.mean_amplitude = \
             self.__find_celltypewithmeanamplitude()
