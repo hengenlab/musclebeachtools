@@ -2386,7 +2386,7 @@ def n_getspikes(neuron_list, start=False, end=False, lonoff=1):
 
         # get spiketimes for each cell and append
         if lonoff:
-            spiketimes = neuron_l.spike_time_sec_onoff / neuron_l.fs
+            spiketimes = neuron_l.spike_time_sec_onoff
         else:
             spiketimes = neuron_l.spike_time_sec
         spiketimes = spiketimes[(spiketimes >= start) & (spiketimes <= end)]
