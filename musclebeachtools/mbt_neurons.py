@@ -1069,6 +1069,8 @@ class Neuron:
         '''
 
         logger.debug("Calculating isi contamination over time")
+        # tic = time.time()
+        time_limit = np.inf
 
         # check cont_thresh_list is not empty
         if (len(cont_thresh_list) == 0):
@@ -1084,11 +1086,25 @@ class Neuron:
         end_times = np.append(start_times[1:], start_times[-1]+binsz)
         all_values = []
         for idx in range(len(start_times)):
-            isi_cont = \
-                self.isi_contamination(cont_thresh_list=cont_thresh_list,
-                                       start=start_times[idx],
-                                       end=end_times[idx])
-            all_values.append(isi_cont)
+            # isi_cont = \
+            #     self.isi_contamination(cont_thresh_list=cont_thresh_list,
+            #                            start=start_times[idx],
+            #                            end=end_times[idx])
+            # range
+            idx = np.where(np.logical_and(time_s >= start_times[idx],
+                                          time_s <= end_times[idx]))[0]
+            time_s_r = time_s[idx]
+
+            # Calculate isi
+            isi = np.diff(time_s_r)
+
+            # Loop and calculate contamination at various cont_thesh
+            isi_contamin = []
+            for cont_thresh in cont_thresh_list:
+                isi_contamin.append(100.0 * (np.sum(isi < cont_thresh) /
+                                         np.sum(isi < time_limit)))
+
+            all_values.append(isi_contamin)
 
         all_cont = np.array(all_values)
 
@@ -1097,6 +1113,8 @@ class Neuron:
             cont_lines.append(all_cont[:, idx])
 
         cont_lines = np.array(cont_lines)
+        # toc = time.time()
+        # print("Time taken isicont {}".format(toc-tic))
 
         return cont_lines
 
@@ -2139,11 +2157,16 @@ def autoqual(neuron_list, model_file,
         # print(neuron_features[idx, :])
 
         # ISI contamination over time
+        # tic = time.time()
         contamination_lines = \
             i.isi_contamination_over_time(cont_thresh_list=[0.001,
                                                             0.002,
                                                             0.003,
-                                                            0.005])
+                                                            0.005],
+                                          binsz=300)
+
+        # toc = time.time()
+        # print("Time taken auto {}".format(toc-tic))
         for contamin_idx in range(4):
             tmp_fet = None
             tmp_fet = np.array([np.mean(contamination_lines[contamin_idx])])
