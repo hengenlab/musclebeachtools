@@ -446,7 +446,8 @@ class Neuron:
             self.wf_e = wf_e
 
         if key is not None:
-            self.key = np.asarray([np.int16(key[0]), np.int16(key[1]), str(key[2])])
+            self.key = np.asarray([np.int16(key[0]), np.int16(key[1]),
+                                   str(key[2])])
         else:
             self.key = np.asarray([np.int16(-1), np.int16(-1), str("")])
 
@@ -614,7 +615,8 @@ class Neuron:
                 # print("g0 ", good_times)
                 good_times = good_times[(np.where(good_times >= 0)[0])]
                 # print("g0 ", good_times)
-                # time_s_onoff = time_s_onoff[np.int64(np.asarray(good_times).flatten())]
+                # time_s_onoff = time_s_onoff[np.int64(np.asarray(good_times)
+                # .flatten())]
                 time_s_onoff = time_s_onoff[np.int64(good_times)]
                 # print("time_s_onoff ", time_s_onoff)
                 # check whether length of on off time is greater
@@ -1102,7 +1104,7 @@ class Neuron:
             isi_contamin = []
             for cont_thresh in cont_thresh_list:
                 isi_contamin.append(100.0 * (np.sum(isi < cont_thresh) /
-                                         np.sum(isi < time_limit)))
+                                    np.sum(isi < time_limit)))
 
             all_values.append(isi_contamin)
 
@@ -1747,7 +1749,6 @@ class Neuron:
         self.on_times = ontimes
         self.off_times = offtimes
 
-
     def checkqual(self, binsz=3600, start=False, end=False, lsavepng=0,
                   png_outdir=None, fix_amp_ylim=0):
         # copied from musclebeachtools
@@ -2352,6 +2353,102 @@ def autoqual(neuron_list, model_file,
             i.set_qual(preds[idx])
 
         return preds, neuron_indices_test
+
+
+def n_plot_neuron_wfs(neuron_list, maxqual=4,
+                      pltname=None,
+                      saveloc=None):
+
+    '''
+    Plotting all waverforms from neuron_list
+
+    n_plot_neuron_wfs(neuron_list, maxqual=4,
+                      pltname=None, saveloc=None)
+
+    Parameters
+    ----------
+    neuron_list : List of neurons
+    maxqual : default 4, filter by quality,
+              neuron.quality <= maxqual
+    pltname : plot name, if None it will be neuron_waveforms.png
+    saveloc : if None, show plot, else savepath given
+              save figure
+
+    Returns
+    -------
+
+    Raises
+    ------
+    ValueError if neuron list is empty
+    FileExistsError if saveloc not found
+
+    See Also
+    --------
+
+    Notes
+    -----
+
+    Examples
+    --------
+    n_plot_neuron_wfs(neuron_list, maxqual=4,
+                      pltname=None, saveloc=None)
+
+    '''
+
+    logger.info('Plotting all waveforms from neuron_list')
+    # check neuron_list is not empty
+    if (len(neuron_list) == 0):
+        raise ValueError('Neuron list is empty')
+
+    # check saveloc
+    if saveloc is not None:
+        if not op.exists(saveloc):
+            raise FileExistsError("Folder {} not found"
+                                  .format(saveloc))
+
+    # Plot all neurons by quality
+    len_neurons = 0
+    for ind, neuron in enumerate(neuron_list):
+        if int(neuron.quality) <= int(maxqual):
+            len_neurons += 1
+    print("len_neurons ", len_neurons)
+
+    if pltname is None:
+        pltname = 'neuron_waveforms.png'
+
+    ind = 0
+    # fig = plt.figure(constrained_layout=True, figsize=(7, 7))
+    fig = plt.figure(figsize=(14, 14))
+    for neuron in neuron_list:
+        if neuron.quality <= maxqual:
+            ind += 1
+            print("ind ", ind,
+                  " np.ceil(np.sqrt(len_neurons)) ",
+                  np.ceil(np.sqrt(len_neurons)))
+            plt.subplot(np.ceil(np.sqrt(len_neurons)),
+                        np.ceil(np.sqrt(len_neurons)), ind)
+            plt.plot(neuron.waveform,
+                     label=str("ch " +
+                               str(neuron.peak_channel) +
+                               " id " +
+                               str(neuron.clust_idx) +
+                               "  qual " +
+                               str(neuron.quality)))
+            if ind == 0:
+                plt.title(str(pltname))
+            plt.legend(frameon=False, loc='best', prop={'size': 9})
+            # plt.legend(frameon=False, loc='lower right', prop={'size': 9})
+            plt.xticks([])
+            # plt.yticks([])
+            plt.yticks(fontsize=7)
+            plt.xlabel("")
+            plt.box(False)
+
+    if saveloc is None:
+        plt.show()
+    else:
+        # plt.savefig(op.join(saveloc, pltname), dpi=640)
+        plt.savefig(op.join(saveloc, pltname))
 
 
 def n_getspikes(neuron_list, start=False, end=False, lonoff=1):
