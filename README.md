@@ -245,12 +245,12 @@ n[0].update_behavior(behavior))
 mbt.n_save_modified_neuron_list(n, '/home/kbn/neuron_mod.npy')
 
 # Plot all waveforms in a neuron list
-# maxqual filter by quality
-# plot waveforms for neurons with quality <= maxqual
+# maxqual filter by quality, list
+# plot waveforms for neurons with quality in maxqual
 # To see plot
-mbt.n_plot_neuron_wfs(n, maxqual=4, pltname="block1")
+mbt.n_plot_neuron_wfs(n, maxqual=[1, 2, 3, 4], pltname="block1")
 # To save plot
-mbt.n_plot_neuron_wfs(n, maxqual=1, pltname="block1",
+mbt.n_plot_neuron_wfs(n, maxqual=[1], pltname="block1",
                       saveloc='/home/kbn/')
 
 # To create neuron list from spikeinteface output folder in spikeinterface environmnet
