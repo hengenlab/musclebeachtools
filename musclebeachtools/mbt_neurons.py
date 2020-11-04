@@ -2411,7 +2411,7 @@ def n_plot_neuron_wfs(neuron_list, maxqual=4,
     for ind, neuron in enumerate(neuron_list):
         if int(neuron.quality) <= int(maxqual):
             len_neurons += 1
-    print("len_neurons ", len_neurons)
+    # print("len_neurons ", len_neurons)
 
     if pltname is None:
         pltname = 'neuron_waveforms.png'
@@ -2422,9 +2422,9 @@ def n_plot_neuron_wfs(neuron_list, maxqual=4,
     for neuron in neuron_list:
         if neuron.quality <= maxqual:
             ind += 1
-            print("ind ", ind,
-                  " np.ceil(np.sqrt(len_neurons)) ",
-                  np.ceil(np.sqrt(len_neurons)))
+            # print("ind ", ind,
+            #       " np.ceil(np.sqrt(len_neurons)) ",
+            #       np.ceil(np.sqrt(len_neurons)))
             plt.subplot(np.ceil(np.sqrt(len_neurons)),
                         np.ceil(np.sqrt(len_neurons)), ind)
             plt.plot(neuron.waveform,
@@ -2436,7 +2436,7 @@ def n_plot_neuron_wfs(neuron_list, maxqual=4,
                                str(neuron.quality)))
             if ind == 0:
                 plt.title(str(pltname))
-            plt.legend(frameon=False, loc='best', prop={'size': 9})
+            plt.legend(frameon=False, loc='best', prop={'size': 8})
             # plt.legend(frameon=False, loc='lower right', prop={'size': 9})
             plt.xticks([])
             # plt.yticks([])
