@@ -2355,21 +2355,21 @@ def autoqual(neuron_list, model_file,
         return preds, neuron_indices_test
 
 
-def n_plot_neuron_wfs(neuron_list, maxqual=4,
+def n_plot_neuron_wfs(neuron_list, maxqual=None,
                       pltname=None,
                       saveloc=None):
 
     '''
     Plotting all waverforms from neuron_list
 
-    n_plot_neuron_wfs(neuron_list, maxqual=4,
+    n_plot_neuron_wfs(neuron_list, maxqual=[1, 2, 3, 4],
                       pltname=None, saveloc=None)
 
     Parameters
     ----------
     neuron_list : List of neurons
-    maxqual : default 4, filter by quality,
-              neuron.quality <= maxqual
+    maxqual : default [1, 2, 3, 4], filter by quality,
+              neuron.quality in maxqual
     pltname : plot name, if None it will be neuron_waveforms.png
     saveloc : if None, show plot, else savepath given
               save figure
@@ -2390,7 +2390,7 @@ def n_plot_neuron_wfs(neuron_list, maxqual=4,
 
     Examples
     --------
-    n_plot_neuron_wfs(neuron_list, maxqual=4,
+    n_plot_neuron_wfs(neuron_list, maxqual=[1, 2, 3, 4],
                       pltname=None, saveloc=None)
 
     '''
@@ -2399,6 +2399,9 @@ def n_plot_neuron_wfs(neuron_list, maxqual=4,
     # check neuron_list is not empty
     if (len(neuron_list) == 0):
         raise ValueError('Neuron list is empty')
+
+    if maxqual is None:
+        maxqual = [1, 2, 3, 4]
 
     # check saveloc
     if saveloc is not None:
@@ -2409,7 +2412,8 @@ def n_plot_neuron_wfs(neuron_list, maxqual=4,
     # Plot all neurons by quality
     len_neurons = 0
     for ind, neuron in enumerate(neuron_list):
-        if int(neuron.quality) <= int(maxqual):
+        # if int(neuron.quality) <= int(maxqual):
+        if int(neuron.quality) in maxqual:
             len_neurons += 1
     # print("len_neurons ", len_neurons)
 
@@ -2420,7 +2424,8 @@ def n_plot_neuron_wfs(neuron_list, maxqual=4,
     # fig = plt.figure(constrained_layout=True, figsize=(7, 7))
     fig = plt.figure(figsize=(14, 14))
     for neuron in neuron_list:
-        if neuron.quality <= maxqual:
+        # if neuron.quality <= maxqual:
+        if neuron.quality in maxqual:
             ind += 1
             # print("ind ", ind,
             #       " np.ceil(np.sqrt(len_neurons)) ",
