@@ -319,7 +319,8 @@ class Neuron:
                  sp_amp=None,
                  region_loc=None,
                  wf_b=None, wf_e=None,
-                 key=None):
+                 key=None,
+                 qual_prob=None):
         '''
         The constructor for Neuron class.
 
@@ -333,7 +334,8 @@ class Neuron:
                  sp_amp=None,
                  region_loc=None,
                  wf_b=None, wf_e=None,
-                 key=None)
+                 key=None,
+                 qual_prob=None)
 
 
         Parameters
@@ -362,6 +364,7 @@ class Neuron:
         wf_b : waveforms begin
         wf_e : waveforms end
         key : link clusters
+        qual_prob : quality probability
 
 
         Returns
@@ -388,7 +391,8 @@ class Neuron:
                 sp_amp=None,
                 region_loc=None,
                 wf_b=None, wf_e=None,
-                key=None)
+                key=None,
+                qual_prob=None)
 
         '''
 
@@ -450,6 +454,11 @@ class Neuron:
                                    str(key[2])])
         else:
             self.key = np.asarray([np.int16(-1), np.int16(-1), str("")])
+
+        if qual_prob is not None:
+            self.qual_prob = qual_prob
+        else:
+            self.qual_prob = -1.0
 
         self.cell_type, self.mean_amplitude = \
             self.__find_celltypewithmeanamplitude()
