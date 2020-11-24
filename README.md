@@ -107,6 +107,7 @@ n1[4].on_times
 n1[4].off_times
 n1[4].peak_channel
 n1[4].quality
+n1[4].qual_prob
 n1[4].region
 n1[4].age
 n1[4].sex
@@ -159,12 +160,17 @@ n1[4].presence_ratio(nbins=101, start=False, end=False,
 n1[4].isi_contamination(cont_thresh_list=[0.002, 0.004], time_limit=np.inf)
                         start=False, end=False, lonoff=1)
 
+# Check quality and its probability from autoqual (see below).
+print(n[2].quality, "", n[2].qual_prob[n[2].quality - 1])
+
 # Change quality of neuron n[0] to 1
 # qual : Quality values should be 1, 2, 3 or 4
 #        1 : Good
 #        2 : Good but some contamination
 #        3 : Multiunit contaminated unit
 #        4 : Noise unit
+# qual_prob array with probabilities for each quality from autoqual.
+# When quality is assigned manualy qual_prob is set to 100% for that quality
 n[0].set_qual(1)
 
 # get spiketimes from all neurons in n1 as a list
