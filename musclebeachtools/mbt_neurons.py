@@ -2039,8 +2039,27 @@ class Neuron:
             else:
                 logger.info('Quality not set')
             radio.on_clicked(self.set_qual)
-            qual_ax.text(0.7, 0.5, str(self.qual_prob) + '%',
-                         fontsize=14,
+            qual_ax.text(0.5, 0.8,
+                         '{:06.2f}'.format(self.qual_prob[0]) + '%',
+                         fontsize=10,
+                         horizontalalignment='center',
+                         verticalalignment='center',
+                         transform=qual_ax.transAxes)
+            qual_ax.text(0.5, 0.6,
+                         '{:06.2f}'.format(self.qual_prob[1]) + '%',
+                         fontsize=10,
+                         horizontalalignment='center',
+                         verticalalignment='center',
+                         transform=qual_ax.transAxes)
+            qual_ax.text(0.5, 0.4,
+                         '{:06.2f}'.format(self.qual_prob[2]) + '%',
+                         fontsize=10,
+                         horizontalalignment='center',
+                         verticalalignment='center',
+                         transform=qual_ax.transAxes)
+            qual_ax.text(0.5, 0.2,
+                         '{:06.2f}'.format(self.qual_prob[3]) + '%',
+                         fontsize=10,
                          horizontalalignment='center',
                          verticalalignment='center',
                          transform=qual_ax.transAxes)
@@ -2373,7 +2392,7 @@ def autoqual(neuron_list, model_file,
                 # print("preds[idx] + 1 ", preds[idx] + 1)
                 # print("preds_prob[idx, preds] ", preds_prob[idx, preds[idx]])
                 # i.qual_prob = preds_prob[preds, idx]
-                i.qual_prob = np.round(preds_prob[idx, preds[idx]] * 100, 2)
+                i.qual_prob = np.round(preds_prob[idx] * 100, 2)
 
         return preds, neuron_indices_test
 
