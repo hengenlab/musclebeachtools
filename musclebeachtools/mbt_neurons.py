@@ -2040,25 +2040,25 @@ class Neuron:
                 logger.info('Quality not set')
             radio.on_clicked(self.set_qual)
             qual_ax.text(0.5, 0.8,
-                         '{:06.2f}'.format(self.qual_prob[0]) + '%',
+                         '{:.2f}'.format(self.qual_prob[0]) + '%',
                          fontsize=10,
                          horizontalalignment='center',
                          verticalalignment='center',
                          transform=qual_ax.transAxes)
             qual_ax.text(0.5, 0.6,
-                         '{:06.2f}'.format(self.qual_prob[1]) + '%',
+                         '{:.2f}'.format(self.qual_prob[1]) + '%',
                          fontsize=10,
                          horizontalalignment='center',
                          verticalalignment='center',
                          transform=qual_ax.transAxes)
             qual_ax.text(0.5, 0.4,
-                         '{:06.2f}'.format(self.qual_prob[2]) + '%',
+                         '{:.2f}'.format(self.qual_prob[2]) + '%',
                          fontsize=10,
                          horizontalalignment='center',
                          verticalalignment='center',
                          transform=qual_ax.transAxes)
             qual_ax.text(0.5, 0.2,
-                         '{:06.2f}'.format(self.qual_prob[3]) + '%',
+                         '{:.2f}'.format(self.qual_prob[3]) + '%',
                          fontsize=10,
                          horizontalalignment='center',
                          verticalalignment='center',
