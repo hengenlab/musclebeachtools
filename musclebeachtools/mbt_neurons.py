@@ -2039,6 +2039,11 @@ class Neuron:
             else:
                 logger.info('Quality not set')
             radio.on_clicked(self.set_qual)
+            qual_ax.text(0.7, 0.5, str(self.qual_prob) + '%',
+                         fontsize=14,
+                         horizontalalignment='center',
+                         verticalalignment='center',
+                         transform=qual_ax.transAxes)
             qual_ax.set_ylabel('Select quality')
             qual_ax.set_xlabel("Press 'q' to exit")
             qual_ax.xaxis.set_label_coords(0.1, -0.1)
@@ -2362,7 +2367,13 @@ def autoqual(neuron_list, model_file,
         for idx, i in enumerate(neuron_list):
             i.set_qual(preds[idx] + 1)
             if hasattr(i, 'qual_prob'):
-                i.qual_prob = np.round(preds_prob[idx, preds], 4)
+                # i.qual_prob = np.round(preds_prob[idx, preds], 4)
+                # print("sh preds_prob", preds_prob.shape, " ",
+                #       preds.shape)
+                # print("preds[idx] + 1 ", preds[idx] + 1)
+                # print("preds_prob[idx, preds] ", preds_prob[idx, preds[idx]])
+                # i.qual_prob = preds_prob[preds, idx]
+                i.qual_prob = np.round(preds_prob[idx, preds[idx]] * 100, 2)
 
         return preds, neuron_indices_test
 
