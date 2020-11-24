@@ -1507,6 +1507,9 @@ class Neuron:
                            .format(qual))
 
         logger.debug('Quality is of unit %d is %d', self.clust_idx, qual)
+        tmp_qual_prob = np.zeros(4)
+        tmp_qual_prob[qual - 1] = 100.00
+        self.qual_prob = tmp_qual_prob
         self.quality = np.int8(qual)
         logger.info('Changing quality of unit {} is now {}'
                     .format(self.clust_idx, self.quality))
@@ -2039,30 +2042,66 @@ class Neuron:
             else:
                 logger.info('Quality not set')
             radio.on_clicked(self.set_qual)
-            qual_ax.text(0.5, 0.8,
-                         '{:.2f}'.format(self.qual_prob[0]) + '%',
-                         fontsize=10,
-                         horizontalalignment='center',
-                         verticalalignment='center',
-                         transform=qual_ax.transAxes)
-            qual_ax.text(0.5, 0.6,
-                         '{:.2f}'.format(self.qual_prob[1]) + '%',
-                         fontsize=10,
-                         horizontalalignment='center',
-                         verticalalignment='center',
-                         transform=qual_ax.transAxes)
-            qual_ax.text(0.5, 0.4,
-                         '{:.2f}'.format(self.qual_prob[2]) + '%',
-                         fontsize=10,
-                         horizontalalignment='center',
-                         verticalalignment='center',
-                         transform=qual_ax.transAxes)
-            qual_ax.text(0.5, 0.2,
-                         '{:.2f}'.format(self.qual_prob[3]) + '%',
-                         fontsize=10,
-                         horizontalalignment='center',
-                         verticalalignment='center',
-                         transform=qual_ax.transAxes)
+            if self.quality == 1:
+                qual_ax.text(0.5, 0.8,
+                             '{:.2f}'.format(self.qual_prob[0]) + '%',
+                             fontsize=10,
+                             color='#006374',
+                             horizontalalignment='center',
+                             verticalalignment='center',
+                             transform=qual_ax.transAxes)
+            else:
+                qual_ax.text(0.5, 0.8,
+                             '{:.2f}'.format(self.qual_prob[0]) + '%',
+                             fontsize=10,
+                             horizontalalignment='center',
+                             verticalalignment='center',
+                             transform=qual_ax.transAxes)
+            if self.quality == 2:
+                qual_ax.text(0.5, 0.6,
+                             '{:.2f}'.format(self.qual_prob[1]) + '%',
+                             fontsize=10,
+                             color='#006374',
+                             horizontalalignment='center',
+                             verticalalignment='center',
+                             transform=qual_ax.transAxes)
+            else:
+                qual_ax.text(0.5, 0.6,
+                             '{:.2f}'.format(self.qual_prob[1]) + '%',
+                             fontsize=10,
+                             horizontalalignment='center',
+                             verticalalignment='center',
+                             transform=qual_ax.transAxes)
+            if self.quality == 3:
+                qual_ax.text(0.5, 0.4,
+                             '{:.2f}'.format(self.qual_prob[2]) + '%',
+                             fontsize=10,
+                             color='#006374',
+                             horizontalalignment='center',
+                             verticalalignment='center',
+                             transform=qual_ax.transAxes)
+            else:
+                qual_ax.text(0.5, 0.4,
+                             '{:.2f}'.format(self.qual_prob[2]) + '%',
+                             fontsize=10,
+                             horizontalalignment='center',
+                             verticalalignment='center',
+                             transform=qual_ax.transAxes)
+            if self.quality == 4:
+                qual_ax.text(0.5, 0.2,
+                             '{:.2f}'.format(self.qual_prob[3]) + '%',
+                             fontsize=10,
+                             color='#006374',
+                             horizontalalignment='center',
+                             verticalalignment='center',
+                             transform=qual_ax.transAxes)
+            else:
+                qual_ax.text(0.5, 0.2,
+                             '{:.2f}'.format(self.qual_prob[3]) + '%',
+                             fontsize=10,
+                             horizontalalignment='center',
+                             verticalalignment='center',
+                             transform=qual_ax.transAxes)
             qual_ax.set_ylabel('Select quality')
             qual_ax.set_xlabel("Press 'q' to exit")
             qual_ax.xaxis.set_label_coords(0.1, -0.1)
