@@ -2349,17 +2349,20 @@ def autoqual(neuron_list, model_file,
     else:
         mxgb_model = xgb.Booster()
         mxgb_model.load_model(model_file)
-        preds = mxgb_model.predict(dtest)
+        preds_prob = mxgb_model.predict(dtest)
+        preds = np.argmax(preds_prob, axis=1)
         # print("neuron qual ", neuron_qual + 1)
         # print("preds ", preds + 1)
         # accuracy = accuracy_score(neuron_qual_test, preds)
         # logger.info('Accuracy of predictions is {}'
         #             .format(accuracy))
-        preds = preds + 1
+        # preds = preds + 1
 
         # assign quality
         for idx, i in enumerate(neuron_list):
-            i.set_qual(preds[idx])
+            i.set_qual(preds[idx] + 1)
+            if hasattr(i, 'qual_prob'):
+                i.qual_prob = np.round(preds_prob[idx, preds], 4)
 
         return preds, neuron_indices_test
 
