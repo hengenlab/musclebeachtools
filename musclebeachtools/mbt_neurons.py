@@ -1993,11 +1993,11 @@ class Neuron:
                 amp_ax.set_xlim(left=(self.start_time),
                                 right=(self.end_time))
                 if fix_amp_ylim:
-                    amp_ax.set_ylim(bottom=0, top=fix_amp_ylim)
+                    amp_ax.set_ylim(bottom=0)
                 else:
                     amp_ax.set_ylim(bottom=0,
                                     top=(min((np.mean(self.spike_amplitude) +
-                                             (3*np.std(self.spike_amplitude))),
+                                             (6*np.std(self.spike_amplitude))),
                                              np.max(self.spike_amplitude))))
                 amp_stats_str = '\n'.join((
                     r'$Min: %d, Max: %d$' % (np.min(self.spike_amplitude),
