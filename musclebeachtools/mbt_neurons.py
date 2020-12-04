@@ -970,7 +970,7 @@ class Neuron:
         return ISI, edges, hist_isi
 
     def plotFR(self, binsz=3600, start=False, end=False,
-               lplot=1, lonoff=1):
+               lplot=1, lonoff=1, verbose=1):
         # copied from musclebeachtools
         '''
         This will produce a firing rate plot for all loaded spike times
@@ -1004,8 +1004,8 @@ class Neuron:
         n1[0].plotFR(binsz=3600, start=False, end=False)
 
         '''
-
-        logger.debug('Plotting firing rate')
+        if verbose:
+            logger.debug('Plotting firing rate')
         # Sample time to time in seconds
         if lonoff:
             time_s = self.spike_time_sec_onoff
