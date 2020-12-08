@@ -970,7 +970,7 @@ class Neuron:
         return ISI, edges, hist_isi
 
     def plotFR(self, binsz=3600, start=False, end=False,
-               lplot=1, lonoff=1, verbose=1):
+               lplot=1, lonoff=1):
         # copied from musclebeachtools
         '''
         This will produce a firing rate plot for all loaded spike times
@@ -1004,8 +1004,8 @@ class Neuron:
         n1[0].plotFR(binsz=3600, start=False, end=False)
 
         '''
-        if verbose:
-            logger.debug('Plotting firing rate')
+
+        # logger.debug('Plotting firing rate')
         # Sample time to time in seconds
         if lonoff:
             time_s = self.spike_time_sec_onoff
@@ -2190,6 +2190,7 @@ def autoqual(neuron_list, model_file,
             # 1 +         # Wf amplitude        17
             # 1 +         # Total FR            18
             # 1 +         # Presence ratio      19
+            1 + 1 + 1+ 1 + 1 + 1 + 1 +   # amplitude bin stats     21
             1 + 1 + 1+ 1 + 1 + 1 + 1 +   # amplitude stats     21
             1 + 1 + 1+ 1 + 1 + 1 + 1 +   # fr stats     21
             1 + 1 + 1+ 1 + 1 + 1 + 1 +   # wf stats     21
@@ -2421,46 +2422,46 @@ def autoqual(neuron_list, model_file,
         tmp_starttime = None
         time_s = None
         namp_s = None
-        # namp = np.asarray(i.spike_amplitude)
-        # namp = namp/np.linalg.norm(namp)
-        # tmp_fet = np.array([np.mean(namp)])
-        # neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-        # # print("tmp_fet ", tmp_fet)
-        # fet_idx = fet_idx + tmp_fet.shape[0]
-        # tmp_fet = None
-        # tmp_fet = np.array([np.std(namp)])
-        # neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-        # # print("tmp_fet ", tmp_fet)
-        # fet_idx = fet_idx + tmp_fet.shape[0]
-        # tmp_fet = None
-        # tmp_fet = np.array([np.median(namp)])
-        # neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-        # # print("tmp_fet ", tmp_fet)
-        # fet_idx = fet_idx + tmp_fet.shape[0]
-        # tmp_fet = None
-        # tmp_fet = np.array([np.min(namp)])
-        # neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-        # # print("tmp_fet ", tmp_fet)
-        # fet_idx = fet_idx + tmp_fet.shape[0]
-        # tmp_fet = None
-        # tmp_fet = np.array([np.max(namp)])
-        # neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-        # # print("tmp_fet ", tmp_fet)
-        # fet_idx = fet_idx + tmp_fet.shape[0]
-        # tmp_fet = None
-        # tmp_fet = np.array([sc.stats.kurtosis(namp)])
-        # neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-        # # print("tmp_fet ", tmp_fet)
-        # fet_idx = fet_idx + tmp_fet.shape[0]
-        # tmp_fet = None
-        # tmp_fet = np.array([sc.stats.skew(namp)])
-        # neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-        # # print("tmp_fet ", tmp_fet)
-        # fet_idx = fet_idx + tmp_fet.shape[0]
-        # # print("idx amp ", idx)
-        # # print("fet_idx ", fet_idx)
-        # # print(neuron_features[idx, :])
-        # namp = None
+        namp = np.asarray(i.spike_amplitude)
+        namp = namp/np.linalg.norm(namp)
+        tmp_fet = np.array([np.mean(namp)])
+        neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+        # print("tmp_fet ", tmp_fet)
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        tmp_fet = None
+        tmp_fet = np.array([np.std(namp)])
+        neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+        # print("tmp_fet ", tmp_fet)
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        tmp_fet = None
+        tmp_fet = np.array([np.median(namp)])
+        neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+        # print("tmp_fet ", tmp_fet)
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        tmp_fet = None
+        tmp_fet = np.array([np.min(namp)])
+        neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+        # print("tmp_fet ", tmp_fet)
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        tmp_fet = None
+        tmp_fet = np.array([np.max(namp)])
+        neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+        # print("tmp_fet ", tmp_fet)
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        tmp_fet = None
+        tmp_fet = np.array([sc.stats.kurtosis(namp)])
+        neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+        # print("tmp_fet ", tmp_fet)
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        tmp_fet = None
+        tmp_fet = np.array([sc.stats.skew(namp)])
+        neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+        # print("tmp_fet ", tmp_fet)
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        # print("idx amp ", idx)
+        # print("fet_idx ", fet_idx)
+        # print(neuron_features[idx, :])
+        namp = None
 
         # Firing rate mean, std, median, min, max, kurtosis, skew
         hzcount, xbins = \
