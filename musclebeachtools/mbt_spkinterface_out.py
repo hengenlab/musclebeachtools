@@ -12,7 +12,8 @@ def siout(sorted_data, noflylist, rec_time,
           amps=None,
           wf_b=None, wf_e=None,
           filt=None,
-          t_ch_size=None):
+          t_ch_size=None,
+          model_file='/media/HlabShare/models/xgboost_autoqual_prob'):
     '''
     function to load neuron objects from the spike interface output
 
@@ -181,6 +182,13 @@ def siout(sorted_data, noflylist, rec_time,
                       "run again with no filter")
 
     print(f'Found {len(n)} neurons\n')
+    if op.exists(model_file) and op.isfile(model_file):
+        print("model_file was used ", model_file)
+        mb.autoqual(n, model_file)
+    else:
+        print("Model_file {} does not exists".format(model_file))
+        print("neurons[0].quality not calculated")
+
     return n
 
 
