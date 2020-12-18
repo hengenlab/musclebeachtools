@@ -124,31 +124,49 @@ def siout(sorted_data, noflylist, rec_time,
                         (len(ecube_time_list) == 2)):
                     if (amps is not None):
                         # print("amps not None")
-                        if ((wf_b is not None) and (wf_e is not None)):
-                            n.append(mb.Neuron(sp_c, sp_t, qual, mwf,
-                                     mwfs, max_channel,
-                                     fs=fs,
-                                     start_time=start_time, end_time=end_time,
-                                     mwft=mwf_list,
-                                     rstart_time=str(file_datetime_list[0]),
-                                     rend_time=str(file_datetime_list[1]),
-                                     estart_time=np.int64(ecube_time_list[0]),
-                                     eend_time=np.int64(ecube_time_list[1]),
-                                     sp_amp=amps[unit_idx],
-                                     wf_b=np.asarray(wf_b[unit_idx]).T,
-                                     wf_e=np.asarray(wf_e[unit_idx]).T))
-                        #
-                        elif (wf_b is None):
-                            n.append(mb.Neuron(sp_c, sp_t, qual, mwf,
-                                     mwfs, max_channel,
-                                     fs=fs,
-                                     start_time=start_time, end_time=end_time,
-                                     mwft=mwf_list,
-                                     rstart_time=str(file_datetime_list[0]),
-                                     rend_time=str(file_datetime_list[1]),
-                                     estart_time=np.int64(ecube_time_list[0]),
-                                     eend_time=np.int64(ecube_time_list[1]),
-                                     sp_amp=amps[unit_idx]))
+                        # print("amps not None")
+                        # print("mean amps ", unit_idx)
+                        tmp_mean_amps = np.mean(np.asarray(amps[unit_idx]))
+                        if tmp_mean_amps >= 20:
+                            print("mean amps ", unit_idx, " ", tmp_mean_amps,
+                                  flush=True)
+                            if ((wf_b is not None) and (wf_e is not None)):
+                                n.append(mb.Neuron(sp_c, sp_t, qual, mwf,
+                                         mwfs, max_channel,
+                                         fs=fs,
+                                         start_time=start_time,
+                                         end_time=end_time,
+                                         mwft=mwf_list,
+                                         rstart_time=str(file_datetime_list
+                                                         [0]),
+                                         rend_time=str(file_datetime_list[1]),
+                                         estart_time=np.int64(ecube_time_list
+                                                              [0]),
+                                         eend_time=np.int64(ecube_time_list
+                                                            [1]),
+                                         sp_amp=amps[unit_idx],
+                                         wf_b=np.asarray(wf_b[unit_idx]).T,
+                                         wf_e=np.asarray(wf_e[unit_idx]).T))
+                            #
+                            elif (wf_b is None):
+                                n.append(mb.Neuron(sp_c, sp_t, qual, mwf,
+                                         mwfs, max_channel,
+                                         fs=fs,
+                                         start_time=start_time,
+                                         end_time=end_time,
+                                         mwft=mwf_list,
+                                         rstart_time=str(file_datetime_list
+                                                         [0]),
+                                         rend_time=str(file_datetime_list[1]),
+                                         estart_time=np.int64(ecube_time_list
+                                                              [0]),
+                                         eend_time=np.int64(ecube_time_list
+                                                            [1]),
+                                         sp_amp=amps[unit_idx]))
+
+                        else:
+                            print("Not added mean amps ", unit_idx, " ",
+                                  tmp_mean_amps, flush=True)
 
                     elif (amps is None):
                         n.append(mb.Neuron(sp_c, sp_t, qual, mwf,
@@ -183,10 +201,10 @@ def siout(sorted_data, noflylist, rec_time,
 
     print(f'Found {len(n)} neurons\n')
     if op.exists(model_file) and op.isfile(model_file):
-        print("model_file was used ", model_file)
+        print("model_file was used ", model_file, flush=True)
         mb.autoqual(n, model_file)
     else:
-        print("Model_file {} does not exists".format(model_file))
+        print("Model_file {} does not exists".format(model_file), flush=True)
         print("neurons[0].quality not calculated")
 
     return n
