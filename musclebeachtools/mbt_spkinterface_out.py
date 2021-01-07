@@ -210,7 +210,8 @@ def siout(sorted_data, noflylist, rec_time,
     return n
 
 
-def mbt_spkinterface_out(clust_out_dir):
+def mbt_spkinterface_out(clust_out_dir,
+                         model_file='/media/HlabShare/models/xgboost_autoqual_prob'):
 
     '''
     Function loads spikeinterface output to neuron
@@ -295,5 +296,6 @@ def mbt_spkinterface_out(clust_out_dir):
                   amps=amps,
                   wf_b=wf_b, wf_e=wf_e,
                   filt=filt,
-                  t_ch_size=t_ch_size)
+                  t_ch_size=t_ch_size,
+                  model_file=model_file)
     return cells
