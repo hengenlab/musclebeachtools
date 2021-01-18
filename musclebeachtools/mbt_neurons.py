@@ -292,14 +292,16 @@ class Neuron:
     '''
     Neuron class for use in Hengen Lab
     '''
-    # fs, datatype, species, sex, age, start_time, end_time, clust_idx,
+    # fs, datatype, species, sex, age, animal_name,
+    # start_time, end_time, clust_idx,
     # spike_time, quality, waveform, waveforms, peak_channel, region,
     # cell_type, mean_amplitude, behavior
     # fs = 25000
     datatype = 'npy'
     # species = str('')
     # sex = str('')
-    # age = np.int16(0)
+    # age
+    # animal_name = str('')
     # start_time = 0
     # end_time = 12 * 60 * 60
     # behavior = None
@@ -313,6 +315,7 @@ class Neuron:
                  fs=25000, start_time=0, end_time=12 * 60 * 60,
                  mwft=None,
                  sex=None, age=None, species=None,
+                 animal_name=None,
                  on_time=None, off_time=None,
                  rstart_time=None, rend_time=None,
                  estart_time=None, eend_time=None,
@@ -328,6 +331,7 @@ class Neuron:
                  fs=25000, start_time=0, end_time=12 * 60 * 60,
                  mwft=None,
                  sex=None, age=None, species=None,
+                 animal_name=None,
                  on_time=None, off_time=None,
                  rstart_time=None, rend_time=None,
                  estart_time=None, eend_time=None,
@@ -353,6 +357,7 @@ class Neuron:
         sex : sex of animal ('m' or 'f')
         age : age in days from birth
         species : "r" for rat or "m" for mouse
+        animal_name : name of animal 8 characters, UUU12345
         on_time : start times of cell was activity
         off_time : end times of cell activity
         rstart_time : real start time of recorded file in this block, string
@@ -385,6 +390,7 @@ class Neuron:
                 fs=25000, start_time=0, end_time=12 * 60 * 60,
                 mwft=None,
                 sex=None, age=None, species=None,
+                animal_name=None,
                 on_time=None, off_time=None,
                 rstart_time=None, rend_time=None,
                 estart_time=None, eend_time=None,
@@ -413,10 +419,20 @@ class Neuron:
 
         if sex is not None:
             self.sex = sex
+        else:
+            self.sex = 'x'
         if age is not None:
             self.age = age
+        else:
+            self.age = -1
         if species is not None:
             self.species = species
+        else:
+            self.species = 'x'
+        if animal_name is not None:
+            self.animal_name = animal_name
+        else:
+            self.animal_name = 'UUU12345'
 
         # Give on_time and off_time default values from start_time and end_time
         if on_time is None:
