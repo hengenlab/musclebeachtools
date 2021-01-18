@@ -653,6 +653,37 @@ class Neuron:
             raise AttributeError('No attribute on_times or off_times')
 
     @property
+    def age_rec(self):
+        '''
+        Calculate age at recording based on rstart_time
+
+        age_sorted(self)
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+        age_rec : age at recording based on rstart_time
+
+        Raises
+        ------
+
+        See Also
+        --------
+
+        Notes
+        -----
+
+        Examples
+        --------
+
+        '''
+        dt = datetime.strptime(self.rstart_time.replace("_", " "),
+                               "%Y-%m-%d %H-%M-%S")
+        return self.age - dt
+
+    @property
     def peaklatency(self):
         '''
         Calculate peaklatency from mean waveform
