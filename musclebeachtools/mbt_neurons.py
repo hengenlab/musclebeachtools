@@ -300,6 +300,8 @@ class Neuron:
     datatype = 'npy'
     # species = str('')
     # sex = str('')
+    # genotype,
+    # notes,
     # age datetime.datetime(2019, 12, 24, 7, 30)
     # animal_name = str('')
     # start_time = 0
@@ -316,6 +318,8 @@ class Neuron:
                  mwft=None,
                  sex=None, age=None, species=None,
                  animal_name=None,
+                 genotype=None,
+                 expt_cond=None,
                  on_time=None, off_time=None,
                  rstart_time=None, rend_time=None,
                  estart_time=None, eend_time=None,
@@ -332,6 +336,8 @@ class Neuron:
                  mwft=None,
                  sex=None, age=None, species=None,
                  animal_name=None,
+                 genotype=None,
+                 expt_cond=None,
                  on_time=None, off_time=None,
                  rstart_time=None, rend_time=None,
                  estart_time=None, eend_time=None,
@@ -358,6 +364,8 @@ class Neuron:
         age : age in days from birth
         species : "r" for rat or "m" for mouse
         animal_name : name of animal 8 characters, UUU12345
+        genotype : "wt", te4
+        expt_cond : "monocular deprivation",
         on_time : start times of cell was activity
         off_time : end times of cell activity
         rstart_time : real start time of recorded file in this block, string
@@ -391,6 +399,8 @@ class Neuron:
                 mwft=None,
                 sex=None, age=None, species=None,
                 animal_name=None,
+                genotype=None,
+                expt_cond=None,
                 on_time=None, off_time=None,
                 rstart_time=None, rend_time=None,
                 estart_time=None, eend_time=None,
@@ -420,7 +430,7 @@ class Neuron:
         if sex is not None:
             self.sex = sex
         else:
-            self.sex = 'x'
+            self.sex = ''
         if age is not None:
             self.age = age
         else:
@@ -428,11 +438,20 @@ class Neuron:
         if species is not None:
             self.species = species
         else:
-            self.species = 'x'
+            self.species = ''
         if animal_name is not None:
             self.animal_name = animal_name
         else:
             self.animal_name = 'UUU12345'
+        if genotype is not None:
+            self.genotype = genotype
+        else:
+            self.genotype = ''
+
+        if expt_cond is not None:
+            self.expt_cond = expt_cond
+        else:
+            self.expt_cond = 'experimental condition'
 
         # Give on_time and off_time default values from start_time and end_time
         if on_time is None:
