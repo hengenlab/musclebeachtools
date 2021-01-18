@@ -16,7 +16,9 @@ def siout(sorted_data, noflylist, rec_time,
           model_file='/media/HlabShare/models/xgboost_autoqual_prob',
           sex=None, age=None, species=None,
           animal_name=None,
-          region_loc=None):
+          region_loc=None,
+          genotype=None,
+          expt_cond=None):
     '''
     function to load neuron objects from the spike interface output
 
@@ -152,7 +154,9 @@ def siout(sorted_data, noflylist, rec_time,
                                          wf_e=np.asarray(wf_e[unit_idx]).T,
                                          sex=sex, age=age, species=species,
                                          animal_name=animal_name,
-                                         region_loc=region_loc))
+                                         region_loc=region_loc,
+                                         genotype=genotype,
+                                         expt_cond=expt_cond))
                             #
                             elif (wf_b is None):
                                 n.append(mb.Neuron(sp_c, sp_t, qual, mwf,
@@ -171,7 +175,9 @@ def siout(sorted_data, noflylist, rec_time,
                                          sp_amp=amps[unit_idx],
                                          sex=sex, age=age, species=species,
                                          animal_name=animal_name,
-                                         region_loc=region_loc))
+                                         region_loc=region_loc,
+                                         genotype=genotype,
+                                         expt_cond=expt_cond))
 
                         else:
                             print("Not added mean amps ", unit_idx, " ",
@@ -189,7 +195,9 @@ def siout(sorted_data, noflylist, rec_time,
                                  eend_time=np.int64(ecube_time_list[1]),
                                  sex=sex, age=age, species=species,
                                  animal_name=animal_name,
-                                 region_loc=region_loc))
+                                 region_loc=region_loc,
+                                 genotype=genotype,
+                                 expt_cond=expt_cond))
                 elif ((len(file_datetime_list) == 2) and
                         (len(ecube_time_list) == 0)):
                     n.append(mb.Neuron(sp_c, sp_t, qual, mwf,
@@ -201,7 +209,9 @@ def siout(sorted_data, noflylist, rec_time,
                              rend_time=str(file_datetime_list[1]),
                              sex=sex, age=age, species=species,
                              animal_name=animal_name,
-                             region_loc=region_loc))
+                             region_loc=region_loc,
+                             genotype=genotype,
+                             expt_cond=expt_cond))
                 else:
                     n.append(mb.Neuron(sp_c, sp_t, qual, mwf,
                              mwfs, max_channel,
@@ -222,7 +232,8 @@ def siout(sorted_data, noflylist, rec_time,
         print("model_file was used ", model_file, flush=True)
         mb.autoqual(n, model_file)
     else:
-        print("Model_file {} does not exists".format(model_file), flush=True)
+        print("Model_file {} does not exists".format(model_file),
+              flush=True)
         print("neurons[0].quality not calculated")
 
     return n
@@ -232,8 +243,9 @@ def mbt_spkinterface_out(clust_out_dir,
                          model_file='/media/HlabShare/models/xgboost_autoqual_prob',
                          sex=None, age=None, species=None,
                          animal_name=None,
-                         region_loc=None):
-
+                         region_loc=None,
+                         genotype=None,
+                         expt_cond=None):
 
     '''
     Function loads spikeinterface output to neuron
@@ -242,7 +254,9 @@ def mbt_spkinterface_out(clust_out_dir,
                          model_file,
                          sex=None, age=None, species=None,
                          animal_name=None,
-                         region_loc=None)
+                         region_loc=None,
+                         genotype=None,
+                         expt_cond=None)
 
     Parameters
     ----------
@@ -253,6 +267,8 @@ def mbt_spkinterface_out(clust_out_dir,
     species='r' or 'm', rat or mice
     animal_name : UUU12345
     region_loc : string , ca1, v1, m1
+    genotype : "wt",
+    expt_cond : "experimental condition",
 
     Returns
     -------
@@ -336,5 +352,7 @@ def mbt_spkinterface_out(clust_out_dir,
                   model_file=model_file,
                   sex=sex, age=age, species=species,
                   animal_name=animal_name,
-                  region_loc=region_loc)
+                  region_loc=region_loc,
+                  genotype=genotype,
+                  expt_cond=expt_cond)
     return cells

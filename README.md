@@ -269,7 +269,9 @@ n = mbt.mbt_spkinterface_out('/home/kbn/co/',
                              sex='m', age=datetime(1970, 1, 1, 00, 00),
                              species='m',
                              animal_name='ABC12345',
-                             region_loc='CA1')
+                             region_loc='CA1',
+                             genotype='te4',
+                             expt_cond='monocular deprivation')
 nnew[0].species
 'm'
 
@@ -285,9 +287,14 @@ nnew[0].sex
 nnew[0].age
 datetime.datetime(1970, 1, 1, 0, 0)
 
-
 nnew[0].age_rec # age based on first file in sorting block
 datetime.timedelta(days=-18625, seconds=2958)
+
+nnew[0].genotype
+'te4'
+
+nnew[0].expt_cond
+'monocular deprivation'
 
 ```
 
