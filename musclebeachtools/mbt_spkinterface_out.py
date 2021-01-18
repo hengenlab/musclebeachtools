@@ -249,7 +249,7 @@ def mbt_spkinterface_out(clust_out_dir,
     spikeinterface_output_directory : spikeinterface output directory
     model_file : path of model file
     sex: 'm' or 'f'
-    age: 
+    age: datetime.datetime(1970, 1, 1, 0, 0, 0, 0)
     species='r' or 'm', rat or mice
     animal_name : UUU12345
     region_loc : string , ca1, v1, m1

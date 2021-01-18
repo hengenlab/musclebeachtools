@@ -300,7 +300,7 @@ class Neuron:
     datatype = 'npy'
     # species = str('')
     # sex = str('')
-    # age
+    # age datetime.datetime(2019, 12, 24, 7, 30)
     # animal_name = str('')
     # start_time = 0
     # end_time = 12 * 60 * 60
@@ -424,7 +424,7 @@ class Neuron:
         if age is not None:
             self.age = age
         else:
-            self.age = -1
+            self.age = datetime(1970, 1, 1, 00, 00)
         if species is not None:
             self.species = species
         else:
