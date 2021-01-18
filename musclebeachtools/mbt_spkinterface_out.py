@@ -13,7 +13,10 @@ def siout(sorted_data, noflylist, rec_time,
           wf_b=None, wf_e=None,
           filt=None,
           t_ch_size=None,
-          model_file='/media/HlabShare/models/xgboost_autoqual_prob'):
+          model_file='/media/HlabShare/models/xgboost_autoqual_prob',
+          sex=None, age=None, species=None,
+          animal_name=None,
+          region_loc=None):
     '''
     function to load neuron objects from the spike interface output
 
@@ -146,7 +149,10 @@ def siout(sorted_data, noflylist, rec_time,
                                                             [1]),
                                          sp_amp=amps[unit_idx],
                                          wf_b=np.asarray(wf_b[unit_idx]).T,
-                                         wf_e=np.asarray(wf_e[unit_idx]).T))
+                                         wf_e=np.asarray(wf_e[unit_idx]).T,
+                                         sex=sex, age=age, species=species,
+                                         animal_name=animal_name,
+                                         region_loc=region_loc))
                             #
                             elif (wf_b is None):
                                 n.append(mb.Neuron(sp_c, sp_t, qual, mwf,
@@ -162,7 +168,10 @@ def siout(sorted_data, noflylist, rec_time,
                                                               [0]),
                                          eend_time=np.int64(ecube_time_list
                                                             [1]),
-                                         sp_amp=amps[unit_idx]))
+                                         sp_amp=amps[unit_idx],
+                                         sex=sex, age=age, species=species,
+                                         animal_name=animal_name,
+                                         region_loc=region_loc))
 
                         else:
                             print("Not added mean amps ", unit_idx, " ",
@@ -177,7 +186,10 @@ def siout(sorted_data, noflylist, rec_time,
                                  rstart_time=str(file_datetime_list[0]),
                                  rend_time=str(file_datetime_list[1]),
                                  estart_time=np.int64(ecube_time_list[0]),
-                                 eend_time=np.int64(ecube_time_list[1])))
+                                 eend_time=np.int64(ecube_time_list[1]),
+                                 sex=sex, age=age, species=species,
+                                 animal_name=animal_name,
+                                 region_loc=region_loc))
                 elif ((len(file_datetime_list) == 2) and
                         (len(ecube_time_list) == 0)):
                     n.append(mb.Neuron(sp_c, sp_t, qual, mwf,
@@ -186,13 +198,19 @@ def siout(sorted_data, noflylist, rec_time,
                              start_time=start_time, end_time=end_time,
                              mwft=mwf_list,
                              rstart_time=str(file_datetime_list[0]),
-                             rend_time=str(file_datetime_list[1])))
+                             rend_time=str(file_datetime_list[1]),
+                             sex=sex, age=age, species=species,
+                             animal_name=animal_name,
+                             region_loc=region_loc))
                 else:
                     n.append(mb.Neuron(sp_c, sp_t, qual, mwf,
                              mwfs, max_channel,
                              fs=fs,
                              start_time=start_time, end_time=end_time,
-                             mwft=mwf_list))
+                             mwft=mwf_list,
+                             sex=sex, age=age, species=species,
+                             animal_name=animal_name,
+                             region_loc=region_loc))
                 #  except:
                 #  pdb.set_trace()
             elif len(filt) > 0:
@@ -211,16 +229,30 @@ def siout(sorted_data, noflylist, rec_time,
 
 
 def mbt_spkinterface_out(clust_out_dir,
-                         model_file='/media/HlabShare/models/xgboost_autoqual_prob'):
+                         model_file='/media/HlabShare/models/xgboost_autoqual_prob',
+                         sex=None, age=None, species=None,
+                         animal_name=None,
+                         region_loc=None):
+
 
     '''
     Function loads spikeinterface output to neuron
 
-    mbt_spkinterface_out('spikeinterface_output_directory')
+    mbt_spkinterface_out('spikeinterface_output_directory',
+                         model_file,
+                         sex=None, age=None, species=None,
+                         animal_name=None,
+                         region_loc=None)
 
     Parameters
     ----------
     spikeinterface_output_directory : spikeinterface output directory
+    model_file : path of model file
+    sex: 'm' or 'f'
+    age: 
+    species='r' or 'm', rat or mice
+    animal_name : UUU12345
+    region_loc : string , ca1, v1, m1
 
     Returns
     -------
@@ -237,7 +269,11 @@ def mbt_spkinterface_out(clust_out_dir,
 
     Examples
     --------
-    mbt_spkinterface_out('/home/kbn/co/')
+    mbt_spkinterface_out('/home/kbn/co/',
+                         model_file,
+                         sex=None, age=None, species=None,
+                         animal_name=None,
+                         region_loc=None)
 
     '''
 
@@ -297,5 +333,8 @@ def mbt_spkinterface_out(clust_out_dir,
                   wf_b=wf_b, wf_e=wf_e,
                   filt=filt,
                   t_ch_size=t_ch_size,
-                  model_file=model_file)
+                  model_file=model_file,
+                  sex=sex, age=age, species=species,
+                  animal_name=animal_name,
+                  region_loc=region_loc)
     return cells
