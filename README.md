@@ -263,7 +263,31 @@ mbt.n_plot_neuron_wfs(n, maxqual=[1], pltname="block1",
 import numpy as np
 import glob
 import musclebeachtools as mbt
-n = mbt.mbt_spkinterface_out('/home/kbn/co/')
+from datetime import datetime
+n = mbt.mbt_spkinterface_out('/home/kbn/co/',
+                             '/media/HlabShare/models/xgboost_autoqual_prob',
+                             sex='m', age=datetime(1970, 1, 1, 00, 00),
+                             species='m',
+                             animal_name='ABC12345',
+                             region_loc='CA1')
+nnew[0].species
+'m'
+
+nnew[0].region
+'CA1'
+
+nnew[0].animal_name
+'ABC12345'
+
+nnew[0].sex
+'m'
+
+nnew[0].age
+datetime.datetime(1970, 1, 1, 0, 0)
+
+
+nnew[0].age_rec # age based on first file in sorting block
+datetime.timedelta(days=-18625, seconds=2958)
 
 ```
 
