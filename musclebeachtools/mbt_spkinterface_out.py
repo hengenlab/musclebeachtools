@@ -14,7 +14,7 @@ def siout(sorted_data, noflylist, rec_time,
           filt=None,
           t_ch_size=None,
           model_file='/media/HlabShare/models/xgboost_autoqual_prob',
-          sex=None, age=None, species=None,
+          sex=None, birthday=None, species=None,
           animal_name=None,
           region_loc=None,
           genotype=None,
@@ -124,7 +124,7 @@ def siout(sorted_data, noflylist, rec_time,
                 # def __init__(self, sp_c, sp_t, qual, mwf, mwfs, max_channel,
                 #              fs=25000, start_time=0, end_time=12 * 60 * 60,
                 #              mwft=None,
-                #              sex=None, age=None, species=None):
+                #              sex=None, birthday=None, species=None):
                 if ((len(file_datetime_list) == 2) and
                         (len(ecube_time_list) == 2)):
                     if (amps is not None):
@@ -152,7 +152,7 @@ def siout(sorted_data, noflylist, rec_time,
                                          sp_amp=amps[unit_idx],
                                          wf_b=np.asarray(wf_b[unit_idx]).T,
                                          wf_e=np.asarray(wf_e[unit_idx]).T,
-                                         sex=sex, age=age, species=species,
+                                         sex=sex, birthday=birthday, species=species,
                                          animal_name=animal_name,
                                          region_loc=region_loc,
                                          genotype=genotype,
@@ -173,7 +173,7 @@ def siout(sorted_data, noflylist, rec_time,
                                          eend_time=np.int64(ecube_time_list
                                                             [1]),
                                          sp_amp=amps[unit_idx],
-                                         sex=sex, age=age, species=species,
+                                         sex=sex, birthday=birthday, species=species,
                                          animal_name=animal_name,
                                          region_loc=region_loc,
                                          genotype=genotype,
@@ -193,7 +193,7 @@ def siout(sorted_data, noflylist, rec_time,
                                  rend_time=str(file_datetime_list[1]),
                                  estart_time=np.int64(ecube_time_list[0]),
                                  eend_time=np.int64(ecube_time_list[1]),
-                                 sex=sex, age=age, species=species,
+                                 sex=sex, birthday=birthday, species=species,
                                  animal_name=animal_name,
                                  region_loc=region_loc,
                                  genotype=genotype,
@@ -207,7 +207,7 @@ def siout(sorted_data, noflylist, rec_time,
                              mwft=mwf_list,
                              rstart_time=str(file_datetime_list[0]),
                              rend_time=str(file_datetime_list[1]),
-                             sex=sex, age=age, species=species,
+                             sex=sex, birthday=birthday, species=species,
                              animal_name=animal_name,
                              region_loc=region_loc,
                              genotype=genotype,
@@ -218,7 +218,7 @@ def siout(sorted_data, noflylist, rec_time,
                              fs=fs,
                              start_time=start_time, end_time=end_time,
                              mwft=mwf_list,
-                             sex=sex, age=age, species=species,
+                             sex=sex, birthday=birthday, species=species,
                              animal_name=animal_name,
                              region_loc=region_loc))
                 #  except:
@@ -241,7 +241,7 @@ def siout(sorted_data, noflylist, rec_time,
 
 def mbt_spkinterface_out(clust_out_dir,
                          model_file='/media/HlabShare/models/xgboost_autoqual_prob',
-                         sex=None, age=None, species=None,
+                         sex=None, birthday=None, species=None,
                          animal_name=None,
                          region_loc=None,
                          genotype=None,
@@ -252,7 +252,7 @@ def mbt_spkinterface_out(clust_out_dir,
 
     mbt_spkinterface_out('spikeinterface_output_directory',
                          model_file,
-                         sex=None, age=None, species=None,
+                         sex=None, birthday=None, species=None,
                          animal_name=None,
                          region_loc=None,
                          genotype=None,
@@ -263,7 +263,7 @@ def mbt_spkinterface_out(clust_out_dir,
     spikeinterface_output_directory : spikeinterface output directory
     model_file : path of model file
     sex: 'm' or 'f'
-    age: datetime.datetime(1970, 1, 1, 0, 0, 0, 0)
+    birthday: datetime.datetime(1970, 1, 1, 0, 0, 0, 0)
     species='r' or 'm', rat or mice
     animal_name : UUU12345
     region_loc : string , ca1, v1, m1
@@ -287,7 +287,7 @@ def mbt_spkinterface_out(clust_out_dir,
     --------
     mbt_spkinterface_out('/home/kbn/co/',
                          model_file,
-                         sex=None, age=None, species=None,
+                         sex=None, birthday=None, species=None,
                          animal_name=None,
                          region_loc=None)
 
@@ -350,7 +350,7 @@ def mbt_spkinterface_out(clust_out_dir,
                   filt=filt,
                   t_ch_size=t_ch_size,
                   model_file=model_file,
-                  sex=sex, age=age, species=species,
+                  sex=sex, birthday=birthday, species=species,
                   animal_name=animal_name,
                   region_loc=region_loc,
                   genotype=genotype,
