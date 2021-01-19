@@ -292,7 +292,7 @@ class Neuron:
     '''
     Neuron class for use in Hengen Lab
     '''
-    # fs, datatype, species, sex, age, animal_name,
+    # fs, datatype, species, sex, birthday, animal_name,
     # start_time, end_time, clust_idx,
     # spike_time, quality, waveform, waveforms, peak_channel, region,
     # cell_type, mean_amplitude, behavior
@@ -302,7 +302,7 @@ class Neuron:
     # sex = str('')
     # genotype,
     # notes,
-    # age datetime.datetime(2019, 12, 24, 7, 30)
+    # birthday datetime.datetime(2019, 12, 24, 7, 30)
     # animal_name = str('')
     # start_time = 0
     # end_time = 12 * 60 * 60
@@ -316,7 +316,7 @@ class Neuron:
     def __init__(self, sp_c, sp_t, qual, mwf, mwfs, max_channel,
                  fs=25000, start_time=0, end_time=12 * 60 * 60,
                  mwft=None,
-                 sex=None, age=None, species=None,
+                 sex=None, birthday=None, species=None,
                  animal_name=None,
                  genotype=None,
                  expt_cond=None,
@@ -334,7 +334,7 @@ class Neuron:
         __init__(self, sp_c, sp_t, qual, mwf, mwfs, max_channel,
                  fs=25000, start_time=0, end_time=12 * 60 * 60,
                  mwft=None,
-                 sex=None, age=None, species=None,
+                 sex=None, birthday=None, species=None,
                  animal_name=None,
                  genotype=None,
                  expt_cond=None,
@@ -361,7 +361,7 @@ class Neuron:
         end_time : end time in seconds
         mwft : mean waveform tetrodes
         sex : sex of animal ('m' or 'f')
-        age : age in days from birth
+        birthday : birthday datetime.datetime(2019, 12, 24, 7, 30)
         species : "r" for rat or "m" for mouse
         animal_name : name of animal 8 characters, UUU12345
         genotype : "wt", te4
@@ -397,7 +397,7 @@ class Neuron:
         (Neuron(sp_c, sp_t, qual, mwf, mwfs, max_channel,
                 fs=25000, start_time=0, end_time=12 * 60 * 60,
                 mwft=None,
-                sex=None, age=None, species=None,
+                sex=None, birthday=None, species=None,
                 animal_name=None,
                 genotype=None,
                 expt_cond=None,
@@ -431,10 +431,10 @@ class Neuron:
             self.sex = sex
         else:
             self.sex = ''
-        if age is not None:
-            self.age = age
+        if birthday is not None:
+            self.birthday = birthday
         else:
-            self.age = datetime(1970, 1, 1, 00, 00)
+            self.birthday = datetime(1970, 1, 1, 00, 00)
         if species is not None:
             self.species = species
         else:
@@ -700,7 +700,7 @@ class Neuron:
         '''
         dt = datetime.strptime(self.rstart_time.replace("_", " "),
                                "%Y-%m-%d %H-%M-%S")
-        return self.age - dt
+        return self.birthday - dt
 
     @property
     def peaklatency(self):

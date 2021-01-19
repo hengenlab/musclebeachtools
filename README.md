@@ -109,7 +109,7 @@ n1[4].peak_channel
 n1[4].quality
 n1[4].qual_prob
 n1[4].region
-n1[4].age
+n1[4].birthday
 n1[4].sex
 n1[4].species
 n1[4].region
@@ -266,7 +266,7 @@ import musclebeachtools as mbt
 from datetime import datetime
 n = mbt.mbt_spkinterface_out('/home/kbn/co/',
                              '/media/HlabShare/models/xgboost_autoqual_prob',
-                             sex='m', age=datetime(1970, 1, 1, 00, 00),
+                             sex='m', birthday=datetime(1970, 1, 1, 00, 00),
                              species='m',
                              animal_name='ABC12345',
                              region_loc='CA1',
@@ -284,7 +284,7 @@ nnew[0].animal_name
 nnew[0].sex
 'm'
 
-nnew[0].age
+nnew[0].birthday
 datetime.datetime(1970, 1, 1, 0, 0)
 
 nnew[0].age_rec # age based on first file in sorting block
