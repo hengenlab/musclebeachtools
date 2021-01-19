@@ -700,7 +700,7 @@ class Neuron:
         '''
         dt = datetime.strptime(self.rstart_time.replace("_", " "),
                                "%Y-%m-%d %H-%M-%S")
-        return self.birthday - dt
+        return dt - self.birthday
 
     @property
     def peaklatency(self):
