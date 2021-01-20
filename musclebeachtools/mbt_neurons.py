@@ -87,7 +87,8 @@ logger.setLevel(logging.DEBUG)
 #  console/file handlers
 c_loghandler = logging.StreamHandler()
 # f_loghandler = logging.FileHandler('mbt.log')
-c_loghandler.setLevel(logging.INFO)
+c_loghandler.setLevel(logging.ERROR)
+# c_loghandler.setLevel(logging.INFO)
 # c_loghandler.setLevel(logging.DEBUG)
 # f_loghandler.setLevel(logging.WARNING)
 
