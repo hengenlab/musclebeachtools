@@ -3047,6 +3047,121 @@ def n_spiketimes_to_spikewords(neuron_list, binsz=0.02,
         return(spikewords_array.astype(np.int32))
 
 
+def n_branching_ratio(neuron_list, ava_binsz=0.004,
+                               kmax=500, method="complex",
+                               start=0, end=2,
+                               plotname=None):
+    '''
+    This function is a wrapper for branching ratio
+
+    br, acc =
+    n_branching_ratio(neuron_list, ava_binsz=0.002
+                      kmax=500, method="complex",
+                      start=False, end=False,
+                      plotname=None):
+
+    Parameters
+    ----------
+    neuron_list : List of neurons from (usually output from ksout)
+    ava_binsz : Bin size (default 0.002 (4 ms))
+    method : default, "complex"
+    start : default, 0 from starting time
+    end : default, 2 from starting time to 2 hours
+    plotname : location of figure to save
+
+    Returns
+    -------
+    br: Branching ratio
+    acc : pearsons correlation a test way to not check plot
+
+    Raises
+    ------
+    ValueError if neuron list is empty
+
+    See Also
+    --------
+
+    Notes
+    -----
+
+    Examples
+    --------
+    br, acc =
+    n_branching_ratio(neuron_list, ava_binsz=0.002
+                      kmax=500, method="complex",
+                      start=False, end=False,
+                      plotname=None):
+
+    '''
+
+    try:
+        import mrestimator as mre
+    except ImportError:
+        raise ImportError('''Run command :
+                 git clone https://github.com/Priesemann-Group/mrestimator.git
+                 cd mrestimator 
+                 pip install .''')
+    from sys import platform
+    if platform == "darwin":
+        # matplotlib.use('TkAgg')
+        plt.switch_backend('TkAgg')
+    else:
+        # matplotlib.use('Agg')
+        plt.switch_backend('Agg')
+
+
+    # check neuron_list is not empty
+    if (len(neuron_list) == 0):
+        raise ValueError('Neuron list is empty')
+
+
+    # lplot = 1
+    # ava_binsz = 0.004
+    # start = 0
+    # end = 2
+    # kmax = 500
+
+    # filter neural data
+    # newlist = [x for x in n if x.quality is in [filt]]
+    # print("len newlist ", len(newlist))
+
+    data = n_spiketimes_to_spikewords(neuron_list,
+                                      ava_binsz,
+                                      3600*start,
+                                      3600*(start+end),
+                                      1)
+
+    dt = ava_binsz * 1000
+    A_t = np.sum(data, 0)
+    src = mre.input_handler(A_t)
+    rks = mre.coefficients(src, steps=(1, kmax),
+                           dt=dt, dtunit='ms',
+                           method='trialseparated')
+
+    fit1 = mre.fit(rks, fitfunc=method)
+    # fit2 = mre.fit(rks , fitfunc='exp_offset')
+    # print("method ", method, " br ", fit1.mre)
+
+    if plotname is not None:
+        fig, ax1 = plt.subplots()
+        ax1.plot(rks.steps, rks.coefficients, '.k', alpha=0.2, label=r'Data')
+        ax1.plot(rks.steps, mre.f_complex(rks.steps*dt, *fit1.popt),
+                 label='complex m={:.5f}'.format(fit1.mre))
+        ax1.set_xlabel(r'Time lag $\delta t$')
+        ax1.set_ylabel(r'Autocorrelation $r_{\delta t}$')
+        ax1.legend()
+        if plotname is not None:
+            plt.savefig(plotname)
+            plt.close()
+
+    fit_acc = sc.stats.pearsonr(rks.coefficients,
+                                mre.f_complex(rks.steps*dt,
+                                              *fit1.popt))[0]
+    # print(sc.stats.pearsonr(rks.coefficients, rks.coefficients))
+    # print(sc.stats.pearsonr(rks.coefficients, np.random.random(500)))
+    return fit1.mre, fit_acc
+
+
 def n_save_modified_neuron_list(neuron_list, file_name):
 
     '''
