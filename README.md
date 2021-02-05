@@ -296,6 +296,24 @@ nnew[0].genotype
 nnew[0].expt_cond
 'monocular deprivation'
 
+# branching ratio from Viola Priesemann
+import numpy as np
+import musclebeachtools as mbt
+
+n = np.load('H_2020-12-17_13-19-30_2020-12-18_01-14-32_neurons_group0.npy', allow_pickle=True)
+# filer by quality
+neuron_list = [x for x in n if x.quality <=2]
+
+# start, end are starting time and end time for br calculation, in hours
+# ava_binsz binsize for branching ration, in seconds
+# kmax  150-2500, remember in ms multiply ava_binsz
+# plotname None no figures
+br, acc = mbt.n_branching_ratio(neuron_list, ava_binsz=0.004,
+                                kmax=500, method="complex",
+                                start=0, end=2,
+                                plotname='/media/HlabShare/ckbn/hhh.png')
+print("Branching ration ", br, " pearson corr ", acc, flush=True)
+
 ```
 
 ## FAQ
