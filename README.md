@@ -305,7 +305,7 @@ import musclebeachtools as mbt
 
 n = np.load('H_2020-12-17_13-19-30_2020-12-18_01-14-32_neurons_group0.npy', allow_pickle=True)
 # filer by quality
-neuron_list = [x for x in n if x.quality <=2]
+neuron_list = mbt.n_filt_quality(n, maxqual=[1, 2])
 
 # start, end are starting time and end time for br calculation, in hours
 # ava_binsz binsize for branching ration, in seconds
@@ -315,7 +315,7 @@ br, acc = mbt.n_branching_ratio(neuron_list, ava_binsz=0.004,
                                 kmax=500, method="complex",
                                 start=0, end=2,
                                 plotname='/home/kbn/hhh.png')
-print("Branching ration ", br, " pearson corr ", acc, flush=True)
+print("Branching ratio ", br, " pearson corr ", acc, flush=True)
 
 ```
 
