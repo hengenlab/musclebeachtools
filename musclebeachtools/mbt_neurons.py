@@ -2787,6 +2787,56 @@ def autoqual(neuron_list, model_file,
         return preds, neuron_indices_test
 
 
+def n_filt_quality(neuron_list, maxqual=None):
+
+    '''
+    Filter neuron_list using maxqual list
+
+    n_filt_quality(neuron_list, maxqual=[1, 2, 3])
+
+    Parameters
+    ----------
+    neuron_list : List of neurons
+    maxqual : default [1, 2, 3, 4], filter by quality,
+              neuron.quality in maxqual
+
+    Returns
+    -------
+    neuron_list : filtered by quality in maxqual
+
+    Raises
+    ------
+    ValueError if neuron list is empty
+
+    See Also
+    --------
+
+    Notes
+    -----
+
+    Examples
+    --------
+    n_filt_quality(neuron_list, maxqual=[1, 3])
+
+    '''
+
+    logger.info('Filter neuron_list using maxqual list')
+    # check neuron_list is not empty
+    if (len(neuron_list) == 0):
+        raise ValueError('Neuron list is empty')
+
+    if maxqual is None:
+        maxqual = [1, 2, 3, 4]
+
+    # Filter neurons by quality
+    filt_list = []
+    for ind, neuron in enumerate(neuron_list):
+        if int(neuron.quality) in maxqual:
+            filt_list.append(ind)
+
+    return neuron_list[filt_list]
+
+
 def n_plot_neuron_wfs(neuron_list, maxqual=None,
                       pltname=None,
                       saveloc=None):
@@ -3048,9 +3098,9 @@ def n_spiketimes_to_spikewords(neuron_list, binsz=0.02,
 
 
 def n_branching_ratio(neuron_list, ava_binsz=0.004,
-                               kmax=500, method="complex",
-                               start=0, end=2,
-                               plotname=None):
+                      kmax=500, method="complex",
+                      start=0, end=2,
+                      plotname=None):
     '''
     This function is a wrapper for branching ratio
 
@@ -3099,7 +3149,7 @@ def n_branching_ratio(neuron_list, ava_binsz=0.004,
     except ImportError:
         raise ImportError('''Run command :
                  git clone https://github.com/Priesemann-Group/mrestimator.git
-                 cd mrestimator 
+                 cd mrestimator
                  pip install .''')
     from sys import platform
     if platform == "darwin":
@@ -3109,11 +3159,9 @@ def n_branching_ratio(neuron_list, ava_binsz=0.004,
         # matplotlib.use('Agg')
         plt.switch_backend('Agg')
 
-
     # check neuron_list is not empty
     if (len(neuron_list) == 0):
         raise ValueError('Neuron list is empty')
-
 
     # lplot = 1
     # ava_binsz = 0.004
