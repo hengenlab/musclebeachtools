@@ -296,6 +296,9 @@ nnew[0].genotype
 nnew[0].expt_cond
 'monocular deprivation'
 
+# Filter neuron list by quality
+neuron_list_filt = mbt.n_filt_quality(neuron_list, maxqual=[1, 2])
+
 # branching ratio from Viola Priesemann
 import numpy as np
 import musclebeachtools as mbt
@@ -311,7 +314,7 @@ neuron_list = [x for x in n if x.quality <=2]
 br, acc = mbt.n_branching_ratio(neuron_list, ava_binsz=0.004,
                                 kmax=500, method="complex",
                                 start=0, end=2,
-                                plotname='/media/HlabShare/ckbn/hhh.png')
+                                plotname='/home/kbn/hhh.png')
 print("Branching ration ", br, " pearson corr ", acc, flush=True)
 
 ```
