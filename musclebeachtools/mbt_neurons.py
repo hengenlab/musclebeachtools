@@ -3108,6 +3108,7 @@ def n_branching_ratio(neuron_list, ava_binsz=0.004,
     n_branching_ratio(neuron_list, ava_binsz=0.002
                       kmax=500, method="complex",
                       start=False, end=False,
+                      binarize=1,
                       plotname=None):
 
     Parameters
@@ -3117,6 +3118,8 @@ def n_branching_ratio(neuron_list, ava_binsz=0.004,
     method : default, "complex"
     start : default, 0 from starting time
     end : default, 2 from starting time to 2 hours
+    binarize : Get counts (default 0) in bins,
+    if binarize is 1,binarize to 0 and 1
     plotname : location of figure to save
 
     Returns
@@ -3176,8 +3179,8 @@ def n_branching_ratio(neuron_list, ava_binsz=0.004,
     data = n_spiketimes_to_spikewords(neuron_list,
                                       ava_binsz,
                                       3600*start,
-                                      3600*(start+end),
-                                      1)
+                                      3600*end,
+                                      binarize)
 
     dt = ava_binsz * 1000
     A_t = np.sum(data, 0)
