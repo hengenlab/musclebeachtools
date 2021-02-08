@@ -3111,6 +3111,15 @@ def n_branching_ratio(neuron_list, ava_binsz=0.004,
     This function is a wrapper for branching ratio using
     "complex" and "exp_offset" fit
 
+    Articles
+    Inferring collective dynamical states from widely unobserved systems
+    Jens Wilting & Viola Priesemann
+    and
+    Nature Communications volume 9, Article number: 2325 (2018)
+    MR. Estimator, a toolbox to determine intrinsic timescales from subsampled spiking activity
+    F. P. Spitzner, J. Dehning, J. Wilting, A. Hagemann, J. P. Neto, J. Zierenberg, V. Priesemann
+    https://arxiv.org/abs/2007.03367
+
     br1, br2, acc1, acc2=
     n_branching_ratio(neuron_list, ava_binsz=0.002
                       kmax=500,
