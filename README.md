@@ -311,9 +311,14 @@ neuron_list = mbt.n_filt_quality(n, maxqual=[1, 2])
 # ava_binsz binsize for branching ration, in seconds
 # kmax  150-2500, remember in ms multiply ava_binsz
 # plotname None no figures
-br, acc = mbt.n_branching_ratio(neuron_list, ava_binsz=0.004,
-                                kmax=500, method="complex",
+# br1 branching ratio with complex fit
+# br2 branching ratio with exp_offset fit
+# acc1 is pearson correlation coefficient with respect to data for complex (experimental not tested fully)
+# acc2 is pearson correlation coefficient with respect to data for exp_offset (experimental not tested fully)
+br1, br2, acc1, acc2 = mbt.n_branching_ratio(neuron_list, ava_binsz=0.004,
+                                kmax=500,
                                 start=0, end=2,
+                                binarize=1,
                                 plotname='/home/kbn/hhh.png')
 print("Branching ratio ", br, " pearson corr ", acc, flush=True)
 
