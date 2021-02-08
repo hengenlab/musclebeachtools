@@ -2984,6 +2984,11 @@ def n_getspikes(neuron_list, start=False, end=False, lonoff=1):
         end = neuron_list[0].end_time
     logger.info('start and end is %s and %s', start, end)
 
+    if start < neuron_list[0].start_time:
+        raise ValueError('start is less than neuron_list[0].start_time')
+    if end > neuron_list[0].end_time:
+        raise ValueError('end is greater than neuron_list[0].end_time')
+
     # Create empty list
     spiketimes_allcells = []
 
@@ -3098,15 +3103,17 @@ def n_spiketimes_to_spikewords(neuron_list, binsz=0.02,
 
 
 def n_branching_ratio(neuron_list, ava_binsz=0.004,
-                      kmax=500, method="complex",
+                      kmax=500,
                       start=0, end=2,
+                      binarize=1,
                       plotname=None):
     '''
-    This function is a wrapper for branching ratio
+    This function is a wrapper for branching ratio using
+    "complex" and "exp_offset" fit
 
-    br, acc =
+    br1, br2, acc1, acc2=
     n_branching_ratio(neuron_list, ava_binsz=0.002
-                      kmax=500, method="complex",
+                      kmax=500,
                       start=False, end=False,
                       binarize=1,
                       plotname=None):
@@ -3115,7 +3122,6 @@ def n_branching_ratio(neuron_list, ava_binsz=0.004,
     ----------
     neuron_list : List of neurons from (usually output from ksout)
     ava_binsz : Bin size (default 0.002 (4 ms))
-    method : default, "complex"
     start : default, 0 from starting time
     end : default, 2 from starting time to 2 hours
     binarize : Get counts (default 0) in bins,
@@ -3124,8 +3130,10 @@ def n_branching_ratio(neuron_list, ava_binsz=0.004,
 
     Returns
     -------
-    br: Branching ratio
-    acc : pearsons correlation a test way to not check plot
+    br1: Branching ratio with complex
+    br2: Branching ratio with exp_offset
+    acc1 : pearsons correlation a test way to not check plot, complex
+    acc2 : pearsons correlation a test way to not check plot, exp_offset
 
     Raises
     ------
@@ -3139,10 +3147,11 @@ def n_branching_ratio(neuron_list, ava_binsz=0.004,
 
     Examples
     --------
-    br, acc =
-    n_branching_ratio(neuron_list, ava_binsz=0.002
-                      kmax=500, method="complex",
+    br1, br2, acc1, acc2 =
+    n_branching_ratio(neuron_list, ava_binsz=0.004
+                      kmax=500,
                       start=False, end=False,
+                      binarize=1,
                       plotname=None):
 
     '''
@@ -3189,8 +3198,8 @@ def n_branching_ratio(neuron_list, ava_binsz=0.004,
                            dt=dt, dtunit='ms',
                            method='trialseparated')
 
-    fit1 = mre.fit(rks, fitfunc=method)
-    # fit2 = mre.fit(rks , fitfunc='exp_offset')
+    fit1 = mre.fit(rks, fitfunc="complex")
+    fit2 = mre.fit(rks , fitfunc='exp_offset')
     # print("method ", method, " br ", fit1.mre)
 
     if plotname is not None:
@@ -3198,6 +3207,8 @@ def n_branching_ratio(neuron_list, ava_binsz=0.004,
         ax1.plot(rks.steps, rks.coefficients, '.k', alpha=0.2, label=r'Data')
         ax1.plot(rks.steps, mre.f_complex(rks.steps*dt, *fit1.popt),
                  label='complex m={:.5f}'.format(fit1.mre))
+        ax1.plot(rks.steps, mre.f_exponential_offset(rks.steps*dt, *fit2.popt),
+                 label='exp_offset m={:.5f}'.format(fit2.mre))
         ax1.set_xlabel(r'Time lag $\delta t$')
         ax1.set_ylabel(r'Autocorrelation $r_{\delta t}$')
         ax1.legend()
@@ -3205,12 +3216,15 @@ def n_branching_ratio(neuron_list, ava_binsz=0.004,
             plt.savefig(plotname)
             plt.close()
 
-    fit_acc = sc.stats.pearsonr(rks.coefficients,
+    fit_acc1 = sc.stats.pearsonr(rks.coefficients,
                                 mre.f_complex(rks.steps*dt,
                                               *fit1.popt))[0]
+    fit_acc2 = sc.stats.pearsonr(rks.coefficients,
+                                mre.f_exponential_offset(rks.steps*dt,
+                                                         *fit2.popt))[0]
     # print(sc.stats.pearsonr(rks.coefficients, rks.coefficients))
     # print(sc.stats.pearsonr(rks.coefficients, np.random.random(500)))
-    return fit1.mre, fit_acc
+    return fit1.mre, fit2.mre, fit_acc1, fit_acc2
 
 
 def n_save_modified_neuron_list(neuron_list, file_name):
