@@ -2259,22 +2259,22 @@ def autoqual(neuron_list, model_file,
     # 75 wf
     #                                          1  2  3  4  5  6   7   8   9   10  11  12  13  14     15 : 15
     nfet = (15 +          # isi contamination  1, 2, 3, 4, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90 and 100 ms
-            #                                   16, 17,  18, 19,  20, 21,  22, 23,  24, 25 : 25
-            10 +          # contamination_lines 1,       2,       3,       4,   and 5 ms mean and median
-            1 +           # Peak latency        26 : 26
-            1 +           # Wf amplitude        27 : 27
-            1 +           # Total FR            28 : 28 29   30   31   32   33  34    35   36   37      38
-            10 +          # Presence ratio      29 : 38 101, 201, 301, 401, 501, 601, 701, 801, 901 and 1001
+            #                                   16 : 50
+            35 +          # contamination_lines 1,       2,       3,       4,   and 5 ms mean std median min max kur skw
+            1 +           # Peak latency        51 : 52
+            1 +           # Wf amplitude        53 : 53
+            1 +           # Total FR            54 : 54
+            10 +          # Presence ratio      55 : 64        101, 201, 301, 401, 501, 601, 701, 801, 901 and 1001
             #
-            1 + 1 + 1 +   # amplitude bin stats 39, 40, 41 mean std median : 41
-            1 + 1 + 1 +   # amplitude stats     42, 43, 44 mean std median : 44
-            1 + 1 + 1 +   # fr stats            45, 46, 47 mean std median : 47
-            1 + 1 + 1 +   # wf stats            48, 49, 50 mean std median : 50
-            1 +           # wf E                51 : 51
-            1 +           # cell type           52 : 52
-            1 +           # mean amp            53 : 53
-            75+           # nWF                 54 : 128
-            75)           # WF                  129 : 203
+            1 + 1 + 1 + 1 + 1 + 1 + 1 +   # amplitude bin stats 65:71  mean std median min max kur skw
+            1 + 1 + 1 + 1 + 1 + 1 + 1 +   # amplitude stats     72:78 mean std median min max kur skw
+            1 + 1 + 1 + 1 + 1 + 1 + 1 +   # fr stats            79:85 mean std median min max kur skw
+            1 + 1 + 1 + 1 + 1 + 1 + 1 +   # wf stats            86:92 mean std median min max kur skw
+            1 +           # wf E                93 : 93
+            1 +           # cell type           94 : 94
+            1 +           # mean amp            95 : 95
+            75+           # nWF                 96 : 169
+            75)           # WF                  170 : 244
     neuron_features = np.zeros((len(neuron_list), nfet))
     neuron_qual = np.zeros((len(neuron_list)), dtype='int8')
     neuron_indices = np.zeros((len(neuron_list)), dtype='int16')
@@ -2333,70 +2333,52 @@ def autoqual(neuron_list, model_file,
             if ldebug:
                 print("contamination_lines[",contamin_idx,"] ",
                       contamination_lines[contamin_idx])
-            tmp_fet = np.array([np.mean(contamination_lines[contamin_idx])])
-            neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-            # print("idx ", idx,  " clust_idx ", i.clust_idx)
-            if ldebug:
-                print("contamin_idx ", contamin_idx+1,  " mean ", tmp_fet)
-            fet_idx = fet_idx + tmp_fet.shape[0]
-            # tmp_fet = None
-            # tmp_fet = np.array([np.std(contamination_lines[contamin_idx])])
-            # print("contamin_idx ", contamin_idx,  " std ", tmp_fet)
-            # neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-            # fet_idx = fet_idx + tmp_fet.shape[0]
             tmp_fet = None
-            tmp_fet = \
-              np.array([np.median(contamination_lines[contamin_idx])])
-            if ldebug:
-                print("contamin_idx ", contamin_idx+1,  " median ", tmp_fet)
-            neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-            fet_idx = fet_idx + tmp_fet.shape[0]
-            if ldebug:
-                print("fet_idx ", fet_idx)
-
-            # tmp_fet = None
-            # # print("contamination_lines[",contamin_idx,"] ",
-            # # contamination_lines[contamin_idx])
-            # ncontl = np.array([np.mean(contamination_lines[contamin_idx])])
+            # print("contamination_lines[",contamin_idx,"] ",
+            # contamination_lines[contamin_idx])
+            ncontl = np.asarray(contamination_lines[contamin_idx])
             # ncontl = ncontl/np.linalg.norm(ncontl)
-            # tmp_fet = np.array([np.mean(ncontl)])
-            # neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-            # # print("tmp_fet ", tmp_fet)
-            # fet_idx = fet_idx + tmp_fet.shape[0]
-            # tmp_fet = None
-            # tmp_fet = np.array([np.std(ncontl)])
-            # neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-            # # print("tmp_fet ", tmp_fet)
-            # fet_idx = fet_idx + tmp_fet.shape[0]
-            # tmp_fet = None
-            # tmp_fet = np.array([np.median(ncontl)])
-            # neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-            # # print("tmp_fet ", tmp_fet)
-            # fet_idx = fet_idx + tmp_fet.shape[0]
-            # tmp_fet = None
-            # tmp_fet = np.array([np.min(ncontl)])
-            # neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-            # # print("tmp_fet ", tmp_fet)
-            # fet_idx = fet_idx + tmp_fet.shape[0]
-            # tmp_fet = None
-            # tmp_fet = np.array([np.max(ncontl)])
-            # neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-            # # print("tmp_fet ", tmp_fet)
-            # fet_idx = fet_idx + tmp_fet.shape[0]
-            # tmp_fet = None
-            # tmp_fet = np.array([sc.stats.kurtosis(ncontl)])
-            # neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-            # # print("tmp_fet ", tmp_fet)
-            # fet_idx = fet_idx + tmp_fet.shape[0]
-            # tmp_fet = None
-            # tmp_fet = np.array([sc.stats.skew(ncontl)])
-            # neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-            # # print("tmp_fet ", tmp_fet)
-            # fet_idx = fet_idx + tmp_fet.shape[0]
-            # # print("idx amp ", idx)
-            # # print("fet_idx ", fet_idx)
-            # # print(neuron_features[idx, :])
-            # ncontl = None
+            ncontl = (ncontl - np.min(ncontl)) / (np.max(ncontl) - np.min(ncontl))
+            tmp_fet = np.array([np.mean(ncontl)])
+            neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+            # print("tmp_fet ", tmp_fet)
+            fet_idx = fet_idx + tmp_fet.shape[0]
+            tmp_fet = None
+            tmp_fet = np.array([np.std(ncontl)])
+            neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+            # print("tmp_fet ", tmp_fet)
+            fet_idx = fet_idx + tmp_fet.shape[0]
+            tmp_fet = None
+            tmp_fet = np.array([np.median(ncontl)])
+            neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+            # print("tmp_fet ", tmp_fet)
+            fet_idx = fet_idx + tmp_fet.shape[0]
+            tmp_fet = None
+            tmp_fet = np.array([np.min(ncontl)])
+            neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+            # print("tmp_fet ", tmp_fet)
+            fet_idx = fet_idx + tmp_fet.shape[0]
+            tmp_fet = None
+            tmp_fet = np.array([np.max(ncontl)])
+            neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+            # print("tmp_fet ", tmp_fet)
+            fet_idx = fet_idx + tmp_fet.shape[0]
+            tmp_fet = None
+            tmp_fet = np.array([sc.stats.kurtosis(ncontl)])
+            neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+            # print("tmp_fet ", tmp_fet)
+            fet_idx = fet_idx + tmp_fet.shape[0]
+            tmp_fet = None
+            tmp_fet = np.array([sc.stats.skew(ncontl)])
+            neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+            # print("tmp_fet ", tmp_fet)
+            fet_idx = fet_idx + tmp_fet.shape[0]
+            # print("idx amp ", idx)
+            # print("fet_idx ", fet_idx)
+            # print(neuron_features[idx, :])
+            ncontl = None
+        if ldebug:
+            print("tmp_isi ", tmp_isi)
 
         # print("idx isi time ", idx)
         # print("fet_idx ", fet_idx)
@@ -2596,6 +2578,7 @@ def autoqual(neuron_list, model_file,
             print("namp_s_bin_values ", namp_s_bin_values)
         namp_s_bin = np.asarray(namp_s_bin_values)
         # namp_s_bin = namp_s_bin/np.linalg.norm(namp_s_bin)
+        namp_s_bin = (namp_s_bin - np.min(namp_s_bin)) / (np.max(namp_s_bin) - np.min(namp_s_bin))
         if ldebug:
             print("namp_s_bin ", namp_s_bin)
         tmp_fet = np.array([np.mean(namp_s_bin)])
@@ -2614,28 +2597,28 @@ def autoqual(neuron_list, model_file,
         fet_idx = fet_idx + tmp_fet.shape[0]
         if ldebug:
             print("namp_s_bin ", np.mean(namp_s_bin), np.median(namp_s_bin))
-        #tmp_fet = None
-        #tmp_fet = np.array([np.min(namp_s_bin)])
-        #neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-        ## print("tmp_fet ", tmp_fet)
-        #fet_idx = fet_idx + tmp_fet.shape[0]
-        #tmp_fet = None
-        #tmp_fet = np.array([np.max(namp_s_bin)])
-        #neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-        ## print("tmp_fet ", tmp_fet)
-        #fet_idx = fet_idx + tmp_fet.shape[0]
-        #tmp_fet = None
-        #tmp_fet = np.array([sc.stats.kurtosis(namp_s_bin)])
-        #neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-        ## print("tmp_fet ", tmp_fet)
-        #fet_idx = fet_idx + tmp_fet.shape[0]
-        #tmp_fet = None
-        #tmp_fet = np.array([sc.stats.skew(namp_s_bin)])
-        #neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-        ## print("tmp_fet ", tmp_fet)
-        #fet_idx = fet_idx + tmp_fet.shape[0]
-        ## print("idx amp ", idx)
-        ## print("fet_idx ", fet_idx)
+        tmp_fet = None
+        tmp_fet = np.array([np.min(namp_s_bin)])
+        neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+        # print("tmp_fet ", tmp_fet)
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        tmp_fet = None
+        tmp_fet = np.array([np.max(namp_s_bin)])
+        neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+        # print("tmp_fet ", tmp_fet)
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        tmp_fet = None
+        tmp_fet = np.array([sc.stats.kurtosis(namp_s_bin)])
+        neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+        # print("tmp_fet ", tmp_fet)
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        tmp_fet = None
+        tmp_fet = np.array([sc.stats.skew(namp_s_bin)])
+        neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+        # print("tmp_fet ", tmp_fet)
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        # print("idx amp ", idx)
+        # print("fet_idx ", fet_idx)
         ## print(neuron_features[idx, :])
         namp_s_bin = None
         namp_s_bin_values = None
@@ -2649,6 +2632,7 @@ def autoqual(neuron_list, model_file,
         if ldebug:
             print("namp ", namp)
         # namp = namp/np.linalg.norm(namp)
+        namp = (namp - np.min(namp)) / (np.max(namp) - np.min(namp))
         if ldebug:
             print("namp ", namp)
         tmp_fet = np.array([np.mean(namp)])
@@ -2665,29 +2649,29 @@ def autoqual(neuron_list, model_file,
         neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
         # print("tmp_fet ", tmp_fet)
         fet_idx = fet_idx + tmp_fet.shape[0]
-        #tmp_fet = None
-        #tmp_fet = np.array([np.min(namp)])
-        #neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-        ## print("tmp_fet ", tmp_fet)
-        #fet_idx = fet_idx + tmp_fet.shape[0]
-        #tmp_fet = None
-        #tmp_fet = np.array([np.max(namp)])
-        #neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-        ## print("tmp_fet ", tmp_fet)
-        #fet_idx = fet_idx + tmp_fet.shape[0]
-        #tmp_fet = None
-        #tmp_fet = np.array([sc.stats.kurtosis(namp)])
-        #neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-        ## print("tmp_fet ", tmp_fet)
-        #fet_idx = fet_idx + tmp_fet.shape[0]
-        #tmp_fet = None
-        #tmp_fet = np.array([sc.stats.skew(namp)])
-        #neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-        ## print("tmp_fet ", tmp_fet)
-        #fet_idx = fet_idx + tmp_fet.shape[0]
-        ## print("idx amp ", idx)
-        ## print("fet_idx ", fet_idx)
-        ## print(neuron_features[idx, :])
+        tmp_fet = None
+        tmp_fet = np.array([np.min(namp)])
+        neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+        # print("tmp_fet ", tmp_fet)
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        tmp_fet = None
+        tmp_fet = np.array([np.max(namp)])
+        neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+        # print("tmp_fet ", tmp_fet)
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        tmp_fet = None
+        tmp_fet = np.array([sc.stats.kurtosis(namp)])
+        neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+        # print("tmp_fet ", tmp_fet)
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        tmp_fet = None
+        tmp_fet = np.array([sc.stats.skew(namp)])
+        neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+        # print("tmp_fet ", tmp_fet)
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        # print("idx amp ", idx)
+        # print("fet_idx ", fet_idx)
+        # print(neuron_features[idx, :])
         if ldebug:
             print("spike amplitude ", np.mean(namp), " ", np.median(namp))
         namp = None
@@ -2700,6 +2684,7 @@ def autoqual(neuron_list, model_file,
         # print("xbins ", xbins)
         nfrate = np.asarray(hzcount)
         # nfrate = nfrate/np.linalg.norm(nfrate)
+        nfrate = (nfrate - np.min(nfrate)) / (np.max(nfrate) - np.min(nfrate))
         tmp_fet = np.array([np.mean(nfrate)])
         neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
         # print("tmp_fet ", tmp_fet)
@@ -2714,29 +2699,29 @@ def autoqual(neuron_list, model_file,
         neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
         # print("tmp_fet ", tmp_fet)
         fet_idx = fet_idx + tmp_fet.shape[0]
-        #tmp_fet = None
-        #tmp_fet = np.array([np.min(nfrate)])
-        #neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-        ## print("tmp_fet ", tmp_fet)
-        #fet_idx = fet_idx + tmp_fet.shape[0]
-        #tmp_fet = None
-        #tmp_fet = np.array([np.max(nfrate)])
-        #neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-        ## print("tmp_fet ", tmp_fet)
-        #fet_idx = fet_idx + tmp_fet.shape[0]
-        #tmp_fet = None
-        #tmp_fet = np.array([sc.stats.kurtosis(nfrate)])
-        #neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-        ## print("tmp_fet ", tmp_fet)
-        #fet_idx = fet_idx + tmp_fet.shape[0]
-        #tmp_fet = None
-        #tmp_fet = np.array([sc.stats.skew(nfrate)])
-        #neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-        ## print("tmp_fet ", tmp_fet)
-        #fet_idx = fet_idx + tmp_fet.shape[0]
-        ## print("idx amp ", idx)
-        ## print("fet_idx ", fet_idx)
-        ## print(neuron_features[idx, :])
+        tmp_fet = None
+        tmp_fet = np.array([np.min(nfrate)])
+        neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+        # print("tmp_fet ", tmp_fet)
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        tmp_fet = None
+        tmp_fet = np.array([np.max(nfrate)])
+        neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+        # print("tmp_fet ", tmp_fet)
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        tmp_fet = None
+        tmp_fet = np.array([sc.stats.kurtosis(nfrate)])
+        neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+        # print("tmp_fet ", tmp_fet)
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        tmp_fet = None
+        tmp_fet = np.array([sc.stats.skew(nfrate)])
+        neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+        # print("tmp_fet ", tmp_fet)
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        # print("idx amp ", idx)
+        # print("fet_idx ", fet_idx)
+        # print(neuron_features[idx, :])
         if ldebug:
             print("spike fr ", np.mean(nfrate), " ", np.median(nfrate))
         nfrate = None
@@ -2745,6 +2730,7 @@ def autoqual(neuron_list, model_file,
         tmp_fet_wf = None
         tmp_fet_wf = np.asarray(i.waveform)
         # tmp_fet_wf = tmp_fet_wf / np.linalg.norm(tmp_fet_wf)
+        tmp_fet_wf = (i.waveform - np.min(i.waveform)) / (np.max(i.waveform) - np.min(i.waveform))
         # print("tmp_fet_wf ", tmp_fet_wf)
         # print("sh tmp_fet_wf ", tmp_fet_wf.shape)
         tmp_fet = None
@@ -2762,56 +2748,31 @@ def autoqual(neuron_list, model_file,
         neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
         # print("tmp_fet ", tmp_fet)
         fet_idx = fet_idx + tmp_fet.shape[0]
-        #tmp_fet = None
-        #tmp_fet = np.array([np.min(tmp_fet_wf)])
-        #neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-        ## print("tmp_fet ", tmp_fet)
-        #fet_idx = fet_idx + tmp_fet.shape[0]
-        #tmp_fet = None
-        #tmp_fet = np.array([np.max(tmp_fet_wf)])
-        #neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-        ## print("tmp_fet ", tmp_fet)
-        #fet_idx = fet_idx + tmp_fet.shape[0]
-        #tmp_fet = None
-        #tmp_fet = np.array([sc.stats.kurtosis(tmp_fet_wf)])
-        #neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-        ## print("tmp_fet ", tmp_fet)
-        #fet_idx = fet_idx + tmp_fet.shape[0]
-        #tmp_fet = None
-        #tmp_fet = np.array([sc.stats.skew(tmp_fet_wf)])
-        #neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-        ## print("tmp_fet ", tmp_fet)
-        #fet_idx = fet_idx + tmp_fet.shape[0]
-        ## print("idx amp ", idx)
-        ## print("fet_idx ", fet_idx)
-        ## print(neuron_features[idx, :])
+        tmp_fet = None
+        tmp_fet = np.array([np.min(tmp_fet_wf)])
+        neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+        # print("tmp_fet ", tmp_fet)
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        tmp_fet = None
+        tmp_fet = np.array([np.max(tmp_fet_wf)])
+        neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+        # print("tmp_fet ", tmp_fet)
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        tmp_fet = None
+        tmp_fet = np.array([sc.stats.kurtosis(tmp_fet_wf)])
+        neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+        # print("tmp_fet ", tmp_fet)
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        tmp_fet = None
+        tmp_fet = np.array([sc.stats.skew(tmp_fet_wf)])
+        neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
+        # print("tmp_fet ", tmp_fet)
+        fet_idx = fet_idx + tmp_fet.shape[0]
+        # print("idx amp ", idx)
+        # print("fet_idx ", fet_idx)
+        # print(neuron_features[idx, :])
         if ldebug:
             print("spike wf ", np.mean(tmp_fet_wf), " ", np.median(tmp_fet_wf))
-
-
-        # # To deal with both positive and negative spikes
-        # maxvalueidx = np.argmax(np.abs(tmp_fet_wf))
-        # if tmp_fet_wf[maxvalueidx] <= 0:
-        #     bottom = np.argmin(tmp_fet_wf)
-        #     top = np.argmax(tmp_fet_wf[bottom:]) + bottom
-        #     peaklatency = ((top - bottom) * 1e3) / i.fs
-        #     # Find mean amplitude
-        #     mean_amplitude = np.abs(tmp_fet_wf[bottom])
-        #     # mean_amplitude = tmp_fet_wf[top] - tmp_fet_wf[bottom]
-        # elif tmp_fet_wf[maxvalueidx] > 0:
-        #     bottom = np.argmax(tmp_fet_wf)
-        #     top = np.argmin(tmp_fet_wf[bottom:]) + bottom
-        #     peaklatency = ((top - bottom) * 1e3) / i.fs
-        #     # Find mean amplitude
-        #     mean_amplitude = np.abs(tmp_fet_wf[bottom])
-        #     # mean_amplitude = tmp_fet_wf[bottom] - tmp_fet_wf[top]
-
-        # # Find cell type
-        # cell_type = 'RSU' if peaklatency >= 0.4 else 'FS'
-        # # print("cell_type ", cell_type, " mean_amplitude ", mean_amplitude)
-        # maxvalueidx = None
-        # bottom = None
-        # top = None
 
         # Calculate energy
         tmp_fet = None
@@ -2841,17 +2802,6 @@ def autoqual(neuron_list, model_file,
         # print(neuron_features[idx, :])
         if ldebug:
             print("cell type ", tmp_fet)
-
-        # # Peak latency
-        # tmp_fet = None
-        # tmp_fet = np.array([peaklatency])
-        # # print("tmp_fet ", tmp_fet)
-        # # print("sh tmp_fet ", tmp_fet.shape)
-        # neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
-        # fet_idx = fet_idx + tmp_fet.shape[0]
-        # peaklatency = None
-        # # print("fet_idx3 ", fet_idx)
-        # print("wf type ", tmp_fet)
 
         # WF amplitude
         tmp_fet = None
