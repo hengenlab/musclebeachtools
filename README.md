@@ -24,7 +24,7 @@ conda install -c conda-forge xgboost
 ```
 
 ---
-### Installation by adding to path
+### Installation by adding to path (not recommended)
 
 ##### Windows
 ```
