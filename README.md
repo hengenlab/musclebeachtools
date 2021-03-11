@@ -57,7 +57,7 @@ export PYTHONPATH=/location_of_musclebeachtools_hlab:$PYTHONPATH
 ```
 Open powershell/terminal     
     ipython    
-    import musclebeachtools.musclebeachtools as mbt   
+    import musclebeachtools as mbt   
 ```
 ---
 

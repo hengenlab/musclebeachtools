@@ -36,7 +36,10 @@ setup(
    download_url="https://github.com/hengenlab/musclebeachtools_hlab",
    packages=['musclebeachtools'],
    install_requires=['ipython', 'numpy', 'matplotlib', 'seaborn', 'pandas',
-                     'joblib', 'scipy', 'sklearn'],
+                     'joblib', 'scipy', 'sklearn',
+                     'mrestimator@git+https://github.com/Priesemann-Group/mrestimator.git'],
+   # not added as may be users have their own changes in neuraltoolkit
+   # 'neuraltoolkit@git+https://github.com/hengenlab/neuraltoolkit.git'],
    classifiers=[
         'Development Status :: 1 - Pre-Alpha',
         'Natural Language :: English',
