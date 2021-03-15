@@ -510,10 +510,12 @@ class Neuron:
         '''
         Description of neuron
         '''
-        return '''Neuron with (animal_name=%s, genotype=%s, species=%s, sex=%s,
+        return '''Neuron with (animal_name=%s, region=%s,
+             genotype=%s, species=%s, sex=%s,
              clust_idx=%d, quality=%d, peak_channel=%d)''' \
                % \
-               (self.animal_name, self.genotype, self.species, self.sex,
+               (self.animal_name, self.region, self.genotype,
+                self.species, self.sex,
                 self.clust_idx, self.quality, self.peak_channel)
 
     def __find_celltypewithmeanamplitude(self):
