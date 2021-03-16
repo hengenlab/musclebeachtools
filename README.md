@@ -15,14 +15,17 @@ git clone https://github.com/hengenlab/musclebeachtools_hlab.git
 ```
 cd locationofmusclebeachtools_hlab/musclebeachtools/  
 pip install .
+
 # In Linux and windows
 pip install xgboost
+
 # In mac, install brew,gcc then install xgboost
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 brew install gcc@5
 conda install -c conda-forge xgboost
 ```
 
+<!--
 ---
 ### Installation by adding to path (not recommended)
 
@@ -51,7 +54,7 @@ then open  .profile using your favourite text editor
 add this line  
 export PYTHONPATH=/location_of_musclebeachtools_hlab:$PYTHONPATH
 ```
-
+-->
 ---
 ### Test import
 ```
@@ -61,8 +64,8 @@ Open powershell/terminal
 ```
 ---
 
-## Usage
 
+<!--
 #### Load data from ntksortingb
 ```
 import musclebeachtools as mbt
@@ -70,14 +73,18 @@ import musclebeachtools as mbt
 datadir = "/hlabhome/kiranbn/neuronclass/t_lit_EAB50final/"
 n1 = mbt.ksout(datadir, filenum=0, prbnum=4, filt=[])
 ```
+-->
 
+## Usage
 
 #### Load spike amplitudes from spikeinteface output
 ```
 import numpy as np
 import musclebeachtools as mbt
+
 n = np.load('neurons_group0.npy', allow_pickle=True)
 n_amp = mbt.load_spike_amplitudes(n, '/home/kbn/amplitudes0.npy')
+
 # For 4th neuron, by neuron.clust_idx
 n_amp[4].spike_amplitude
 ```
@@ -323,7 +330,7 @@ br1, br2, acc1, acc2 = mbt.n_branching_ratio(neuron_list, ava_binsz=0.004,
 print("Branching ratio ", br, " pearson corr ", acc, flush=True)
 
 ```
-
+---
 ## FAQ
 ```
 1. spike_time vs spike_time_sec
@@ -335,7 +342,7 @@ For example for 4th neuron n1[4].spike_time/n1[4].fs
 Also spike_time_sec_onoff filters spike_time_sec based on on/off times
 
 ```
-
+---
 ## Issues
 
 ```Please slack Kiran ```
