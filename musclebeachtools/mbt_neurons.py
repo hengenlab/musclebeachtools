@@ -3129,7 +3129,7 @@ def n_getspikes(neuron_list, start=False, end=False, lonoff=1):
 
     # Loop through and get spike times
     for idx, neuron_l in enumerate(neuron_list):
-        logger.debug('Getting spiketimes for cell %d', str(idx))
+        logger.debug('Getting spiketimes for cell %s', str(idx))
 
         # get spiketimes for each cell and append
         if lonoff:

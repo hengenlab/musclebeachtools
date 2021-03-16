@@ -26,7 +26,7 @@ setup(
    long_description=long_description,
    keywords='musclebeachtools, neuroscience, electrophysiology',
    package_dir={'musclebeachtools': 'musclebeachtools'},
-   author='Keith Hengen, Sahara Ensley, Kiran Bhaskran-Nair\
+   author='Keith Hengen, Sahara Ensley, Kiran Bhaskaran-Nair\
            (Hengen Lab Washington University in St. Louis)',
    author_email='',
    maintainer='Kiran Bhaskaran-Nair, Sahara Ensley, Keith Hengen,\
