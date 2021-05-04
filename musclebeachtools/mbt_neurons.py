@@ -1444,8 +1444,8 @@ class Neuron:
                             col.set_ylabel('Amplitude')
                         elif i == 2:
                             col.plot([1], [2])
-                            plt.xticks([], [])
-                            plt.yticks([], [])
+                            plt.xticks([])
+                            plt.yticks([])
                             col.spines['right'].set_visible(False)
                             col.spines['top'].set_visible(False)
                             col.spines['bottom'].set_visible(False)
@@ -1949,7 +1949,7 @@ class Neuron:
                 hzcount, xbins = self.plotFR(binsz=300, lplot=0)
                 fr_ax.plot(xbins[:-1], hzcount, color='#703be7')
                 fr_ax.set_xlim(left=self.start_time)
-                fr_ax.set_xticks([], [])
+                fr_ax.set_xticks([])
                 fr_ax.set_xlabel('Time')
                 fr_ax.set_ylabel('Firing rate (Hz)')
             else:
@@ -1958,7 +1958,7 @@ class Neuron:
                                 lplot=0)
                 fr_ax.plot(xbins[:-1], hzcount, color='#703be7')
                 fr_ax.set_xlim(left=self.start_time)
-                fr_ax.set_xticks([], [])
+                fr_ax.set_xticks([])
                 fr_ax.set_xlabel('Time')
                 fr_ax.set_ylabel('Firing rate (Hz)')
             fr_stats_str = '\n'.join((
@@ -1991,7 +1991,7 @@ class Neuron:
             #                                  self.end_time/300, 12))
             # isi_time_ax.set_xticklabels(np.arange(0,
             #                                       int(self.end_time/3600)))
-            isi_time_ax.set_xticks([], [])
+            isi_time_ax.set_xticks([])
 
             # WAVEFORM plot
             if hasattr(self, 'waveform_tetrodes'):
@@ -2086,8 +2086,8 @@ class Neuron:
 
             else:
                 amp_ax.plot([1], [2])
-                plt.xticks([], [])
-                plt.yticks([], [])
+                plt.xticks([])
+                plt.yticks([])
                 amp_ax.spines['right'].set_visible(False)
                 amp_ax.spines['top'].set_visible(False)
                 amp_ax.spines['bottom'].set_visible(False)
@@ -2097,8 +2097,8 @@ class Neuron:
 
             # SET QUAL plot
             qual_ax.plot([1], [2])
-            plt.xticks([], [])
-            plt.yticks([], [])
+            plt.xticks([])
+            plt.yticks([])
             qual_ax.spines['right'].set_visible(False)
             qual_ax.spines['top'].set_visible(False)
             qual_ax.spines['bottom'].set_visible(False)
