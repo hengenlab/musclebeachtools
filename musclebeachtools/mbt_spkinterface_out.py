@@ -18,7 +18,8 @@ def siout(sorted_data, noflylist, rec_time,
           animal_name=None,
           region_loc=None,
           genotype=None,
-          expt_cond=None):
+          expt_cond=None,
+          lskipautoqual=None):
     '''
     function to load neuron objects from the spike interface output
 
@@ -228,13 +229,14 @@ def siout(sorted_data, noflylist, rec_time,
                       "run again with no filter")
 
     print(f'Found {len(n)} neurons\n')
-    if op.exists(model_file) and op.isfile(model_file):
-        print("model_file was used ", model_file, flush=True)
-        mb.autoqual(n, model_file)
-    else:
-        print("Model_file {} does not exists".format(model_file),
-              flush=True)
-        print("neurons[0].quality not calculated")
+    if lskipautoqual is None:
+        if op.exists(model_file) and op.isfile(model_file):
+            print("model_file was used ", model_file, flush=True)
+            mb.autoqual(n, model_file)
+        else:
+            print("Model_file {} does not exists".format(model_file),
+                  flush=True)
+            print("neurons[0].quality not calculated")
 
     return n
 
