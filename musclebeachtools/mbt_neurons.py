@@ -212,6 +212,68 @@ def wf_comparison(waveform_1, waveform_2):
     return sse, mse, rmse
 
 
+def euclidean_distance(row1, row2, ch=None, corr_fact=0.95):
+
+    '''
+    Calculate distance between row1 and row2
+
+    distance = euclidean_distance(row1, row2, ch=None, corr_fact=0.95)
+
+    Parameters
+    ----------
+    row1 : first vector
+    row2 : second vector
+    ch : channel list
+    corr_fact : correlation lower limit
+
+    Returns
+    -------
+    distance
+
+    Raises
+    ------
+
+    See Also
+    --------
+
+    Notes
+    -----
+
+    Examples
+    --------
+    distance = euclidean_distance(row1, row2, ch=None, corr_fact=0.95)
+
+    '''
+
+    # print("row 1 ", row1)
+    # print("row 2 ", row2)
+    # print("sh row1 ", row1.shape, " sh ", row2.shape)
+    # print("len ", len(row1)-1)
+    distance = 0.0
+
+    # if ((stats.ks_2samp(row1[5:-7], row2[5:-7])[1] >  0.1) and
+    #    (np.corrcoef(row1[5:-7], row2[5:-7])[0, 1] >  0.1)):
+    # if ((stats.ks_2samp(row1[5:-7], row2[5:-7])[1] >  0.5)):
+    if ((np.corrcoef(row1[5:-7], row2[5:-7])[0, 1] > corr_fact)):
+        # if (int(row1[-2] + ch) == int(row2[-2] + ch)):
+        # print("int(row2[-2] ", int(row2[-2]), " int(row1[-2] ",
+        #       int(row1[-2]), " ch ", ch)
+        if (int(row2[-2]) in ch):
+            print("\tint(row2[-2] ", int(row2[-2]),
+                  " int(row1[-2] ", int(row1[-2]), " ch ", ch)
+            for i in range(len(row1)-2):
+                # print("i ", i, " row1 ", row1[i], " row2 ", row2[i],
+                #       " ch ", int(row1[-2]), " ", int(row2[-2]))
+                distance += (row1[i] - row2[i])**2
+                # print("distance ", distance)
+                # print("ch ", int(row1[-2]), " ", int(row2[-2]))
+        else:
+            distance = 1000000000.0
+    else:
+        distance = 1000000000.0
+    return np.sqrt(distance)
+
+
 def wf_sim(wf1, wf2, ltype=1):
 
     '''
