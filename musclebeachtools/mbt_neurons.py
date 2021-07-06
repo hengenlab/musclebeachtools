@@ -274,6 +274,227 @@ def euclidean_distance(row1, row2, ch=None, corr_fact=0.95):
     return np.sqrt(distance)
 
 
+def track_blocks(fl, ch_grp_size=4, maxqual=3, corr_fact=0.97,
+                 lsaveneuron=0, lsavefig=0):
+
+    '''
+    Calculate key between blocks
+
+    track_blocks(fl, ch_grp_size=4, maxqual=3, corr_fact=0.97,
+                 lsaveneuron=0, lsavefig=0)
+
+
+    Parameters
+    ----------
+    fl : file list
+    group size : 4 for tetrodes
+    maxqual : maximum quality
+    corr_fact : correlation lower limit
+    lsaveneuron : 1 to save neuron, 0 no not save
+    lsavefig : 1 to save fig, 0 not savefig
+
+    Returns
+    -------
+    new neron file with name "_withkeys.npy"
+
+    Raises
+    ------
+
+    See Also
+    --------
+
+    Notes
+    -----
+
+    Examples
+    --------
+    track_blocks(fl, ch_grp_size=4, maxqual=3, corr_fact=0.97,
+                 lsaveneuron=0, lsavefig=0)
+
+    '''
+
+    if lsavefig:
+        plt.rcParams.update({'font.size': 4})
+        plt.rcParams['axes.spines.left'] = False
+        plt.rcParams['axes.spines.right'] = False
+        plt.rcParams['axes.spines.top'] = False
+        plt.rcParams['axes.spines.bottom'] = False
+
+    print("File list ", fl)
+    for fl_idx in range(len(fl)-1):
+        print("Loading neurons")
+        neurons1 = None
+        neurons2 = None
+        print("fl[fl_idx] ", fl[fl_idx])
+        print("fl[fl_idx+1] ", fl[fl_idx+1])
+        neurons1 = np.load(fl[fl_idx], allow_pickle=True)
+        neurons2 = np.load(fl[fl_idx+1], allow_pickle=True)
+
+        print("Filtering neurons")
+        wf_e =\
+            [np.append(np.mean(neuron.wf_b, axis=1),
+             [int(neuron.peak_channel), int(neuron.clust_idx)])
+             for neuron in neurons1 if int(neuron.quality) <= maxqual]
+        wf_e = np.asarray(wf_e).T
+        # wf_e_l = [neuron.clust_idx
+        #           for neuron in neurons1 if neuron.quality < 3]
+        print("sh neurons1 ", len(neurons1), " sh wf_e ", wf_e.shape)
+
+        wf_b =\
+            [np.append(np.mean(neuron2.wf_b, axis=1),
+             [int(neuron2.peak_channel), int(neuron2.clust_idx)])
+             for neuron2 in neurons2 if int(neuron2.quality) <= maxqual]
+        wf_b = np.asarray(wf_b).T
+        print("sh neurons2 ", len(neurons2), " sh wf_b ", wf_b.shape)
+        # wf_b_l = [neuron.clust_idx for neuron in neurons2 if
+        #           neuron.quality < 3]
+        # print("sh wf_b ", wf_b.shape)
+        # print("sh wf_b0 ", wf_b[0,:].shape)
+        # print("sh wf_b1 ", wf_b[:,0].shape)
+        # print("sh wf_e ", wf_e.shape)
+        # print("sh wf_e0 ", wf_e[0,:].shape)
+        # print("sh wf_e1 ", wf_e[:,0].shape)
+        # wf_b_mean = np.mean(wf_b, axis=0)
+        dist_list = np.zeros((wf_b.shape[1], wf_e.shape[1]))
+        for j in range(wf_b.shape[1]):
+            for i in range(wf_e.shape[1]):
+                # print(" ", i, " j ", j)
+                ch_i = wf_e[-2, i]
+                # if wf_b[-2, j] in np.arange(ch_i -(ch_i%ch_grp_size), ch_i +
+                # (ch_grp_size - (ch_i%ch_grp_size))):
+                # print("ch_i ", ch_i)
+                dist_list[j, i] = \
+                    euclidean_distance(wf_e[:, i],
+                                       wf_b[:, j],
+                                       np.arange(ch_i -
+                                                 (ch_i % ch_grp_size),
+                                                 ch_i +
+                                                 (ch_grp_size -
+                                                  (ch_i % ch_grp_size))),
+                                       corr_fact=corr_fact)
+
+        # print("dist_list ", dist_list)
+        X = np.asarray(dist_list)
+        # print("X ", X)
+        # print("X ", np.int32(X))
+        # print("sh X ", X.shape)
+
+        keys = np.argmin(X, axis=0)
+        # print("keys ", keys)
+        # print("sh keys ", keys.shape)
+        # print(np.where(np.asarray(keys) >0))
+        K = np.where(np.asarray(keys) > 0)[0]
+
+        # check Key is unique
+        _, K_counts = np.unique(K, return_counts=True)
+        if (len(np.where(K_counts > 1)[0]) == 0):
+            print("unique")
+        else:
+            print("not unique")
+            raise RuntimeError('Not unique')
+
+        V = keys[K]
+        K1 = []
+        V1 = []
+        for k_i, v_i in zip(K, V):
+            # print(neurons1[k_i].clust_idx, " ", neurons2[v_i].clust_idx,
+            #       " q ", neurons1[k_i].quality, " ", neurons2[v_i].quality)
+            # print("check ", wf_e[-1:, k_i], " ", wf_b[-1:, v_i])
+            K1.extend(wf_e[-1:, k_i])
+            V1.extend(wf_b[-1:, v_i])
+
+        print(K, V)
+        # print(K1, V1)
+        # K = K1.copy()
+        # V = V1.copy()
+        K = np.array(K1, dtype="int")
+        V = np.array(V1, dtype="int")
+        print("Keys")
+        print(K)
+        print(V)
+        plt.figure(fl_idx + 1, figsize=(20, 20))
+        # print("key_order ", key_order)
+        key_order = None
+        key_order = []
+        for ind, i in enumerate(K):
+            plt.subplot(np.ceil(np.sqrt(len(K))),
+                        np.ceil(np.sqrt(len(K))), ind+1)
+            c1 = [cell for cell in neurons1 if cell.clust_idx == int(K[ind])]
+            c2 = [cell for cell in neurons2 if cell.clust_idx == int(V[ind])]
+            # plt.plot(neurons1[i].waveform)
+            plt.plot(c1[0].waveform)
+            # plt.plot(neurons2[V[ind]].waveform,
+            #          label=str("ch " +
+            #                    str(neurons1[i].peak_channel) +
+            #                    " " +
+            #                    str(neurons2[V[ind]].peak_channel) +
+            #                    " id " +
+            #                    str(neurons1[i].clust_idx) +
+            #                    " " +
+            #                    str(neurons2[V[ind]].clust_idx) +
+            #                    " q " +
+            #                    str(neurons1[i].quality) +
+            #                    " " +
+            #                    str(neurons2[V[ind]].quality)))
+            plt.plot(c2[0].waveform,
+                     label=str("c " +
+                               str(c1[0].peak_channel) +
+                               " " +
+                               str(c2[0].peak_channel) +
+                               "\ni " +
+                               str(c1[0].clust_idx) +
+                               " " +
+                               str(c2[0].clust_idx) +
+                               "\nq " +
+                               str(c1[0].quality) +
+                               " " +
+                               str(c2[0].quality)))
+
+            # key_order.append([neurons1[i].clust_idx,
+            #                   neurons2[V[ind]].clust_idx,
+            #                   str(fl[fl_idx+1])])
+            key_order.append([c1[0].clust_idx, c2[0].clust_idx,
+                              str(fl[fl_idx+1])])
+            # plt.plot(neuron.waveform,
+            #          label=str(str(neuron.peak_channel) +
+            #                    " " +
+            #                    str(neuron.clust_idx)))
+            # if ind == 0:
+            #     plt.title("block " + str(fl_indx + 1))
+            # # plt.legend(frameon=False, loc='best', prop={'size': 2})
+            # plt.legend(frameon=False,
+            #            loc='lower right', prop={'size': 4,
+            #                                     'weight':'bold'})
+            plt.legend(frameon=False, loc='best', prop={'size': 6,
+                                                        'weight': 'bold'})
+            plt.xticks([])
+            # # plt.yticks([])
+            plt.xlabel("")
+            # plt.box(False)
+        # print("nnnnnn ", op.splitext(fl[fl_idx]))
+        # np.save(op.splitext(fl[fl_idx])[0] + "_" + str(fl_idx) +
+        # "_new" + ".npy", np.asarray(key_order))
+
+        # Add keys
+        for i in neurons1:
+            for k in key_order:
+                # print(k[0], i.clust_idx)
+                if int(i.clust_idx) == int(k[0]):
+                    print("i.clust_idx ", i.clust_idx, " k[0] ", k[0])
+                    i.key = k
+        if lsaveneuron:
+            np.save(op.splitext(fl[fl_idx])[0] + "_withkeys.npy", neurons1)
+        if lsavefig:
+            # plt.savefig(op.splitext(fl[fl_idx])[0] + "_withkeys.png",
+            #             bbox_inches='tight',pad_inches=-1)
+            plt.savefig(op.splitext(fl[fl_idx])[0] + "_withkeys.png",
+                        pad_inches=-1)
+
+    # print("key_order ", key_order)
+    if not lsavefig:
+        plt.show()
+
+
 def wf_sim(wf1, wf2, ltype=1):
 
     '''
