@@ -329,6 +329,18 @@ br1, br2, acc1, acc2 = mbt.n_branching_ratio(neuron_list, ava_binsz=0.004,
                                 plotname='/home/kbn/hhh.png')
 print("Branching ratio ", br, " pearson corr ", acc, flush=True)
 
+
+# find keys
+import numpy as np
+import glob
+import musclebeachtools as mbt
+
+npath = '/media/kbn/results/'
+fl = np.sort(glob.glob(npath + '*neurons_group0.npy'))
+for indx, fl_file in enumerate(fl):
+    print("indx ", indx, " ", fl_file)
+mbt.track_blocks(fl, ch_grp_size=4, maxqual=3, corr_fact=0.97, lsaveneuron=1, lsavefig=1)
+
 ```
 ---
 ## FAQ
