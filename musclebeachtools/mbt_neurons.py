@@ -493,6 +493,7 @@ def track_blocks(fl, ch_grp_size=4, maxqual=3, corr_fact=0.97,
     # print("key_order ", key_order)
     if not lsavefig:
         plt.show()
+    plt.clf()
 
 
 def wf_sim(wf1, wf2, ltype=1):
