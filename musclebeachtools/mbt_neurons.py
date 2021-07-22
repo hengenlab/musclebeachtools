@@ -3516,9 +3516,15 @@ def n_spiketimes_to_spikewords(neuron_list, binsz=0.02,
         spikewords_array[i, :] = counts
 
     if binarize == 1:
-        return(spikewords_array.astype(np.int8))
+        if (spikewords_array < 128).all():
+            return(spikewords_array.astype(np.int8))
+        else:
+            return(spikewords_array.astype(np.int32))
     elif binarize == 0:
-        return(spikewords_array.astype(np.int32))
+        if (spikewords_array < 2147483647).all():
+            return(spikewords_array.astype(np.int32))
+        else:
+            return(spikewords_array.astype(np.int64))
 
 
 def n_branching_ratio(neuron_list, ava_binsz=0.004,
