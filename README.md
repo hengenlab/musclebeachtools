@@ -13,7 +13,8 @@ git clone https://github.com/hengenlab/musclebeachtools_hlab.git
 ```
 ### Using pip
 ```
-cd locationofmusclebeachtools_hlab/musclebeachtools/  
+cd locationofmusclebeachtools_hlab/musclebeachtools_hlab/  
+For example /home/kbn/git/musclebeachtools_hlab  
 pip install .
 
 # In Linux and windows
