@@ -84,10 +84,7 @@ import numpy as np
 import musclebeachtools as mbt
 
 n = np.load('neurons_group0.npy', allow_pickle=True)
-n_amp = mbt.load_spike_amplitudes(n, '/home/kbn/amplitudes0.npy')
 
-# For 4th neuron, by neuron.clust_idx
-n_amp[4].spike_amplitude
 ```
 
 #### Usage of properties and functions
@@ -342,6 +339,9 @@ for indx, fl_file in enumerate(fl):
     print("indx ", indx, " ", fl_file)
 mbt.track_blocks(fl, ch_grp_size=4, maxqual=3, corr_fact=0.97, lsaveneuron=1, lsavefig=1)
 
+# For 4th neuron, by neuron.clust_idx (old)
+n_amp = mbt.load_spike_amplitudes(n, '/home/kbn/amplitudes0.npy')
+n_amp[4].spike_amplitude
 ```
 ---
 ## FAQ
