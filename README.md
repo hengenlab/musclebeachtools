@@ -304,6 +304,27 @@ nnew[0].expt_cond
 # Filter neuron list by quality
 neuron_list_filt = mbt.n_filt_quality(neuron_list, maxqual=[1, 2])
 
+
+# Add neurons
+import numpy as np
+import musclebeachtools as mbt
+
+neurons = np.load('neuron_add.npy', allow_pickle=True)
+
+new_neuron = neurons[51] + neurons[61]
+neurons[51].checkqual()
+neurons[61].checkqual()
+new_neuron.checkqual()
+
+# if you agree merge is right
+print("Length ", len(neurons))
+# delete neurons used to merge
+neurons = np.delete(neurons, [51, 61])
+print("Length ", len(neurons))
+# add merged new merged neuron
+neurons = np.append(neurons, new_neuron)
+print("Length ", len(neurons))
+
 # branching ratio from Viola Priesemann
 import numpy as np
 import musclebeachtools as mbt
