@@ -802,6 +802,130 @@ class Neuron:
                 self.species, self.sex,
                 self.clust_idx, self.quality, self.peak_channel)
 
+    def __add__(self, new):
+        # def __init__(self, sp_c, sp_t, qual, mwf, mwfs, max_channel,
+        #              fs=25000, start_time=0, end_time=12 * 60 * 60,
+        #              mwft=None,
+        #              sex=None, birthday=None, species=None,
+        #              animal_name=None,
+        #              genotype=None,
+        #              expt_cond=None,
+        #              on_time=None, off_time=None,
+        #              rstart_time=None, rend_time=None,
+        #              estart_time=None, eend_time=None,
+        #              sp_amp=None,
+        #              region_loc=None,
+        #              wf_b=None, wf_e=None,
+        #              key=None,
+        #              qual_prob=None):
+
+        self_dict = self.__dict__
+        new_dict = new.__dict__
+        # ik  clust_idx  jk  clust_idx
+        # ik  spike_time  jk  spike_time
+        # ik  quality  jk  quality
+        # ik  waveform  jk  waveform
+        # ik  waveforms  jk  waveforms
+        # ik  peak_channel  jk  peak_channel
+        # ik  fs  jk  fs
+        # ik  start_time  jk  start_time
+        # ik  end_time  jk  end_time
+        # ik  waveform_tetrodes  jk  waveform_tetrodes
+        # ik  on_times  jk  on_times
+        # ik  off_times  jk  off_times
+        # ik  rstart_time  jk  rstart_time
+        # ik  rend_time  jk  rend_time
+        # ik  estart_time  jk  estart_time
+        # ik  eend_time  jk  eend_time
+        # ik  spike_amplitude  jk  spike_amplitude
+        # ik  wf_b  jk  wf_b
+        # ik  wf_e  jk  wf_e
+        # ik  key  jk  key
+        # ik  qual_prob  jk  qual_prob
+        # ik  cell_type  jk  cell_type
+        # ik  mean_amplitude  jk  mean_amplitude
+        for ik, iv, jk, jv in zip(self_dict.keys(), self_dict.values(),
+                                  new_dict.keys(), new_dict.values()):
+            if ik == jk:
+                print("ik ", ik, " jk ", jk)
+                if ik == "clust_idx":
+                    new_clust_idx = np.array([10000 + iv])
+                    print(np.int16(new_clust_idx)[0])
+                    print("new_clust_idx ", new_clust_idx)
+                elif ik == "spike_time":
+                    new_spike_time = np.concatenate((iv, jv), axis=0)
+                elif ik == "quality":
+                    new_quality = -1
+                elif ik == "waveform":
+                    new_waveform = list((np.asarray(iv) + np.asarray(jv)) / 2)
+                elif ik == "waveforms":
+                    new_waveforms = list((np.asarray(iv) + np.asarray(jv)) / 2)
+                elif ik == "peak_channel":
+                    new_peak_channel = np.array([iv])
+                elif ik == "fs":
+                    new_fs = iv
+                elif ik == "start_time":
+                    new_start_time = iv
+                elif ik == "end_time":
+                    new_end_time = iv
+                elif ik == "waveform_tetrodes":
+                    new_waveform_tetrodes = (np.asarray(iv) + np.asarray(jv))/2
+                elif ik == "on_times":
+                    new_on_times = iv
+                elif ik == "off_times":
+                    new_off_times = iv
+                elif ik == "rstart_time":
+                    new_rstart_time = iv
+                elif ik == "rend_time":
+                    new_rend_time = iv
+                elif ik == "estart_time":
+                    new_estart_time = iv
+                elif ik == "eend_time":
+                    new_eend_time = iv
+                elif ik == "spike_amplitude":
+                    new_spike_amplitude = np.concatenate((iv, jv), axis=0)
+                elif ik == "wf_b":
+                    # may be add them lets keep it with iv
+                    new_wf_b = iv
+                elif ik == "wf_e":
+                    # may be add them lets keep it with iv
+                    new_wf_e = iv
+                elif ik == "key":
+                    new_key = None
+                elif ik == "qual_prob":
+                    new_qual_prob = np.array([0.00, 0.00, 0.00, 0.00])
+
+        #        # def __init__(self, sp_c, sp_t, qual, mwf, mwfs, max_channel,
+        #              fs=25000, start_time=0, end_time=12 * 60 * 60,
+        #              mwft=None,
+        #              sex=None, birthday=None, species=None,
+        #              animal_name=None,
+        #              genotype=None,
+        #              expt_cond=None,
+        #              on_time=None, off_time=None,
+        #              rstart_time=None, rend_time=None,
+        #              estart_time=None, eend_time=None,
+        #              sp_amp=None,
+        #              region_loc=None,
+        #              wf_b=None, wf_e=None,
+        #              key=None,
+        #              qual_prob=None):
+        return Neuron(new_clust_idx, new_spike_time, new_quality,
+                      new_waveform, new_waveforms,
+                      new_peak_channel, fs=new_fs,
+                      start_time=new_start_time, end_time=new_end_time,
+                      mwft=new_waveform_tetrodes, sex=self.sex,
+                      birthday=self.birthday,
+                      species=self.species, animal_name=self.animal_name,
+                      genotype=self.genotype,
+                      expt_cond=self.expt_cond,
+                      on_time=new_on_times, off_time=new_off_times,
+                      rstart_time=new_rstart_time, rend_time=new_rend_time,
+                      estart_time=new_estart_time, eend_time=new_eend_time,
+                      sp_amp=new_spike_amplitude, region_loc=self.region,
+                      wf_b=new_wf_b, wf_e=new_wf_e, qual_prob=new_qual_prob,
+                      key=new_key)
+
     def __find_celltypewithmeanamplitude(self):
         '''
         Calculate cell type from mean waveform and mean amplitude
