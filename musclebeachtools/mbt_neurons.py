@@ -1273,8 +1273,11 @@ class Neuron:
         --------
 
         '''
-        logger.info('Not implemented')
-        return self.behavior
+        # logger.info('Not implemented')
+        if np.array_equal(self.behavior, np.zeros((2, 6))) :
+                raise ValueError('behavior not added')
+        else:
+            return self.behavior
 
     def shuffle_times(self, shuffle_alg=1, time_offset=10):
         '''
