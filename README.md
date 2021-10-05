@@ -348,6 +348,29 @@ br1, br2, acc1, acc2 = mbt.n_branching_ratio(neuron_list, ava_binsz=0.004,
                                 plotname='/home/kbn/hhh.png')
 print("Branching ratio ", br, " pearson corr ", acc, flush=True)
 
+# To add behavior to neuron list
+import numpy as np
+import musclebeachtools as mbt
+neurons = np.load('H_2020-12-17_13-19-30_2020-12-18_01-14-32_neurons_group0.npy', allow_pickle=True)
+# mbt.n_update_behavior
+# neuron_list : List of neurons
+# behavior : behavior numpy array
+#            (behavior.ndim == 2 or behavior.shape[0] ==2)
+#            behavior must be numpy array with ndim==2
+#            otherwise raise ValueError
+#            behavior first dimension is time and second is state
+# Please remember to save neuron_list as file for future use
+# Returns
+# neuron_list : neuron lists with behavior
+mbt.n_update_behavior(neurons, np.random.random((2, 1000)))
+np.save('H_2020-12-17_13-19-30_2020-12-18_01-14-32_neurons_group0_withb.npy',neurons)
+# To get behavior
+import numpy as np
+import musclebeachtools as mbt
+neurons = np.load('H_2020-12-17_13-19-30_2020-12-18_01-14-32_neurons_group0_withb.npy', allow_pickle=True)
+neurons[0].get_behavior()
+# if behavior is not added using mbt.n_update_behavior it will raise error
+# ValueError: behavior not added
 
 # find keys
 import numpy as np
