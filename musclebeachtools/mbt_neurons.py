@@ -3348,6 +3348,8 @@ def n_update_behavior(neuron_list, behavior=None):
                (behavior.ndim == 2 or behavior.shape[0] ==2)
                behavior must be numpy array with ndim==2
                otherwise raise ValueError
+               Array behavior's first dimension is time and
+               second is sleep states
 
     Returns
     -------
