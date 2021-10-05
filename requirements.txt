@@ -7,3 +7,5 @@ joblib
 scipy
 sklearn
 xgboost
+mrestimator@git+https://github.com/Priesemann-Group/mrestimator.git
+neuraltoolkit@git+https://github.com/hengenlab/neuraltoolkit.git
