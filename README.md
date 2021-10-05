@@ -362,7 +362,8 @@ neurons = np.load('H_2020-12-17_13-19-30_2020-12-18_01-14-32_neurons_group0.npy'
 # Please remember to save neuron_list as file for future use
 # Returns
 # neuron_list : neuron lists with behavior
-mbt.n_update_behavior(neurons, np.random.random((2, 1000)))
+behavior = np.load('Sleepstates.npy')
+mbt.n_update_behavior(neurons, behavior)
 np.save('H_2020-12-17_13-19-30_2020-12-18_01-14-32_neurons_group0_withb.npy',neurons)
 # To get behavior
 import numpy as np
