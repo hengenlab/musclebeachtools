@@ -346,7 +346,7 @@ br1, br2, acc1, acc2 = mbt.n_branching_ratio(neuron_list, ava_binsz=0.004,
                                 start=0, end=2,
                                 binarize=1,
                                 plotname='/home/kbn/hhh.png')
-print("Branching ratio ", br, " pearson corr ", acc, flush=True)
+print("Branching ratio ", br1, " pearson corr ", acc1, flush=True)
 
 # To add behavior to neuron list
 import numpy as np
