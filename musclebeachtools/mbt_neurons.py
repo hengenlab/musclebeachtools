@@ -3411,7 +3411,7 @@ def n_filt_quality(neuron_list, maxqual=None):
 
     Returns
     -------
-    neuron_list : filtered by quality in maxqual
+    neuron_list : filtered by quality in maxqual, numpy array
 
     Raises
     ------
@@ -3433,6 +3433,8 @@ def n_filt_quality(neuron_list, maxqual=None):
     # check neuron_list is not empty
     if (len(neuron_list) == 0):
         raise ValueError('Neuron list is empty')
+    if type(neuron_list) == list:
+        neuron_list = np.asarray(neuron_list)
 
     if maxqual is None:
         maxqual = [1, 2, 3, 4]
