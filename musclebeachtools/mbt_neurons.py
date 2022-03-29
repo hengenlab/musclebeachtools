@@ -1998,10 +1998,21 @@ class Neuron:
                     .format(self.clust_idx, self.quality))
 
     def set_onofftimes(self):
-        '''GUI based approach to setting on/off times for a neuron.
-                   Based on PLOT_SETONOFF_TIMES.PY. Function that allows a user to manually label times in which recordings should be considered "on" and "off" in a GUI based format. This program assumes that the user is loading a .npy file with multiple "neuron" class objects that should have fields for spike times, spike amplitudes, and cell quality. The user can either manually enter the file name and location or a GUI file selector will automatically pop up.
+        '''
+        GUI based approach to setting on/off times for a neuron.
+        Based on PLOT_SETONOFF_TIMES.PY. Function that allows a user to
+        manually label times in which recordings should be considered
+        "on" and "off" in a GUI based format. This program assumes that
+        the user is loading a .npy file with multiple "neuron" class objects
+        that should have fields for spike times, spike amplitudes, and
+        cell quality. The user can either manually enter the file name
+        and location or a GUI file selector will automatically pop up.
 
-            NB: this is all very slow because it's built in matplotlib, but due to the necessity of matplotlib on everyone's machines, this should run without much trouble on almost any system within the lab. '''
+        NB: this is all very slow because it's built in matplotlib,
+        but due to the necessity of matplotlib on everyone's machines,
+        this should run without much trouble on almost any system
+        within the lab.
+        '''
         import seaborn as sns
         # KIRAN we need to test this function.
         plt.ion()
@@ -2021,16 +2032,16 @@ class Neuron:
             ylims1 = subp1.get_ylim()
 
             if tag == 'on':
-                subp.vlines(ix, ylims[0], ylims[1], colors = 'xkcd:seafoam' )
-                subp1.vlines(ix, ylims1[0], ylims1[1], colors = 'xkcd:seafoam' )
+                subp.vlines(ix, ylims[0], ylims[1], colors='xkcd:seafoam')
+                subp1.vlines(ix, ylims1[0], ylims1[1], colors='xkcd:seafoam')
                 #plt.pause(0.01)
                 sp_t.append([ix,1])
                 tag = np.NaN
                 tag_event()
 
             elif tag == 'off':
-                subp.vlines(ix, ylims[0], ylims[1], colors = 'xkcd:vermillion' )
-                subp1.vlines(ix, ylims1[0], ylims1[1], colors = 'xkcd:vermillion' )
+                subp.vlines(ix, ylims[0], ylims[1], colors='xkcd:vermillion')
+                subp1.vlines(ix, ylims1[0], ylims1[1], colors='xkcd:vermillion')
                 #plt.pause(0.01)
                 sp_t.append([ix,0])
                 tag = np.NaN
@@ -2043,21 +2054,21 @@ class Neuron:
             global nidx, subp, ky, tag#, cid1, cid2
             ky = event.key
 
-            if ky =='0':
+            if ky == '0':
                 tag = 'off'
                 tag_event()
                 # set off time
 
-            elif ky=='1':
+            elif ky == '1':
                 tag = 'on'
                 tag_event()
             #     # set on time
 
-            elif ky=='z':
+            elif ky == 'z':
                 tag = 'del'
                 tag_event()
 
-            elif ky=='d':
+            elif ky == 'd':
                 # This button will save the indicated on/off times to the applicable neurons
                 savefunc()
 
@@ -2129,11 +2140,15 @@ class Neuron:
                 # pull ylims for the FR plot
                 ylims1 = subp1.get_ylim()
                 # add the lines to the amplitude plot
-                subp.vlines(oots[tempons,0], ylims[0], ylims[1], colors = 'xkcd:seafoam' )
-                subp1.vlines(oots[tempons,0], ylims1[0], ylims1[1], colors = 'xkcd:seafoam' )
+                subp.vlines(oots[tempons,0], ylims[0], ylims[1],
+                            colors='xkcd:seafoam')
+                subp1.vlines(oots[tempons,0], ylims1[0], ylims1[1],
+                             colors='xkcd:seafoam')
                 # and add the same x vals to the FR plot with the proper ylims
-                subp.vlines(oots[tempoffs,0], ylims[0], ylims[1], colors = 'xkcd:vermillion' )
-                subp1.vlines(oots[tempoffs,0], ylims1[0], ylims1[1], colors = 'xkcd:vermillion' )
+                subp.vlines(oots[tempoffs,0], ylims[0], ylims[1],
+                            colors='xkcd:vermillion')
+                subp1.vlines(oots[tempoffs,0], ylims1[0], ylims1[1],
+                             colors='xkcd:vermillion')
             else:
                 pass
 
@@ -2146,7 +2161,7 @@ class Neuron:
         fig.canvas.mpl_connect('button_press_event', onclick)
         gs = fig.add_gridspec(2, 1)
         subp = fig.add_subplot(gs[0, 0])
-        subp1 = fig.add_subplot(gs[1, 0], sharex = subp)
+        subp1 = fig.add_subplot(gs[1, 0], sharex=subp)
 
         # Call the initial plotting:
         plotcell(self)
@@ -2689,7 +2704,7 @@ def autoqual(neuron_list, model_file,
             1 +           # wf E                93 : 93
             1 +           # cell type           94 : 94
             1 +           # mean amp            95 : 95
-            75+           # nWF                 96 : 169
+            75 +          # nWF                 96 : 169
             75)           # WF                  170 : 244
     neuron_features = np.zeros((len(neuron_list), nfet))
     neuron_qual = np.zeros((len(neuron_list)), dtype='int8')
@@ -2747,7 +2762,7 @@ def autoqual(neuron_list, model_file,
         for contamin_idx in range(5):
             tmp_fet = None
             if ldebug:
-                print("contamination_lines[",contamin_idx,"] ",
+                print("contamination_lines[", contamin_idx, "] ",
                       contamination_lines[contamin_idx])
             tmp_fet = None
             # print("contamination_lines[",contamin_idx,"] ",
@@ -3035,7 +3050,7 @@ def autoqual(neuron_list, model_file,
         fet_idx = fet_idx + tmp_fet.shape[0]
         # print("idx amp ", idx)
         # print("fet_idx ", fet_idx)
-        ## print(neuron_features[idx, :])
+        # print(neuron_features[idx, :])
         namp_s_bin = None
         namp_s_bin_values = None
         time_s_amp_idx_bin_tmp = None
@@ -3241,7 +3256,7 @@ def autoqual(neuron_list, model_file,
         if ldebug:
             print("fet_idx ", fet_idx)
             print("norm wf ", tmp_fet)
-        #sys.exit()
+        # sys.exit()
         tmp_fet_wf = None
         # print("fet_idx ", fet_idx)
         # print("idx wf ", idx)
