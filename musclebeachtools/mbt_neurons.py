@@ -1998,12 +1998,12 @@ class Neuron:
                     .format(self.clust_idx, self.quality))
 
     def set_onofftimes(self):
-        '''GUI based approach to setting on/off times for a neuron. 
-                   Based on PLOT_SETONOFF_TIMES.PY. Function that allows a user to manually label times in which recordings should be considered "on" and "off" in a GUI based format. This program assumes that the user is loading a .npy file with multiple "neuron" class objects that should have fields for spike times, spike amplitudes, and cell quality. The user can either manually enter the file name and location or a GUI file selector will automatically pop up. 
+        '''GUI based approach to setting on/off times for a neuron.
+                   Based on PLOT_SETONOFF_TIMES.PY. Function that allows a user to manually label times in which recordings should be considered "on" and "off" in a GUI based format. This program assumes that the user is loading a .npy file with multiple "neuron" class objects that should have fields for spike times, spike amplitudes, and cell quality. The user can either manually enter the file name and location or a GUI file selector will automatically pop up.
 
-            NB: this is all very slow because it's built in matplotlib, but due to the necessity of matplotlib on everyone's machines, this should run without much trouble on almost any system within the lab. ''' 
+            NB: this is all very slow because it's built in matplotlib, but due to the necessity of matplotlib on everyone's machines, this should run without much trouble on almost any system within the lab. '''
         import seaborn as sns
-        # KIRAN we need to test this function. 
+        # KIRAN we need to test this function.
         plt.ion()
         global nidx, subp, subp1, tag#, cid1, cid2
         nidx = 0 # This will index the selected neurons from tcells
@@ -2037,7 +2037,7 @@ class Neuron:
                 tag_event()
 
         def press(event):
-            # Respond to the user's keyboard input. User can select right or left keys to advance/retreat through the individual neurons that meet the initial filtering criteria. User can also press 1 to indicate ON time and 0 to indicate OFF time. Pressing 0 or 1 will then make the code "listen" for a mouse input that is used to log the on/off timestamp. Alternatively, the user can press "z" to delete the most recent time input (mouse click). 
+            # Respond to the user's keyboard input. User can select right or left keys to advance/retreat through the individual neurons that meet the initial filtering criteria. User can also press 1 to indicate ON time and 0 to indicate OFF time. Pressing 0 or 1 will then make the code "listen" for a mouse input that is used to log the on/off timestamp. Alternatively, the user can press "z" to delete the most recent time input (mouse click).
             sys.stdout.flush()
 
             global nidx, subp, ky, tag#, cid1, cid2
@@ -2052,7 +2052,7 @@ class Neuron:
                 tag = 'on'
                 tag_event()
             #     # set on time
-                
+
             elif ky=='z':
                 tag = 'del'
                 tag_event()
@@ -2084,14 +2084,14 @@ class Neuron:
             elif np.isnan(tag):
                 top_title.update({'text':'Ready to continue.'})
                 plt.pause(0.01)
-                
+
         def plotcell(neuron):
-            # Core plotting code to show two subplots. Top subplot is amplitude versus time, and the bottom is firing rate versus time. If there are on/off times, this will also process those and display them accordingly. 
+            # Core plotting code to show two subplots. Top subplot is amplitude versus time, and the bottom is firing rate versus time. If there are on/off times, this will also process those and display them accordingly.
 
             # Amplitudes subplot:
             meanamp = np.mean(neuron.spike_amplitude)
             stdevamp = np.std(neuron.spike_amplitude)
-            
+
             subp.scatter(neuron.spike_time_sec/3600, neuron.spike_amplitude, color = (0.5,0.5,0.5), marker = '.', alpha = 0.075)
             # set reasonable x and y lims for display. y min is 3rd percentile and max is 5 std
             subp.set_ylim(np.percentile(neuron.spike_amplitude, 3), meanamp+4*stdevamp)
@@ -2107,7 +2107,7 @@ class Neuron:
             subp.set_ylabel('Amplitude (uV)')
             sns.despine()
             #plt.draw()
-            
+
             # Firing rate subplot:
             t0 = neuron.spike_time_sec[0] / 3600
             t1 = neuron.spike_time_sec[-1] / 3600
@@ -2115,7 +2115,7 @@ class Neuron:
             edges = np.arange(t0,t1, step / 3600)
             fr = np.histogram(neuron.spike_time_sec/3600, edges)
             subp1.plot(fr[1][0:-1],fr[0]/step, color = 'xkcd:periwinkle', linewidth = 3)
-            subp1.set_ylim(0, np.ceil( (np.max (fr[0])/step )*1.05) )  # Set the limits so they stop drifting when adding vertical lines. 
+            subp1.set_ylim(0, np.ceil( (np.max (fr[0])/step )*1.05) )  # Set the limits so they stop drifting when adding vertical lines.
             subp1.set_xlabel('Time (hours)')
             subp1.set_ylabel('Firing Rate (Hz)')
             sns.despine()
@@ -2855,7 +2855,7 @@ def autoqual(neuron_list, model_file,
         # print("fet_idx ", fet_idx)
         # print(neuron_features[idx, :])
         if ldebug:
-            print("presence ratio 1001 ", tmp_fet) 
+            print("presence ratio 1001 ", tmp_fet)
         # 2001
         tmp_fet = None
         tmp_fet = np.array([i.presence_ratio(nbins=2001)])
@@ -2868,7 +2868,7 @@ def autoqual(neuron_list, model_file,
         # print("fet_idx ", fet_idx)
         # print(neuron_features[idx, :])
         if ldebug:
-            print("presence ratio 2001 ", tmp_fet) 
+            print("presence ratio 2001 ", tmp_fet)
         # 3001
         tmp_fet = None
         tmp_fet = np.array([i.presence_ratio(nbins=3001)])
@@ -2881,7 +2881,7 @@ def autoqual(neuron_list, model_file,
         # print("fet_idx ", fet_idx)
         # print(neuron_features[idx, :])
         if ldebug:
-            print("presence ratio 3001 ", tmp_fet) 
+            print("presence ratio 3001 ", tmp_fet)
         # 4001
         tmp_fet = None
         tmp_fet = np.array([i.presence_ratio(nbins=4001)])
@@ -2894,7 +2894,7 @@ def autoqual(neuron_list, model_file,
         # print("fet_idx ", fet_idx)
         # print(neuron_features[idx, :])
         if ldebug:
-            print("presence ratio 4001 ", tmp_fet) 
+            print("presence ratio 4001 ", tmp_fet)
         # 5001
         tmp_fet = None
         tmp_fet = np.array([i.presence_ratio(nbins=5001)])
@@ -2907,7 +2907,7 @@ def autoqual(neuron_list, model_file,
         # print("fet_idx ", fet_idx)
         # print(neuron_features[idx, :])
         if ldebug:
-            print("presence ratio 5001 ", tmp_fet) 
+            print("presence ratio 5001 ", tmp_fet)
         # 6001
         tmp_fet = None
         tmp_fet = np.array([i.presence_ratio(nbins=6001)])
@@ -2920,7 +2920,7 @@ def autoqual(neuron_list, model_file,
         # print("fet_idx ", fet_idx)
         # print(neuron_features[idx, :])
         if ldebug:
-            print("presence ratio 6001 ", tmp_fet) 
+            print("presence ratio 6001 ", tmp_fet)
         # 7001
         tmp_fet = None
         tmp_fet = np.array([i.presence_ratio(nbins=7001)])
@@ -2933,7 +2933,7 @@ def autoqual(neuron_list, model_file,
         # print("fet_idx ", fet_idx)
         # print(neuron_features[idx, :])
         if ldebug:
-            print("presence ratio 7001 ", tmp_fet) 
+            print("presence ratio 7001 ", tmp_fet)
         # 8001
         tmp_fet = None
         tmp_fet = np.array([i.presence_ratio(nbins=8001)])
@@ -2946,7 +2946,7 @@ def autoqual(neuron_list, model_file,
         # print("fet_idx ", fet_idx)
         # print(neuron_features[idx, :])
         if ldebug:
-            print("presence ratio 8001 ", tmp_fet) 
+            print("presence ratio 8001 ", tmp_fet)
         # 9001
         tmp_fet = None
         tmp_fet = np.array([i.presence_ratio(nbins=9001)])
@@ -2959,7 +2959,7 @@ def autoqual(neuron_list, model_file,
         # print("fet_idx ", fet_idx)
         # print(neuron_features[idx, :])
         if ldebug:
-            print("presence ratio 9001 ", tmp_fet) 
+            print("presence ratio 9001 ", tmp_fet)
         # 10001
         tmp_fet = None
         tmp_fet = np.array([i.presence_ratio(nbins=10001)])
@@ -2972,7 +2972,7 @@ def autoqual(neuron_list, model_file,
         # print("fet_idx ", fet_idx)
         # print(neuron_features[idx, :])
         if ldebug:
-            print("presence ratio 10001 ", tmp_fet) 
+            print("presence ratio 10001 ", tmp_fet)
 
         # Amplitude mean, std, median, min, max, kurtosis, skew
         tmp_fet = None
