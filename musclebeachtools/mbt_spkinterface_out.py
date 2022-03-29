@@ -1,10 +1,10 @@
-import numpy as np
-from musclebeachtools import mbt_neurons as mb
-import neuraltoolkit as ntk
 import glob
 import os
 import os.path as op
 import pickle
+import numpy as np
+import neuraltoolkit as ntk
+from musclebeachtools import mbt_neurons as mb
 
 
 def siout(sorted_data, noflylist, rec_time,
@@ -153,7 +153,8 @@ def siout(sorted_data, noflylist, rec_time,
                                          sp_amp=amps[unit_idx],
                                          wf_b=np.asarray(wf_b[unit_idx]).T,
                                          wf_e=np.asarray(wf_e[unit_idx]).T,
-                                         sex=sex, birthday=birthday, species=species,
+                                         sex=sex, birthday=birthday,
+                                         species=species,
                                          animal_name=animal_name,
                                          region_loc=region_loc,
                                          genotype=genotype,
@@ -174,7 +175,8 @@ def siout(sorted_data, noflylist, rec_time,
                                          eend_time=np.int64(ecube_time_list
                                                             [1]),
                                          sp_amp=amps[unit_idx],
-                                         sex=sex, birthday=birthday, species=species,
+                                         sex=sex, birthday=birthday,
+                                         species=species,
                                          animal_name=animal_name,
                                          region_loc=region_loc,
                                          genotype=genotype,
@@ -241,13 +243,14 @@ def siout(sorted_data, noflylist, rec_time,
     return n
 
 
-def mbt_spkinterface_out(clust_out_dir,
-                         model_file='/media/HlabShare/models/xgboost_autoqual_prob',
-                         sex=None, birthday=None, species=None,
-                         animal_name=None,
-                         region_loc=None,
-                         genotype=None,
-                         expt_cond=None):
+def mbt_spkinterface_out(
+     clust_out_dir,
+     model_file='/media/HlabShare/models/xgboost_autoqual_prob',
+     sex=None, birthday=None, species=None,
+     animal_name=None,
+     region_loc=None,
+     genotype=None,
+     expt_cond=None):
 
     '''
     Function loads spikeinterface output to neuron
