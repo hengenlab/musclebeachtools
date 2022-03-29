@@ -1274,8 +1274,8 @@ class Neuron:
 
         '''
         # logger.info('Not implemented')
-        if np.array_equal(self.behavior, np.zeros((2, 6))) :
-                raise ValueError('behavior not added')
+        if np.array_equal(self.behavior, np.zeros((2, 6))):
+            raise ValueError('behavior not added')
         else:
             return self.behavior
 
@@ -3733,8 +3733,10 @@ def n_branching_ratio(neuron_list, ava_binsz=0.004,
     Jens Wilting & Viola Priesemann
     and
     Nature Communications volume 9, Article number: 2325 (2018)
-    MR. Estimator, a toolbox to determine intrinsic timescales from subsampled spiking activity
-    F. P. Spitzner, J. Dehning, J. Wilting, A. Hagemann, J. P. Neto, J. Zierenberg, V. Priesemann
+    MR. Estimator, a toolbox to determine intrinsic timescales from subsampled
+    spiking activity
+    F. P. Spitzner, J. Dehning, J. Wilting, A. Hagemann, J. P. Neto,
+    J. Zierenberg, V. Priesemann
     https://arxiv.org/abs/2007.03367
 
     br1, br2, acc1, acc2=
@@ -3825,7 +3827,7 @@ def n_branching_ratio(neuron_list, ava_binsz=0.004,
                            method='trialseparated')
 
     fit1 = mre.fit(rks, fitfunc="complex")
-    fit2 = mre.fit(rks , fitfunc='exp_offset')
+    fit2 = mre.fit(rks, fitfunc='exp_offset')
     # print("method ", method, " br ", fit1.mre)
 
     if plotname is not None:
@@ -3843,11 +3845,11 @@ def n_branching_ratio(neuron_list, ava_binsz=0.004,
             plt.close()
 
     fit_acc1 = sc.stats.pearsonr(rks.coefficients,
-                                mre.f_complex(rks.steps*dt,
-                                              *fit1.popt))[0]
+                                 mre.f_complex(rks.steps*dt,
+                                               *fit1.popt))[0]
     fit_acc2 = sc.stats.pearsonr(rks.coefficients,
-                                mre.f_exponential_offset(rks.steps*dt,
-                                                         *fit2.popt))[0]
+                                 mre.f_exponential_offset(rks.steps*dt,
+                                                          *fit2.popt))[0]
     # print(sc.stats.pearsonr(rks.coefficients, rks.coefficients))
     # print(sc.stats.pearsonr(rks.coefficients, np.random.random(500)))
     return fit1.mre, fit2.mre, fit_acc1, fit_acc2
