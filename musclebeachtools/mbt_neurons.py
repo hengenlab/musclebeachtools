@@ -2035,15 +2035,16 @@ class Neuron:
                 subp.vlines(ix, ylims[0], ylims[1], colors='xkcd:seafoam')
                 subp1.vlines(ix, ylims1[0], ylims1[1], colors='xkcd:seafoam')
                 #plt.pause(0.01)
-                sp_t.append([ix,1])
+                sp_t.append([ix, 1])
                 tag = np.NaN
                 tag_event()
 
             elif tag == 'off':
                 subp.vlines(ix, ylims[0], ylims[1], colors='xkcd:vermillion')
-                subp1.vlines(ix, ylims1[0], ylims1[1], colors='xkcd:vermillion')
+                subp1.vlines(ix, ylims1[0], ylims1[1],
+                             colors='xkcd:vermillion')
                 #plt.pause(0.01)
-                sp_t.append([ix,0])
+                sp_t.append([ix, 0])
                 tag = np.NaN
                 tag_event()
 
@@ -2069,7 +2070,8 @@ class Neuron:
                 tag_event()
 
             elif ky == 'd':
-                # This button will save the indicated on/off times to the applicable neurons
+                # This button will save the indicated on/off times
+                # to the applicable neurons
                 savefunc()
 
         def savefunc():
@@ -2080,13 +2082,13 @@ class Neuron:
             # Change the sup title at the top of the window to reflect the user's recent selection. This is mostly to show the user that the code has registered their input, however, if the user has selected "z" (delete most recent time stamp), this will clear the last entry in the time stamp list and call the plotting code to refresh the data w/ timestamp deleted.
             global tag
 
-            if tag=='off':
+            if tag == 'off':
                 top_title.update({'text':'Click OFF time.'})
                 plt.pause(0.01)
-            elif tag=='on':
+            elif tag == 'on':
                 top_title.update({'text':'Click ON time.'})
                 plt.pause(0.01)
-            elif tag=='del':
+            elif tag == 'del':
                 del sp_t[-1]
                 subp.cla()
                 subp1.cla()
@@ -2103,51 +2105,58 @@ class Neuron:
             meanamp = np.mean(neuron.spike_amplitude)
             stdevamp = np.std(neuron.spike_amplitude)
 
-            subp.scatter(neuron.spike_time_sec/3600, neuron.spike_amplitude, color = (0.5,0.5,0.5), marker = '.', alpha = 0.075)
-            # set reasonable x and y lims for display. y min is 3rd percentile and max is 5 std
-            subp.set_ylim(np.percentile(neuron.spike_amplitude, 3), meanamp+4*stdevamp)
-            subp.set_xlim(np.floor(neuron.spike_time_sec[0]/3600), neuron.spike_time_sec[-1]/3600 )
+            subp.scatter(neuron.spike_time_sec/3600, neuron.spike_amplitude,
+                         color=(0.5, 0.5, 0.5), marker='.', alpha=0.075)
+            # set reasonable x and y lims for display.
+            # y min is 3rd percentile and max is 5 std
+            subp.set_ylim(np.percentile(neuron.spike_amplitude, 3),
+                          meanamp+4*stdevamp)
+            subp.set_xlim(np.floor(neuron.spike_time_sec[0]/3600),
+                          neuron.spike_time_sec[-1]/3600)
 
             xlims = subp.get_xlim()
             ylims = subp.get_ylim()
 
             txtx = xlims[0]+0.1*(xlims[1] - xlims[0])
             txty = ylims[0]+0.5*(ylims[1] - ylims[0])
-            subp.text(txtx,txty, f'cluster index: {neuron.clust_idx}')
+            subp.text(txtx, txty, f'cluster index: {neuron.clust_idx}')
             subp.set_xlabel('Time (hours)')
             subp.set_ylabel('Amplitude (uV)')
             sns.despine()
-            #plt.draw()
+            # plt.draw()
 
             # Firing rate subplot:
             t0 = neuron.spike_time_sec[0] / 3600
             t1 = neuron.spike_time_sec[-1] / 3600
             step = 120
-            edges = np.arange(t0,t1, step / 3600)
+            edges = np.arange(t0, t1, step / 3600)
             fr = np.histogram(neuron.spike_time_sec/3600, edges)
-            subp1.plot(fr[1][0:-1],fr[0]/step, color = 'xkcd:periwinkle', linewidth = 3)
-            subp1.set_ylim(0, np.ceil( (np.max (fr[0])/step )*1.05) )  # Set the limits so they stop drifting when adding vertical lines.
+            subp1.plot(fr[1][0:-1], fr[0]/step, color='xkcd:periwinkle',
+                       linewidth=3)
+            # Set the limits so they stop drifting when adding vertical lines.
+            subp1.set_ylim(0, np.ceil((np.max(fr[0])/step)*1.05))
             subp1.set_xlabel('Time (hours)')
             subp1.set_ylabel('Firing Rate (Hz)')
             sns.despine()
 
-            if np.size(sp_t)>0:
+            if np.size(sp_t) > 0:
                 # Add on/off lines if they exist
-                # take the list of on/off times and convert to an array for searching.
+                # take the list of on/off times and
+                # convert to an array for searching.
                 oots = np.stack(sp_t, axis=0)
-                tempons = np.squeeze(np.where(oots[:,1]==1))
-                tempoffs = np.squeeze(np.where(oots[:,1]==0))
+                tempons = np.squeeze(np.where(oots[:, 1] == 1))
+                tempoffs = np.squeeze(np.where(oots[:, 1] == 0))
                 # pull ylims for the FR plot
                 ylims1 = subp1.get_ylim()
                 # add the lines to the amplitude plot
-                subp.vlines(oots[tempons,0], ylims[0], ylims[1],
+                subp.vlines(oots[tempons, 0], ylims[0], ylims[1],
                             colors='xkcd:seafoam')
-                subp1.vlines(oots[tempons,0], ylims1[0], ylims1[1],
+                subp1.vlines(oots[tempons, 0], ylims1[0], ylims1[1],
                              colors='xkcd:seafoam')
                 # and add the same x vals to the FR plot with the proper ylims
-                subp.vlines(oots[tempoffs,0], ylims[0], ylims[1],
+                subp.vlines(oots[tempoffs, 0], ylims[0], ylims[1],
                             colors='xkcd:vermillion')
-                subp1.vlines(oots[tempoffs,0], ylims1[0], ylims1[1],
+                subp1.vlines(oots[tempoffs, 0], ylims1[0], ylims1[1],
                              colors='xkcd:vermillion')
             else:
                 pass
