@@ -2016,14 +2016,16 @@ class Neuron:
         import seaborn as sns
         # KIRAN we need to test this function.
         plt.ion()
-        global nidx, subp, subp1, tag#, cid1, cid2
-        nidx = 0 # This will index the selected neurons from tcells
+        global nidx, subp, subp1, tag  # , cid1, cid2
+        nidx = 0  # This will index the selected neurons from tcells
         tag = np.NaN
 
         sp_t = []
 
         def onclick(event):
-            # capture the x coordinate (time) of the user click input. This will only matter if the user has already made a keyboard press to indicate on or off time (1 or 0, respectively).
+            # capture the x coordinate (time) of the user click input.
+            # This will only matter if the user has already made a
+            # keyboard press to indicate on or off time (1 or 0, respectively).
             global ix, iy, tag
             ix, iy = event.xdata, event.ydata
             print("ix ", ix, " iy ", iy)
@@ -2034,7 +2036,7 @@ class Neuron:
             if tag == 'on':
                 subp.vlines(ix, ylims[0], ylims[1], colors='xkcd:seafoam')
                 subp1.vlines(ix, ylims1[0], ylims1[1], colors='xkcd:seafoam')
-                #plt.pause(0.01)
+                # plt.pause(0.01)
                 sp_t.append([ix, 1])
                 tag = np.NaN
                 tag_event()
@@ -2043,16 +2045,22 @@ class Neuron:
                 subp.vlines(ix, ylims[0], ylims[1], colors='xkcd:vermillion')
                 subp1.vlines(ix, ylims1[0], ylims1[1],
                              colors='xkcd:vermillion')
-                #plt.pause(0.01)
+                # plt.pause(0.01)
                 sp_t.append([ix, 0])
                 tag = np.NaN
                 tag_event()
 
         def press(event):
-            # Respond to the user's keyboard input. User can select right or left keys to advance/retreat through the individual neurons that meet the initial filtering criteria. User can also press 1 to indicate ON time and 0 to indicate OFF time. Pressing 0 or 1 will then make the code "listen" for a mouse input that is used to log the on/off timestamp. Alternatively, the user can press "z" to delete the most recent time input (mouse click).
+            # Respond to the user's keyboard input. User can select right or
+            # left keys to advance/retreat through the individual neurons that
+            # meet the initial filtering criteria. User can also press 1 to
+            # indicate ON time and 0 to indicate OFF time. Pressing 0 or 1 will
+            # then make the code "listen" for a mouse input that is used to log
+            # the on/off timestamp. Alternatively, the user can press "z" to
+            # delete the most recent time input (mouse click).
             sys.stdout.flush()
 
-            global nidx, subp, ky, tag#, cid1, cid2
+            global nidx, subp, ky, tag  # , cid1, cid2
             ky = event.key
 
             if ky == '0':
@@ -2075,11 +2083,20 @@ class Neuron:
                 savefunc()
 
         def savefunc():
-            # KIRAN - Does this work? Save func was a way to exit the program and save the data. In this case, the user should be able to enter a bunch of on off times and then press "D" to complete the process and exit the GUI with the new on/off times added to the base dataset
+            # KIRAN - Does this work? Save func was a way to exit the program
+            # and save the data. In this case, the user should be able to enter
+            # a bunch of on off times and then press "D" to complete the
+            # process and exit the GUI with the new on/off times added to the
+            # base dataset
             return (self)
 
         def tag_event():
-            # Change the sup title at the top of the window to reflect the user's recent selection. This is mostly to show the user that the code has registered their input, however, if the user has selected "z" (delete most recent time stamp), this will clear the last entry in the time stamp list and call the plotting code to refresh the data w/ timestamp deleted.
+            # Change the sup title at the top of the window to reflect the
+            # user's recent selection. This is mostly to show the user that the
+            # code has registered their input, however, if the user has
+            # selected "z" (delete most recent time stamp), this will clear the
+            # last entry in the time stamp list and call the plotting code to
+            # refresh the data w/ timestamp deleted.
             global tag
 
             if tag == 'off':
@@ -2099,7 +2116,10 @@ class Neuron:
                 plt.pause(0.01)
 
         def plotcell(neuron):
-            # Core plotting code to show two subplots. Top subplot is amplitude versus time, and the bottom is firing rate versus time. If there are on/off times, this will also process those and display them accordingly.
+            # Core plotting code to show two subplots. Top subplot is amplitude
+            # versus time, and the bottom is firing rate versus time. If there
+            # are on/off times, this will also process those and display them
+            # accordingly.
 
             # Amplitudes subplot:
             meanamp = np.mean(neuron.spike_amplitude)
