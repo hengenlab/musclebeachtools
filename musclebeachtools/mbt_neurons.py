@@ -3256,7 +3256,7 @@ def autoqual(neuron_list, model_file,
         neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
         # print("tmp_fet ", tmp_fet)
         fet_idx = fet_idx + tmp_fet.shape[0]
-        cell_type = None
+        # cell_type = None
         # print("idx wf type ", idx)
         # print("fet_idx ", fet_idx)
         # print(neuron_features[idx, :])
@@ -3269,7 +3269,7 @@ def autoqual(neuron_list, model_file,
         neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
         # print("tmp_fet ", tmp_fet)
         fet_idx = fet_idx + tmp_fet.shape[0]
-        mean_amplitude = None
+        # mean_amplitude = None
         # print("idx wf type ", idx)
         # print("fet_idx ", fet_idx)
         # print(neuron_features[idx, :])
@@ -3559,7 +3559,7 @@ def n_plot_neuron_wfs(neuron_list, maxqual=None,
 
     ind = 0
     # fig = plt.figure(constrained_layout=True, figsize=(7, 7))
-    fig = plt.figure(figsize=(14, 14))
+    plt.figure(figsize=(14, 14))
     for neuron in neuron_list:
         # if neuron.quality <= maxqual:
         if neuron.quality in maxqual:
