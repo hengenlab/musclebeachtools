@@ -2717,24 +2717,44 @@ def autoqual(neuron_list, model_file,
     # 1 Total Fr + 1 presence ratio +
     # 1  Energy + 1 peaks
     # 75 wf
-    #                                          1  2  3  4  5  6   7   8   9   10  11  12  13  14     15 : 15
-    nfet = (15 +          # isi contamination  1, 2, 3, 4, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90 and 100 ms
-            #                                   16 : 50
-            35 +          # contamination_lines 1,       2,       3,       4,   and 5 ms mean std median min max kur skw
-            1 +           # Peak latency        51 : 52
-            1 +           # Wf amplitude        53 : 53
-            1 +           # Total FR            54 : 54
-            10 +          # Presence ratio      55 : 64        101, 201, 301, 401, 501, 601, 701, 801, 901 and 1001
+    #                  1  2  3  4  5  6   7   8   9   10  11  12  13  14
+    #                     15 : 15
+    # isi contamination
+    #                  1, 2, 3, 4, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90 and
+    #                  100 ms
+    #                     16 : 50
+    # contamination_lines 1,       2,       3,       4,   and 5
+    #                     ms mean std median min max kur skw
+    # Peak latency        51 : 52
+    # Wf amplitude        53 : 53
+    # Total FR            54 : 54
+    # Presence ratio      55 : 64
+    #                     101, 201, 301, 401, 501, 601, 701, 801, 901 and 1001
+    # amplitude bin stats 65:71  mean std median min max kur skw
+    # amplitude stats     72:78 mean std median min max kur skw
+    # fr stats            79:85 mean std median min max kur skw
+    # wf stats            86:92 mean std median min max kur skw
+    # wf E                93 : 93
+    # cell type           94 : 94
+    # mean amp            95 : 95
+    # nWF                 96 : 169
+    # WF                  170 : 244
+    nfet = (15 +
+            35 +
+            1 +
+            1 +
+            1 +
+            10 +
             #
-            1 + 1 + 1 + 1 + 1 + 1 + 1 +   # amplitude bin stats 65:71  mean std median min max kur skw
-            1 + 1 + 1 + 1 + 1 + 1 + 1 +   # amplitude stats     72:78 mean std median min max kur skw
-            1 + 1 + 1 + 1 + 1 + 1 + 1 +   # fr stats            79:85 mean std median min max kur skw
-            1 + 1 + 1 + 1 + 1 + 1 + 1 +   # wf stats            86:92 mean std median min max kur skw
-            1 +           # wf E                93 : 93
-            1 +           # cell type           94 : 94
-            1 +           # mean amp            95 : 95
-            75 +          # nWF                 96 : 169
-            75)           # WF                  170 : 244
+            1 + 1 + 1 + 1 + 1 + 1 + 1 +
+            1 + 1 + 1 + 1 + 1 + 1 + 1 +
+            1 + 1 + 1 + 1 + 1 + 1 + 1 +
+            1 + 1 + 1 + 1 + 1 + 1 + 1 +
+            1 +
+            1 +
+            1 +
+            75 +
+            75)
     neuron_features = np.zeros((len(neuron_list), nfet))
     neuron_qual = np.zeros((len(neuron_list)), dtype='int8')
     neuron_indices = np.zeros((len(neuron_list)), dtype='int16')
