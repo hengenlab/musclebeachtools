@@ -1,13 +1,14 @@
 from setuptools import setup
+import subprocess
 
 with open("README.md", 'r') as f:
     long_description = f.read()
 
-import subprocess
 try:
     process = subprocess.check_output(['git', 'describe'], shell=False)
     __git_version__ = process.strip().decode('ascii')
 except Exception as e:
+    print(e)
     __git_version__ = 'unknown'
 print("__git_version__ ", __git_version__)
 try:
@@ -35,9 +36,10 @@ setup(
    url="https://github.com/hengenlab/musclebeachtools_hlab",
    download_url="https://github.com/hengenlab/musclebeachtools_hlab",
    packages=['musclebeachtools'],
-   install_requires=['ipython', 'numpy', 'matplotlib', 'seaborn', 'pandas',
-                     'joblib', 'scipy', 'sklearn',
-                     'mrestimator@git+https://github.com/Priesemann-Group/mrestimator.git'],
+   install_requires=[
+    'ipython', 'numpy', 'matplotlib', 'seaborn', 'pandas',
+    'joblib', 'scipy', 'sklearn',
+    'mrestimator@git+https://github.com/Priesemann-Group/mrestimator.git'],
    # not added as may be users have their own changes in neuraltoolkit
    # 'neuraltoolkit@git+https://github.com/hengenlab/neuraltoolkit.git'],
    classifiers=[
