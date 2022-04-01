@@ -2100,19 +2100,19 @@ class Neuron:
             global tag
 
             if tag == 'off':
-                top_title.update({'text':'Click OFF time.'})
+                top_title.update({'text': 'Click OFF time.'})
                 plt.pause(0.01)
             elif tag == 'on':
-                top_title.update({'text':'Click ON time.'})
+                top_title.update({'text': 'Click ON time.'})
                 plt.pause(0.01)
             elif tag == 'del':
                 del sp_t[-1]
                 subp.cla()
                 subp1.cla()
-                top_title.update({'text':'Deleted last time selection.'})
+                top_title.update({'text': 'Deleted last time selection.'})
                 plotcell(self)
             elif np.isnan(tag):
-                top_title.update({'text':'Ready to continue.'})
+                top_title.update({'text': 'Ready to continue.'})
                 plt.pause(0.01)
 
         def plotcell(neuron):
