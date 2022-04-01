@@ -2818,7 +2818,8 @@ def autoqual(neuron_list, model_file,
             # contamination_lines[contamin_idx])
             ncontl = np.asarray(contamination_lines[contamin_idx])
             # ncontl = ncontl/np.linalg.norm(ncontl)
-            ncontl = (ncontl - np.min(ncontl)) / (np.max(ncontl) - np.min(ncontl))
+            ncontl = ((ncontl - np.min(ncontl)) /
+                      (np.max(ncontl) - np.min(ncontl)))
             tmp_fet = np.array([np.mean(ncontl)])
             neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
             # print("tmp_fet ", tmp_fet)
@@ -3058,7 +3059,8 @@ def autoqual(neuron_list, model_file,
             print("namp_s_bin_values ", namp_s_bin_values)
         namp_s_bin = np.asarray(namp_s_bin_values)
         # namp_s_bin = namp_s_bin/np.linalg.norm(namp_s_bin)
-        namp_s_bin = (namp_s_bin - np.min(namp_s_bin)) / (np.max(namp_s_bin) - np.min(namp_s_bin))
+        namp_s_bin = ((namp_s_bin - np.min(namp_s_bin)) /
+                      (np.max(namp_s_bin) - np.min(namp_s_bin)))
         if ldebug:
             print("namp_s_bin ", namp_s_bin)
         tmp_fet = np.array([np.mean(namp_s_bin)])
@@ -3210,7 +3212,8 @@ def autoqual(neuron_list, model_file,
         tmp_fet_wf = None
         tmp_fet_wf = np.asarray(i.waveform)
         # tmp_fet_wf = tmp_fet_wf / np.linalg.norm(tmp_fet_wf)
-        tmp_fet_wf = (i.waveform - np.min(i.waveform)) / (np.max(i.waveform) - np.min(i.waveform))
+        tmp_fet_wf = ((i.waveform - np.min(i.waveform)) /
+                      (np.max(i.waveform) - np.min(i.waveform)))
         # print("tmp_fet_wf ", tmp_fet_wf)
         # print("sh tmp_fet_wf ", tmp_fet_wf.shape)
         tmp_fet = None
@@ -3299,7 +3302,8 @@ def autoqual(neuron_list, model_file,
         # wf make sure if they are not 75 we have to make them 75 todo
         tmp_fet = None
         # tmp_fet = tmp_fet_wf * 1.0
-        tmp_fet = (i.waveform - np.min(i.waveform)) / (np.max(i.waveform) - np.min(i.waveform))
+        tmp_fet = ((i.waveform - np.min(i.waveform)) /
+                   (np.max(i.waveform) - np.min(i.waveform)))
         neuron_features[idx, fet_idx:fet_idx + tmp_fet.shape[0]] = tmp_fet
         fet_idx = fet_idx + tmp_fet.shape[0]
         if ldebug:
