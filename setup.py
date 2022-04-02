@@ -19,7 +19,7 @@ except Exception as e:
 
 setup(
    name='musclebeachtools',
-   version='1.2',
+   version='1.2.0',
    description='This package used to analyze neuron data, from basic plotting\
                (ISI histograms, firing rate, cross corr), to hard core\
                computational work (ising models, branching ratios, etc).',
@@ -43,7 +43,7 @@ setup(
    # not added as may be users have their own changes in neuraltoolkit
    # 'neuraltoolkit@git+https://github.com/hengenlab/neuraltoolkit.git'],
    classifiers=[
-        'Development Status :: 1 - Pre-Alpha',
+        'Development Status :: 3 - Alpha',
         'Natural Language :: English',
         'Programming Language :: Python :: 3',
     ],
