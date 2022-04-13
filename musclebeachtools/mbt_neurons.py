@@ -259,8 +259,8 @@ def euclidean_distance(row1, row2, ch=None, corr_fact=0.95):
         # print("int(row2[-2] ", int(row2[-2]), " int(row1[-2] ",
         #       int(row1[-2]), " ch ", ch)
         if (int(row2[-2]) in ch):
-            print("\tint(row2[-2] ", int(row2[-2]),
-                  " int(row1[-2] ", int(row1[-2]), " ch ", ch)
+            # print("\tint(row2[-2] ", int(row2[-2]),
+            #       " int(row1[-2] ", int(row1[-2]), " ch ", ch)
             for i in range(len(row1)-2):
                 # print("i ", i, " row1 ", row1[i], " row2 ", row2[i],
                 #       " ch ", int(row1[-2]), " ", int(row2[-2]))
@@ -325,8 +325,8 @@ def track_blocks(fl, ch_grp_size=4, maxqual=3, corr_fact=0.97,
         print("Loading neurons")
         neurons1 = None
         neurons2 = None
-        print("fl[fl_idx] ", fl[fl_idx])
-        print("fl[fl_idx+1] ", fl[fl_idx+1])
+        # print("fl[fl_idx] ", fl[fl_idx])
+        # print("fl[fl_idx+1] ", fl[fl_idx+1])
         neurons1 = np.load(fl[fl_idx], allow_pickle=True)
         neurons2 = np.load(fl[fl_idx+1], allow_pickle=True)
 
@@ -338,14 +338,14 @@ def track_blocks(fl, ch_grp_size=4, maxqual=3, corr_fact=0.97,
         wf_e = np.asarray(wf_e).T
         # wf_e_l = [neuron.clust_idx
         #           for neuron in neurons1 if neuron.quality < 3]
-        print("sh neurons1 ", len(neurons1), " sh wf_e ", wf_e.shape)
+        # print("sh neurons1 ", len(neurons1), " sh wf_e ", wf_e.shape)
 
         wf_b =\
             [np.append(np.mean(neuron2.wf_b, axis=1),
              [int(neuron2.peak_channel), int(neuron2.clust_idx)])
              for neuron2 in neurons2 if int(neuron2.quality) <= maxqual]
         wf_b = np.asarray(wf_b).T
-        print("sh neurons2 ", len(neurons2), " sh wf_b ", wf_b.shape)
+        # print("sh neurons2 ", len(neurons2), " sh wf_b ", wf_b.shape)
         # wf_b_l = [neuron.clust_idx for neuron in neurons2 if
         #           neuron.quality < 3]
         # print("sh wf_b ", wf_b.shape)
@@ -388,9 +388,10 @@ def track_blocks(fl, ch_grp_size=4, maxqual=3, corr_fact=0.97,
         # check Key is unique
         _, K_counts = np.unique(K, return_counts=True)
         if (len(np.where(K_counts > 1)[0]) == 0):
-            print("unique")
+            if 0:
+                print("unique")
         else:
-            print("not unique")
+            # print("not unique")
             raise RuntimeError('Not unique')
 
         V = keys[K]
@@ -403,7 +404,7 @@ def track_blocks(fl, ch_grp_size=4, maxqual=3, corr_fact=0.97,
             K1.extend(wf_e[-1:, k_i])
             V1.extend(wf_b[-1:, v_i])
 
-        print(K, V)
+        # print(K, V)
         # print(K1, V1)
         # K = K1.copy()
         # V = V1.copy()
@@ -480,7 +481,7 @@ def track_blocks(fl, ch_grp_size=4, maxqual=3, corr_fact=0.97,
             for k in key_order:
                 # print(k[0], i.clust_idx)
                 if int(i.clust_idx) == int(k[0]):
-                    print("i.clust_idx ", i.clust_idx, " k[0] ", k[0])
+                    # print("i.clust_idx ", i.clust_idx, " k[0] ", k[0])
                     i.key = k
         if lsaveneuron:
             np.save(op.splitext(fl[fl_idx])[0] + "_withkeys.npy", neurons1)
@@ -494,6 +495,7 @@ def track_blocks(fl, ch_grp_size=4, maxqual=3, corr_fact=0.97,
     if not lsavefig:
         plt.show()
     plt.clf()
+    plt.close('all')
 
 
 def wf_sim(wf1, wf2, ltype=1):
