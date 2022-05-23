@@ -1596,7 +1596,7 @@ class Neuron:
             #                            end=end_times[idx])
             # range
             idx_l = np.where(np.logical_and(time_s >= start_times[idx],
-                                          time_s <= end_times[idx]))[0]
+                                            time_s <= end_times[idx]))[0]
             time_s_r = time_s[idx_l]
 
             # Calculate isi
