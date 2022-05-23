@@ -1512,8 +1512,8 @@ class Neuron:
         logger.debug('start and end is %s and %s', start, end)
 
         # range
-        idx = np.where(np.logical_and(time_s >= start, time_s <= end))[0]
-        time_s = time_s[idx]
+        idx_l = np.where(np.logical_and(time_s >= start, time_s <= end))[0]
+        time_s = time_s[idx_l]
 
         edges = np.arange(start, end + binsz, binsz)
         bins = np.histogram(time_s, edges)
@@ -1595,9 +1595,9 @@ class Neuron:
             #                            start=start_times[idx],
             #                            end=end_times[idx])
             # range
-            idx = np.where(np.logical_and(time_s >= start_times[idx],
+            idx_l = np.where(np.logical_and(time_s >= start_times[idx],
                                           time_s <= end_times[idx]))[0]
-            time_s_r = time_s[idx]
+            time_s_r = time_s[idx_l]
 
             # Calculate isi
             isi = np.diff(time_s_r)
@@ -1685,8 +1685,8 @@ class Neuron:
         logger.debug('start and end is %s and %s', start, end)
 
         # range
-        idx = np.where(np.logical_and(time_s >= start, time_s <= end))[0]
-        time_s = time_s[idx]
+        idx_l = np.where(np.logical_and(time_s >= start, time_s <= end))[0]
+        time_s = time_s[idx_l]
 
         # Calculate isi
         isi = np.diff(time_s)
@@ -1750,7 +1750,8 @@ class Neuron:
         logger.debug('start and end is %s and %s', start, end)
 
         # range
-        time_s = time_s[(time_s >= start) & (time_s <= end)]
+        idx_l = np.where(np.logical_and(time_s >= start, time_s <= end))[0]
+        time_s = time_s[idx_l]
 
         # Calculation
         p_tmp, _ = np.histogram(time_s, np.linspace(start, end, nbins))
@@ -1821,7 +1822,8 @@ class Neuron:
         logger.debug('start and end is %s and %s', start, end)
 
         # range
-        time_s = time_s[(time_s >= start) & (time_s <= end)]
+        idx_l = np.where(np.logical_and(time_s >= start, time_s <= end))[0]
+        time_s = time_s[idx_l]
 
         # amp = amp[abs(amp - np.mean(amp)) < 1.5 * np.std(amp)]
         # Remove spikes based on threshold
@@ -3690,7 +3692,9 @@ def n_getspikes(neuron_list, start=False, end=False, lonoff=1):
             spiketimes = neuron_l.spike_time_sec_onoff
         else:
             spiketimes = neuron_l.spike_time_sec
-        spiketimes = spiketimes[(spiketimes >= start) & (spiketimes <= end)]
+        idx_l = \
+            np.where(np.logical_and(spiketimes >= start, spiketimes <= end))[0]
+        spiketimes = spiketimes[idx_l]
         spiketimes_allcells.append(spiketimes)
 
     return spiketimes_allcells
@@ -4258,8 +4262,8 @@ def cell_isi_hist(time_s, start, end, isi_thresh=0.1,
     logger.debug('start and end is %s and %s', start, end)
 
     # Calulate isi
-    idx = np.where(np.logical_and(time_s >= start, time_s <= end))[0]
-    ISI = np.diff(time_s[idx])
+    idx_l = np.where(np.logical_and(time_s >= start, time_s <= end))[0]
+    ISI = np.diff(time_s[idx_l])
 
     # plot histogram and calculate contamination
     edges = np.linspace(0, isi_thresh, nbins)
