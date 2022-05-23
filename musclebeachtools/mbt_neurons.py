@@ -280,8 +280,9 @@ def track_blocks(fl, ch_grp_size=4, maxqual=3, corr_fact=0.97,
     '''
     Calculate key between blocks
 
-    track_blocks(fl, ch_grp_size=4, maxqual=3, corr_fact=0.97,
-                 lsaveneuron=0, lsavefig=0)
+    track_list = \
+        track_blocks(fl, ch_grp_size=4, maxqual=3, corr_fact=0.97,
+                     lsaveneuron=0, lsavefig=0)
 
 
     Parameters
@@ -295,7 +296,8 @@ def track_blocks(fl, ch_grp_size=4, maxqual=3, corr_fact=0.97,
 
     Returns
     -------
-    new neron file with name "_withkeys.npy"
+    saves new neron file with name "_withkeys.npy"
+    also returns key value pair as list
 
     Raises
     ------
@@ -308,10 +310,13 @@ def track_blocks(fl, ch_grp_size=4, maxqual=3, corr_fact=0.97,
 
     Examples
     --------
-    track_blocks(fl, ch_grp_size=4, maxqual=3, corr_fact=0.97,
-                 lsaveneuron=0, lsavefig=0)
+    track_list = \
+        track_blocks(fl, ch_grp_size=4, maxqual=3, corr_fact=0.97,
+                     lsaveneuron=0, lsavefig=0)
 
     '''
+    track_list = None
+    track_list = []
 
     if lsavefig:
         plt.rcParams.update({'font.size': 4})
@@ -413,6 +418,8 @@ def track_blocks(fl, ch_grp_size=4, maxqual=3, corr_fact=0.97,
         print("Keys")
         print(K)
         print(V)
+        track_list.append(K)
+        track_list.append(V)
         plt.figure(fl_idx + 1, figsize=(20, 20))
         # print("key_order ", key_order)
         key_order = None
@@ -496,6 +503,7 @@ def track_blocks(fl, ch_grp_size=4, maxqual=3, corr_fact=0.97,
         plt.show()
     plt.clf()
     plt.close('all')
+    return track_list
 
 
 def wf_sim(wf1, wf2, ltype=1):
