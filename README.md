@@ -400,7 +400,7 @@ fl_new = op.splitext(fl)[0]+'_shuffle_spiketimes.npy'
 neurons = np.load(fl, allow_pickle=True)
 for indx, neuron in enumerate(neurons):
     print("indx ",indx)
-    neuron.shuffle_times()
+    neuron.shuffle_times(shuffle_alg=1)
 np.save(fl_new, neurons)
 # to test whether everything worked
 # check quality of some neurons
