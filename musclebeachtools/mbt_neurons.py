@@ -1335,6 +1335,258 @@ class Neuron:
                                           size=np.size(self.spike_time),
                                           dtype='int64'))
 
+    def crosscorr(self, friend=None, dt=1e-3, tspan=1.0, nsegs=None):
+        # if "friend" argument is not give, compute autocorrelation
+        if friend is None:
+            print('Computing autocorrelation for cell {:d}.'
+                  .format(self.clust_idx))
+            print('Parameters:\n\tTime span: {} ms\n\tBin step: {:.2f} ms'
+                  .format(int(tspan*1000), dt*1000))
+            # select spike timestamps within on/off times for this cell
+            # #ckbn stimes1 = \
+            # #ckbn  self.spike_time[(self.spike_time
+            # #ckbn > self.on_times[0]) &
+            # #ckbn  (self.spike_time < self.off_times[-1])]
+            stimes1 = \
+                self.spike_time_sec[(self.spike_time_sec > self.on_times[0])
+                                    & (self.spike_time_sec <
+                                       self.off_times[-1])]
+            # remove spikes at the edges (where edges are tspan/2)
+            t_start = time.time()
+            subset = \
+                [(stimes1 > stimes1[0]+tspan/2) &
+                 (stimes1 < stimes1[-1] - tspan/2)]
+            # line above returns an array of booleans. Convert to indices
+            subset = np.where(subset)[1]
+            # Take a subset of indices. We want "nsegs" elements,
+            # evenly spaced.
+            # "segindx" therefore contains nsegs spike indices, evenly spaced
+            # between the first and last one in subset
+            if nsegs is None:
+                # #ckbn nsegs = np.int(np.ceil(np.max(self.spike_time/120)))
+                nsegs = np.int(np.ceil(np.max(self.spike_time_sec/120)))
+            print('\tUsing {:d} segments.'.format(nsegs))
+            segindx = np.ceil(np.linspace(subset[0], subset[-1], nsegs))
+            # The spikes pointed at by the indices in "segindx" are
+            # our reference spikes for autocorrelation calculation
+
+            # initialize timebins
+            timebins = np.arange(0, tspan+dt, dt)
+            # number of bins
+            nbins = timebins.shape[0] - 1
+
+            # initialize autocorrelation array
+            ACorrs = np.zeros((nsegs, 2*nbins-1), float)
+
+            # ref is the index of the reference spike
+            print("len segindx ", len(segindx), flush=True)
+            for i, ref in enumerate(segindx):
+                ref = int(ref)
+                # "t" is the timestamp of reference spike
+                t = stimes1[ref]
+                # find indices of spikes between t and t+tspan
+                spikeindx = np.where((stimes1 > t) & (stimes1 <= t+tspan))[0]
+                # get timestamps of those and subtract "t" to get "tau"
+                # for each spike
+                # "tau" is the lag between each spike
+                # divide by "dt" step to get indices of bins in which
+                # those spikes fall
+                spikebins = np.ceil((stimes1[spikeindx] - t)/dt)
+                if spikebins.any():
+                    # if any spikes were found using this method,
+                    # create a binary array of spike presence in each bin
+                    bintrain = np.zeros(nbins, int)
+                    bintrain[spikebins.astype(int)-1] = 1
+                    # the auto-correlation is the convolution of that binary
+                    # sequence with itself
+                    # mode="full" ensures np.correlate uses convolution
+                    # to compute correlation
+                    ACorrs[i, :] = np.correlate(bintrain, bintrain,
+                                                mode="full")
+
+            # sum across all segments to get auto-correlation across dataset
+            Y = np.sum(ACorrs, 0)
+            # remove artifactual central peak
+            Y[nbins-1] = 0
+            print("Y ", Y, flush=True)
+
+            # measure time elapsed for benchmarking
+            elapsed = time.time() - t_start
+            print('Elapsed time: {:.2f} seconds'.format(elapsed))
+
+            # plotting ----------------------
+            # -------------------------------
+            plt.ion()
+            fig = plt.figure(facecolor='white')
+            fig.suptitle('Auto-correlation, cell {:d}'.format(self.clust_idx))
+            ax2 = fig.add_subplot(311, frame_on=False)
+
+            ax2.bar(1000*np.arange(-tspan+dt, tspan, dt), Y,
+                    width=0.5, color='k')
+            xlim2 = 100  # in milliseconds
+            tickstep2 = 20  # in milliseconds
+            ax2.set_xlim(0, xlim2)
+            ax2_ticks = [i for i in range(0, xlim2+1, tickstep2)]
+            ax2_labels = [str(i) for i in ax2_ticks]
+            ax2.set_xticks(ax2_ticks)
+            ax2.set_xticklabels(ax2_labels)
+            ax2.set_ylabel('Counts')
+
+            ax3 = fig.add_subplot(312, frame_on=False)
+            ax3.bar(1000*np.arange(-tspan+dt, tspan, dt), Y,
+                    width=0.5, color='k')
+            xlim3 = int(tspan*1000)  # milliseconds - set to tspan
+            tickstep3 = int(xlim3/5)  # milliseconds
+            ax3_ticks = [i for i in range(-xlim3, xlim3+1, tickstep3)]
+            ax3_labels = [str(i) for i in ax3_ticks]
+            ax3.set_xticks(ax3_ticks)
+            ax3.set_xticklabels(ax3_labels)
+            ax3.set_ylabel('Counts')
+            ax3.set_xlabel('Lag (ms)')
+
+            ax4 = fig.add_subplot(313, frame_on=False)
+            ax4.plot(self.waveform)
+            plt.tight_layout()
+
+            fig.show()
+            plt.show()
+
+            # -------------------------------
+
+        # if friend is an instance of class "neuron", compute cross-correlation
+        elif isinstance(friend, Neuron):
+            print('Computing cross correlation between cells {:d} and {:d}.'
+                  .format(self.clust_idx, friend.clust_idx))
+            print('Parameters:\n\tTime span: {} ms\n\tBin step: {:.2f} ms'
+                  .format(int(tspan*1000), dt*1000))
+            # select spike timestamps within on/off times for self cell
+            # #ckbn stimes1 = \
+            # #ckbn self.spike_time[(self.spike_time > self.on_times[0])
+            # #ckbn & (self.spike_time < self.off_times[-1])]
+            stimes1 =\
+                self.spike_time_sec[(self.spike_time_sec > self.on_times[0])
+                                    & (self.spike_time_sec <
+                                       self.off_times[-1])]
+            # select spike timestamps within on/off times for self cell
+            # #ckbn stimes2 = \
+            # #ckbn friend.spike_time[(friend.spike_time > friend.on_times[0])
+            # #ckbn & (friend.spike_time < friend.off_times[-1])]
+            stimes2 = \
+                friend.spike_time_sec[(friend.spike_time_sec >
+                                       friend.on_times[0]) &
+                                      (friend.spike_time_sec <
+                                       friend.off_times[-1])]
+            # start timer for benchmarking
+            t_start = time.time()
+            # remove spikes at the edges (where edges are tspan/2)
+            subset1 =\
+                [(stimes1 > stimes1[0]+tspan/2) &
+                 (stimes1 < stimes1[-1] - tspan/2)]
+            subset2 =\
+                [(stimes2 > stimes2[0]+tspan/2) &
+                 (stimes2 < stimes2[-1] - tspan/2)]
+            # line above returns an array of booleans. Convert to indices
+            subset1 = np.where(subset1)[1]
+            subset2 = np.where(subset2)[1]
+            # check to see if nsegs is user provided or default
+            if nsegs is None:
+                # #ckbn nsegs1 = np.int(np.ceil(np.max(self.spike_time/120)))
+                # #ckbn nsegs2 = np.int(np.ceil(np.max(friend.spike_time/120)))
+                nsegs1 = np.int(np.ceil(np.max(self.spike_time_sec/120)))
+                nsegs2 = np.int(np.ceil(np.max(friend.spike_time_sec/120)))
+                nsegs = max(nsegs1, nsegs2)
+            print('\tUsing {:d} segments.'.format(nsegs))
+            # Take a subset of indices. We want "nsegs" elements,
+            # evenly spaced. "segindx" therefore contains nsegs
+            # spike indices, evenly spaced between the first and
+            # last one in subset
+            segindx1 = np.ceil(np.linspace(subset1[0], subset1[-1], nsegs))
+            # segindx2 = np.ceil(np.linspace(subset2[0], subset2[-1], nsegs))
+
+            # The spikes pointed at by the indices in "segindx"
+            # are our reference spikes for autocorrelation calculation
+
+            # initialize timebins
+            timebins = np.arange(0, tspan+dt,   dt)
+            # number of bins
+            nbins = timebins.shape[0] - 1
+
+            # initialize autocorrelation array
+            XCorrs = np.zeros((nsegs, 2*nbins-1), float)
+
+            # ref is the index of the reference spike
+            for i, ref in enumerate(segindx1):
+                ref = int(ref)
+                # "t" is the timestamp of reference spike
+                t = stimes1[ref]
+                # find indices of spikes between t and t+tspan, for cell SELF
+                spikeindx1 = np.where((stimes1 > t) & (stimes1 <= t+tspan))[0]
+                # same thing but for cell FRIEND
+                spikeindx2 = np.where((stimes2 > t) & (stimes2 <= t+tspan))[0]
+                # get timestamps of those and subtract
+                # "t" to get "tau" for each spike
+                # "tau" is the lag between each spike
+                spikebins1 = np.ceil((stimes1[spikeindx1] - t)/dt)
+                spikebins2 = np.ceil((stimes2[spikeindx2] - t)/dt)
+                if spikebins1.any() & spikebins2.any():
+                    # binary sequence for cell SELF
+                    bintrain1 = np.zeros(nbins, int)
+                    bintrain1[spikebins1.astype(int)-1] = 1
+                    # binary sequence for cell FRIEND
+                    bintrain2 = np.zeros(nbins, int)
+                    bintrain2[spikebins2.astype(int)-1] = 1
+                    XCorrs[i, :] = np.correlate(bintrain1, bintrain2,
+                                                mode="full")
+
+            Y = np.sum(XCorrs, 0)
+
+            elapsed = time.time() - t_start
+            print('Elapsed time: {:.2f} seconds'.format(elapsed))
+            plt.ion()
+            figx = plt.figure(facecolor='white')
+            figx.suptitle('Cross-correlation, cells {:d} and {:d}'
+                          .format(self.clust_idx, friend.clust_idx))
+
+            ax2 = figx.add_subplot(311, frame_on=False)
+
+            ax2.bar(1000*np.arange(-tspan+dt, tspan, dt), Y,
+                    width=0.5, color='k')
+            xlim2 = int(200)  # in milliseconds
+            tickstep2 = int(xlim2/5)  # in milliseconds
+            ax2.set_xlim(-xlim2, xlim2)
+            ax2_ticks = [i for i in range(-xlim2, xlim2+1, tickstep2)]
+            ax2_labels = [str(i) for i in ax2_ticks]
+            # ax2_labels = str(ax2_labels)
+            ax2.set_xticks(ax2_ticks)
+            ax2.set_xticklabels(ax2_labels)
+            ax2.set_ylabel('Counts')
+
+            ax3 = figx.add_subplot(312, frame_on=False)
+            ax3.bar(1000*np.arange(-tspan+dt, tspan, dt), Y,
+                    width=0.5, color='k')
+            xlim3 = int(tspan*1000)  # milliseconds - set to tspan
+            tickstep3 = int(xlim3/5)  # milliseconds
+            ax3_ticks = [i for i in range(-xlim3, xlim3+1, tickstep3)]
+            ax3_labels = [str(i) for i in ax3_ticks]
+            ax3.set_xticks(ax3_ticks)
+            ax3.set_xticklabels(ax3_labels)
+            ax3.set_ylabel('Counts')
+            ax3.set_xlabel('Lag (ms)')
+
+            ax4 = figx.add_subplot(313, frame_on=False)
+            ax4.plot(self.waveform)
+            ax4.plot(friend.waveform)
+            plt.tight_layout()
+
+            figx.show()
+            plt.show()
+
+        elif not isinstance(friend, Neuron):
+            # error out
+            msg = '''ERROR: Second argument to crosscorr should be an
+                            instance of neuron class.'''
+            raise TypeError(msg)
+
     def plot_wf(self):
         '''
         Plot mean waveform of a neuron
