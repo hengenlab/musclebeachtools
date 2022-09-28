@@ -4872,7 +4872,7 @@ def amp_spike_projection(cells, clust_num, num_chans, probe_num, raw_dir,
 
     fig.canvas.mpl_connect('button_press_event', onclick)
 
-    while(not done):
+    while (not done):
         # plt.show()
         print("Press amplitude plot to plot corresponding raw data")
         try:
