@@ -413,6 +413,16 @@ neurons_new = np.load(fl_new, allow_pickle=True)
 for indx, neuron_new in enumerate(neurons_new):
     if neuron_new.quality < 3:
         neuron_new.checkqual()
+
+# Correlograms
+import numpy as np
+import musclebeachtools as mbt
+fl = '/media/ckbn/H_2022-05-12_08-59-26_2022-05-12_17-54-28_neurons_group0.npy'
+n = np.load(fl, allow_pickle=True)
+# Autocorr
+n[1].crosscorr(friend=None)
+# Crosscorr
+n[10].crosscorr(friend=n[11])
 ```
 ---
 ## FAQ
