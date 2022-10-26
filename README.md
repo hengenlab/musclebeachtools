@@ -22,7 +22,7 @@ pip install xgboost
 
 # In mac, install brew,gcc then install xgboost
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-brew install gcc@5
+brew install gcc
 conda install -c conda-forge xgboost
 ```
 
