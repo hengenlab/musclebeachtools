@@ -425,8 +425,8 @@ def track_blocks(fl, ch_grp_size=4, maxqual=3, corr_fact=0.97,
         key_order = None
         key_order = []
         for ind, i in enumerate(K):
-            plt.subplot(np.ceil(np.sqrt(len(K))),
-                        np.ceil(np.sqrt(len(K))), ind+1)
+            plt.subplot(int(np.ceil(np.sqrt(len(K)))),
+                        int(np.ceil(np.sqrt(len(K)))), ind+1)
             c1 = [cell for cell in neurons1 if cell.clust_idx == int(K[ind])]
             c2 = [cell for cell in neurons2 if cell.clust_idx == int(V[ind])]
             # plt.plot(neurons1[i].waveform)
