@@ -3855,8 +3855,8 @@ def n_plot_neuron_wfs(neuron_list, maxqual=None,
             # print("ind ", ind,
             #       " np.ceil(np.sqrt(len_neurons)) ",
             #       np.ceil(np.sqrt(len_neurons)))
-            plt.subplot(np.ceil(np.sqrt(len_neurons)),
-                        np.ceil(np.sqrt(len_neurons)), ind)
+            plt.subplot(int(np.ceil(np.sqrt(len_neurons))),
+                        int(np.ceil(np.sqrt(len_neurons))), ind)
             plt.plot(neuron.waveform,
                      label=str("ch " +
                                str(neuron.peak_channel) +
