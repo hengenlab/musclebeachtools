@@ -1,0 +1,32 @@
+name: Pytests
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.7", "3.8", "3.9", "3.10"]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Python 3
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+          pip install -r requirements.txt
+          pip install -e .
+          # wget --no-check-certificate https://biolinux2.wustl.edu/hlabdata/data/Headstages_512_Channels_int16_2021-06-08_11-08-03.bin -P tests/
+          # wget --no-check-certificate https://biolinux2.wustl.edu/hlabdata/data/timestamp.csv -P tests/
+          # wget --no-check-certificate https://biolinux2.wustl.edu/hlabdata/data/data.csv -P tests/
+      - name: Run tests with pytest
+        run: pytest 
