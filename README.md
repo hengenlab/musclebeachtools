@@ -5,6 +5,9 @@ This package used to analyze neuronal data, from basic plotting
  to hard core computational work (ising models, branching ratios, etc).  
 
 ---
+![Tests](https://github.com/hengenlab/musclebeachtools_hlab/actions/workflows/pytests.yml/badge.svg)
+
+
 ## Installation
 
 ### Download musclebeachtools
