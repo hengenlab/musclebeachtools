@@ -4033,7 +4033,7 @@ def n_spiketimes_to_spikewords(neuron_list, binsz=0.02,
     for i in range(n_cells):
 
         # spiketimes in seconds to ms
-        spiketimes_cell = np.asarray(spiketimes)[i] * conv_mills
+        spiketimes_cell = np.asarray(spiketimes[i]) * conv_mills
         counts, bins = np.histogram(spiketimes_cell, bins=binrange)
 
         # binarize the counts
