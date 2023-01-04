@@ -38,7 +38,7 @@ setup(
    packages=['musclebeachtools'],
    install_requires=[
     'ipython', 'numpy', 'matplotlib', 'seaborn', 'pandas',
-    'joblib', 'scipy', 'sklearn', 'scikit-learn',
+    'joblib', 'scipy', 'scikit-learn',
     'mrestimator@git+https://github.com/Priesemann-Group/mrestimator.git'],
    # not added as may be users have their own changes in neuraltoolkit
    # 'neuraltoolkit@git+https://github.com/hengenlab/neuraltoolkit.git'],
