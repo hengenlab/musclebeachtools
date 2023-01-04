@@ -214,7 +214,10 @@ n = np.load('neurons_group0.npy', allow_pickle=True)
 #                in amplitude plot.
 n[2].checkqual(binsz=3600, start=False, end=False, lsavepng=0,
                png_outdir=None, fix_amp_ylim=0)
+```
+![checkqual](https://biolinux2.wustl.edu/hlabdata/images/mbt_checkqual.png)
 
+```
 # Check quality is changed also there is a log from checkqual
 print(n[2].quality)
 
