@@ -7,9 +7,9 @@ import musclebeachtools as mbt
 
 class Test_mbt_load_neuron(unittest.TestCase):
     print(os.getcwd())
+    workdir = '/home/runner/work/musclebeachtools_hlab/musclebeachtools/tests/'
     os.chdir(workdir)
     print(os.getcwd())
-    workdir = '/home/runner/work/musclebeachtools_hlab/musclebeachtools/tests/'
     if op.exists(workdir):
         os.chdir(workdir)
     expected_output_st = np.uint64(np.loadtxt('spike_time.csv', delimiter=','))
