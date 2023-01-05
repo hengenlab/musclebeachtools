@@ -27,6 +27,6 @@ jobs:
           pip install -e .
           wget --no-check-certificate https://biolinux2.wustl.edu/hlabdata/data/test_neuron.npy -P tests/
           wget --no-check-certificate https://biolinux2.wustl.edu/hlabdata/data/spike_time.csv -P tests/
-          # wget --no-check-certificate https://biolinux2.wustl.edu/hlabdata/data/data.csv -P tests/
+          wget --no-check-certificate https://biolinux2.wustl.edu/hlabdata/data/fr_rate.csv -P tests/
       - name: Run tests with pytest
         run: pytest 
