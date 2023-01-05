@@ -7,6 +7,8 @@ import musclebeachtools as mbt
 
 class Test_mbt_load_neuron(unittest.TestCase):
     print(os.getcwd())
+    os.chdir(workdir)
+    print(os.getcwd())
     workdir = '/home/runner/work/musclebeachtools_hlab/musclebeachtools/tests/'
     if op.exists(workdir):
         os.chdir(workdir)
