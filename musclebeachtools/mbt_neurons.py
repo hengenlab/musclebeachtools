@@ -1734,6 +1734,7 @@ class Neuron:
         Returns
         -------
         hzcount : count per bins
+        xbins
 
         Raises
         ------
