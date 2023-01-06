@@ -18,6 +18,9 @@ class Test_mbt_load_neuron(unittest.TestCase):
     print(n)
     print(expected_output_st)
     print(output)
+    output_fr, _ = \
+        n[0].plotFR(binsz=3600, start=False, end=False, lplot=0, lonoff=1)
+    expected_output_fr = np.double(np.loadtxt('fr_rate.csv', delimiter=','))
 
     def test_checkspk(self):
         print(self.expected_output_st)
@@ -27,3 +30,12 @@ class Test_mbt_load_neuron(unittest.TestCase):
         msg = 'spike times are different'
         self.assertEqual(self.expected_output_st.tolist(),
                          self.output.tolist(), msg)
+
+    def test_checkfr(self):
+        print(self.expected_output_fr)
+        print(type(self.expected_output_fr))
+        print(self.output_fr)
+        print(type(self.output_fr))
+        msg = 'spike times are different'
+        self.assertEqual(self.expected_output_fr.tolist(),
+                         self.output_fr.tolist(), msg)
