@@ -1652,6 +1652,8 @@ class Neuron:
         Returns
         -------
         ISI : spike time difference (a[i+1] - a[i]) along axis
+        edges
+        hist_isi
 
         Raises
         ------
