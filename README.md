@@ -81,20 +81,16 @@ n1 = mbt.ksout(datadir, filenum=0, prbnum=4, filt=[])
 
 ## Usage
 
-#### Load spike amplitudes from spikeinteface output
+#### Load neurons group file (from spikeinteface output) and get basic properties
 ```
 import numpy as np
 import musclebeachtools as mbt
 
 n = np.load('neurons_group0.npy', allow_pickle=True)
 
-```
-
-#### Usage of properties and functions
-```
 # Get basic info of a neuron, here 6th in list n1
 print(n1[6])
-Neuron with (clust_idx=6, quality=1, peak_channel=6)
+# Neuron with (clust_idx=6, quality=1, peak_channel=6)
 
 # Get sampling rate for 4th neuron
 n1[4].fs
@@ -107,8 +103,35 @@ n1[4].spike_time_sec
 
 # Get spike time in seconds for 4th neuron from on off times
 n1[4].spike_time_sec_onoff
+```
 
-# Other properties
+#### Get a test neurons group file in case you do not have one.
+```
+import requests
+import io
+import numpy as np
+import musclebeachtools as mbt
+
+response = requests.get('https://biolinux2.wustl.edu/hlabdata/data/test_neuron.npy')
+neurons = np.load(io.BytesIO(response.content), allow_pickle=True)
+# neurons = np.load('test_neuron.npy', allow_pickle=True)
+
+# Get basic info of a neuron, first neuron
+print("\nBasics ", neurons[0])
+
+# Get sampling rate for first neuron
+print("\nSampling rate, fs ", neurons[0].fs)
+
+# Get sample time for first neuron
+print("\nSample times ", neurons[0].spike_time)
+
+# Get spike time in seconds for the first neuron
+print("\nSpike times in second ", neurons[0].spike_time_sec)
+```
+![checkqual](https://biolinux2.wustl.edu/hlabdata/images/mbt_loadtestneuron.png)
+
+#### Other properties and functions
+```
 n1[4].start_time
 n1[4].end_time
 n1[4].on_times
