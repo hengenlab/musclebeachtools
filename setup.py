@@ -39,7 +39,8 @@ setup(
    install_requires=[
     'ipython', 'numpy', 'matplotlib', 'seaborn', 'pandas',
     'joblib', 'scipy', 'scikit-learn',
-    'mrestimator@git+https://github.com/Priesemann-Group/mrestimator.git'],
+    'mrestimator@git+https://github.com/Priesemann-Group/mrestimator.git',
+    'xgboost'],
    # not added as may be users have their own changes in neuraltoolkit
    # 'neuraltoolkit@git+https://github.com/hengenlab/neuraltoolkit.git'],
    classifiers=[
