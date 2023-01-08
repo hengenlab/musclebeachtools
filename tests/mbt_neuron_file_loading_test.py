@@ -21,7 +21,6 @@ class Test_mbt_load_neuron(unittest.TestCase):
     output_fr, _ = \
         n[0].plotFR(binsz=3600, start=False, end=False, lplot=0, lonoff=1)
     expected_output_fr = np.loadtxt('fr_rate.csv', delimiter=',')
-    ISI, edges, hist_isi = \
     _, _, output_isi = \
         n[0].isi_hist(start=False, end=False, isi_thresh=0.1, nbins=101,
                       lplot=0, lonoff=1)
