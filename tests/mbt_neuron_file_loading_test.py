@@ -27,6 +27,10 @@ class Test_mbt_load_neuron(unittest.TestCase):
     output_isi = output_isi[0]
     expected_output_isi = np.loadtxt('isi_hist.csv', delimiter=',')
 
+    output_wf = n[0].waveform
+    expected_output_wf = np.loadtxt('waveform.csv', delimiter=',')
+    expected_output_wf = expected_output_wf.tolist()
+
     def test_checkspk(self):
         print(self.expected_output_st)
         print(type(self.expected_output_st))
@@ -53,3 +57,14 @@ class Test_mbt_load_neuron(unittest.TestCase):
         msg = 'isi hists are different'
         self.assertEqual(self.expected_output_isi.tolist(),
                          self.output_isi.tolist(), msg)
+
+    def test_checkwf(self):
+        print("wfwfwfwf ", self.expected_output_wf)
+        print(type(self.expected_output_wf))
+        print("wfwfwfwf ", self.output_wf)
+        print(type(self.output_wf))
+        msg = 'wf hists are different'
+        for i, j in zip(self.expected_output_wf, self.output_wf):
+            self.assertAlmostEqual(i, j,
+                                   places=2,
+                                   msg=msg)
