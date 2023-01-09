@@ -2502,8 +2502,9 @@ class Neuron:
             ontimes = ontimes.tolist()
         if isinstance(offtimes, np.ndarray):
             offtimes = offtimes.tolist()
-        print("ontimes type ", type(ontimes))
-        print("offtimes type ", type(offtimes))
+
+        # print("ontimes type ", type(ontimes))
+        # print("offtimes type ", type(offtimes))
 
         # convert to list
         if not isinstance(ontimes, list):
