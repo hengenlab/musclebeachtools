@@ -29,5 +29,6 @@ jobs:
           wget --no-check-certificate https://biolinux2.wustl.edu/hlabdata/data/spike_time.csv -P tests/
           wget --no-check-certificate https://biolinux2.wustl.edu/hlabdata/data/fr_rate.csv -P tests/
           wget --no-check-certificate https://biolinux2.wustl.edu/hlabdata/data/isi_hist.csv -P tests/
+          wget --no-check-certificate https://biolinux2.wustl.edu/hlabdata/data/waveform.csv -P tests/
       - name: Run tests with pytest
         run: pytest 
