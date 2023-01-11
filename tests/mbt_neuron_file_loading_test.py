@@ -31,6 +31,9 @@ class Test_mbt_load_neuron(unittest.TestCase):
     expected_output_wf = np.loadtxt('waveform.csv', delimiter=',')
     expected_output_wf = expected_output_wf.tolist()
 
+    output_fs = n[0].fs
+    expected_output_fs = np.loadtxt('fs.csv', delimiter=',')
+
     def test_checkspk(self):
         print(self.expected_output_st)
         print(type(self.expected_output_st))
@@ -68,3 +71,12 @@ class Test_mbt_load_neuron(unittest.TestCase):
             self.assertAlmostEqual(i, j,
                                    places=2,
                                    msg=msg)
+
+    def test_checkfs(self):
+        print(self.expected_output_fs)
+        print(type(self.expected_output_fs))
+        print(self.output_fs)
+        print(type(self.output_fs))
+        msg = 'fs are different'
+        self.assertEqual(self.expected_output_fs,
+                         self.output_fs, msg)
