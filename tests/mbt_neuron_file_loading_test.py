@@ -34,6 +34,9 @@ class Test_mbt_load_neuron(unittest.TestCase):
     output_fs = n[0].fs
     expected_output_fs = np.loadtxt('fs.csv', delimiter=',')
 
+    output_stsec = n[0].spike_time_sec
+    expected_output_stsec = np.loadtxt('spike_time_sec.csv', delimiter=',')
+
     def test_checkspk(self):
         print(self.expected_output_st)
         print(type(self.expected_output_st))
@@ -80,3 +83,12 @@ class Test_mbt_load_neuron(unittest.TestCase):
         msg = 'fs are different'
         self.assertEqual(self.expected_output_fs,
                          self.output_fs, msg)
+
+    def test_checkspksec(self):
+        print(self.expected_output_stsec)
+        print(type(self.expected_output_stsec))
+        print(self.output_stsec)
+        print(type(self.output_stsec))
+        msg = 'spike times sec are different'
+        self.assertEqual(self.expected_output_stsec.tolist(),
+                         self.output_stsec.tolist(), msg)
