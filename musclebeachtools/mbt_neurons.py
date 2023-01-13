@@ -4157,7 +4157,8 @@ def n_branching_ratio(neuron_list, ava_binsz=0.004,
                                       3600*end,
                                       binarize)
 
-    dt = ava_binsz * 1000
+    # dt = ava_binsz * 1000
+    dt = 1
     A_t = np.sum(data, 0)
     src = mre.input_handler(A_t)
     rks = mre.coefficients(src, steps=(1, kmax),
