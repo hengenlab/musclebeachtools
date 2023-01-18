@@ -275,15 +275,29 @@ n[4].remove_large_amplitude_spikes(1000, lstd_deviation=False, start=False, end=
 If you are sure and do not want to check plots
  to confirm change lplot=False (not recommended)
 
-# Update behavior
-# behavior has a value of np.zeros(2,6) by default to update behaviour of all cells
-# behavior is 2d array with first one with time in each state and second one with
-# behavioral states,
-n[0].update_behavior(behavior))
-
 # Save a modified neuron list
 mbt.n_save_modified_neuron_list(n, '/home/kbn/neuron_mod.npy')
+```
 
+
+```
+# Load behavior to neurons
+# behavior has default values of np.zeros(2,6) to update behaviour of all cells
+# behavior is a 2d array with
+# first one with time in each state and
+# second one with behavioral states (sleep states),
+# As Sleepstates can be modified using Sleep_Wake_Scoring
+# please remember to load these everytime in case they are modified.
+behavior = np.load('Sleepstates.npy', allow_pickle=True)
+mbt.Neuron.update_behavior(behavior))
+
+# To get behavior
+neurons[0].get_behavior()
+# if behavior is not loaded using above step (using Sleepstates.npy)
+# it will raise error ValueError: behavior not added
+```
+
+```
 # Plot all waveforms in a neuron list
 # maxqual filter by quality, list
 # plot waveforms for neurons with quality in maxqual
@@ -377,30 +391,6 @@ br1, br2, acc1, acc2 = mbt.n_branching_ratio(neuron_list, ava_binsz=0.004,
                                 plotname='/home/kbn/hhh.png')
 print("Branching ratio ", br1, " pearson corr ", acc1, flush=True)
 
-# To add behavior to neuron list
-import numpy as np
-import musclebeachtools as mbt
-neurons = np.load('H_2020-12-17_13-19-30_2020-12-18_01-14-32_neurons_group0.npy', allow_pickle=True)
-# mbt.n_update_behavior
-# neuron_list : List of neurons
-# behavior : behavior numpy array
-#            (behavior.ndim == 2 or behavior.shape[0] ==2)
-#            behavior must be numpy array with ndim==2
-#            otherwise raise ValueError
-#            behavior first dimension is time and second is state
-# Please remember to save neuron_list as file for future use
-# Returns
-# neuron_list : neuron lists with behavior
-behavior = np.load('Sleepstates.npy')
-mbt.n_update_behavior(neurons, behavior)
-np.save('H_2020-12-17_13-19-30_2020-12-18_01-14-32_neurons_group0_withb.npy',neurons)
-# To get behavior
-import numpy as np
-import musclebeachtools as mbt
-neurons = np.load('H_2020-12-17_13-19-30_2020-12-18_01-14-32_neurons_group0_withb.npy', allow_pickle=True)
-neurons[0].get_behavior()
-# if behavior is not added using mbt.n_update_behavior it will raise error
-# ValueError: behavior not added
 
 # find keys
 import numpy as np
