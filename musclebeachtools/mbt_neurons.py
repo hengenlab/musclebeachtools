@@ -3670,66 +3670,66 @@ def autoqual(neuron_list, model_file,
         return preds, neuron_indices_test
 
 
-def n_update_behavior(neuron_list, behavior=None):
-
-    '''
-    Update behavior in neuron_list
-
-    n_update_behavior(neuron_list, behavior=behavior)
-
-    Parameters
-    ----------
-    neuron_list : List of neurons
-    behavior : behavior numpy array
-               (behavior.ndim == 2 or behavior.shape[0] ==2)
-               behavior must be numpy array with ndim==2
-               otherwise raise ValueError
-               Array behavior's first dimension is time and
-               second is sleep states
-
-    Returns
-    -------
-    neuron_list : neuron lists with behavior
-
-    Raises
-    ------
-    ValueError if neuron list is empty
-    ValueError if behavior array is empty
-    ValueError if behavior array is not numpy.ndarray
-    ValueError if behavior array shape[0] not 2
-
-    See Also
-    --------
-
-    Notes
-    -----
-    Please remember to save neuron_list as file for future use
-
-    Examples
-    --------
-    n_update_behavior(neuron_list, behavior=behavior)
-
-    '''
-
-    logger.info('Updating neuron list with behavior')
-    # check neuron_list is not empty
-    if (len(neuron_list) == 0):
-        raise ValueError('Neuron list is empty')
-
-    if behavior is None:
-        raise ValueError('behavior is empty')
-
-    if not type(behavior) is np.ndarray:
-        raise ValueError('behavior is not numpy array')
-
-    if not behavior.shape[0] == 2:
-        raise ValueError('behavior.shape[0] is not 2')
-
-    # Update neurons with behavior
-    for ind, neuron in enumerate(neuron_list):
-        neuron.behavior = neuron.update_behavior(behavior)
-
-    return neuron_list
+# def n_update_behavior(neuron_list, behavior=None):
+#
+#     '''
+#     Update behavior in neuron_list
+#
+#     n_update_behavior(neuron_list, behavior=behavior)
+#
+#     Parameters
+#     ----------
+#     neuron_list : List of neurons
+#     behavior : behavior numpy array
+#                (behavior.ndim == 2 or behavior.shape[0] ==2)
+#                behavior must be numpy array with ndim==2
+#                otherwise raise ValueError
+#                Array behavior's first dimension is time and
+#                second is sleep states
+#
+#     Returns
+#     -------
+#     neuron_list : neuron lists with behavior
+#
+#     Raises
+#     ------
+#     ValueError if neuron list is empty
+#     ValueError if behavior array is empty
+#     ValueError if behavior array is not numpy.ndarray
+#     ValueError if behavior array shape[0] not 2
+#
+#     See Also
+#     --------
+#
+#     Notes
+#     -----
+#     Please remember to save neuron_list as file for future use
+#
+#     Examples
+#     --------
+#     n_update_behavior(neuron_list, behavior=behavior)
+#
+#     '''
+#
+#     logger.info('Updating neuron list with behavior')
+#     # check neuron_list is not empty
+#     if (len(neuron_list) == 0):
+#         raise ValueError('Neuron list is empty')
+#
+#     if behavior is None:
+#         raise ValueError('behavior is empty')
+#
+#     if not type(behavior) is np.ndarray:
+#         raise ValueError('behavior is not numpy array')
+#
+#     if not behavior.shape[0] == 2:
+#         raise ValueError('behavior.shape[0] is not 2')
+#
+#     # Update neurons with behavior
+#     for ind, neuron in enumerate(neuron_list):
+#         neuron.behavior = neuron.update_behavior(behavior)
+#
+#     return neuron_list
 
 
 def n_filt_quality(neuron_list, maxqual=None):
