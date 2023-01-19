@@ -1348,10 +1348,7 @@ class Neuron:
             # #ckbn  self.spike_time[(self.spike_time
             # #ckbn > self.on_times[0]) &
             # #ckbn  (self.spike_time < self.off_times[-1])]
-            stimes1 = \
-                self.spike_time_sec[(self.spike_time_sec > self.on_times[0])
-                                    & (self.spike_time_sec <
-                                       self.off_times[-1])]
+            stimes1 = self.spike_time_sec_onoff
             # remove spikes at the edges (where edges are tspan/2)
             t_start = time.time()
             subset = \
@@ -1464,19 +1461,12 @@ class Neuron:
             # #ckbn stimes1 = \
             # #ckbn self.spike_time[(self.spike_time > self.on_times[0])
             # #ckbn & (self.spike_time < self.off_times[-1])]
-            stimes1 =\
-                self.spike_time_sec[(self.spike_time_sec > self.on_times[0])
-                                    & (self.spike_time_sec <
-                                       self.off_times[-1])]
+            stimes1 = self.spike_time_sec_onoff
             # select spike timestamps within on/off times for self cell
             # #ckbn stimes2 = \
             # #ckbn friend.spike_time[(friend.spike_time > friend.on_times[0])
             # #ckbn & (friend.spike_time < friend.off_times[-1])]
-            stimes2 = \
-                friend.spike_time_sec[(friend.spike_time_sec >
-                                       friend.on_times[0]) &
-                                      (friend.spike_time_sec <
-                                       friend.off_times[-1])]
+            stimes2 = friend.spike_time_sec_onoff
             # start timer for benchmarking
             t_start = time.time()
             # remove spikes at the edges (where edges are tspan/2)
@@ -4222,18 +4212,8 @@ def n_zero_crosscorr(neuron_list):
     for i in range(len(neuron_list)):
         for j in range(i+1, len(neuron_list)):
             # select spike timestamps within on/off times for ith neuron
-            stimes1 =\
-                neuron_list[i].spike_time_sec[(neuron_list[i].spike_time_sec >
-                                              neuron_list[i].on_times[0])
-                                              &
-                                              (neuron_list[i].spike_time_sec <
-                                              neuron_list[i].off_times[-1])]
-            stimes2 =\
-                neuron_list[j].spike_time_sec[(neuron_list[j].spike_time_sec >
-                                              neuron_list[j].on_times[0])
-                                              &
-                                              (neuron_list[j].spike_time_sec <
-                                              neuron_list[j].off_times[-1])]
+            stimes1 = neuron_list[i].spike_time_sec_onoff
+            stimes2 = neuron_list[j].spike_time_sec_onoff
 
             corr = fftconvolve(stimes1, stimes2[::-1])
             zero_lag_corr = corr[(len(corr) - 1)//2]
