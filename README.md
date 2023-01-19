@@ -442,6 +442,15 @@ n = np.load(fl, allow_pickle=True)
 n[1].crosscorr(friend=None)
 # Crosscorr
 n[10].crosscorr(friend=n[11])
+
+
+# zero cross corr
+import numpy as np
+import musclebeachtools as mbt
+fl = 'H_2020-08-07_14-00-15_2020-08-08_01-55-16_neurons_group0.jake_scored_q12.npy'
+neurons = np.load(fl, allow_pickle=True)
+zcl_i, zcl_v = mbt.n_zero_crosscorr(neurons)
+print(zcl_i, "\n", zcl_v)
 ```
 ---
 ## FAQ
