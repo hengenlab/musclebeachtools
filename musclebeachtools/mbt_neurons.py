@@ -49,6 +49,7 @@ try:
     import scipy as sc
 except ImportError:
     raise ImportError('Run command : pip install scipy')
+from scipy.signal import fftconvolve
 # try:
 #     import joblib
 # except ImportError:
@@ -4192,6 +4193,61 @@ def n_branching_ratio(neuron_list, ava_binsz=0.004,
     # print(sc.stats.pearsonr(rks.coefficients, rks.coefficients))
     # print(sc.stats.pearsonr(rks.coefficients, np.random.random(500)))
     return fit1.mre, fit2.mre, fit_acc1, fit_acc2
+
+
+def n_zero_crosscorr(neuron_list):
+    '''
+
+    Calculate zero lag cross correlation in descending order
+    and return neuron indices
+
+    n_zero_crosscorr(neuron_list)
+
+    returns
+     zcl_in, zcl_vn
+
+     zcl_in : neuron pairs
+     zcl_vn : zero lag cross cor values in descending order
+    '''
+
+    # check neuron_list is not empty
+    if (len(neuron_list) == 0):
+        raise ValueError('Neuron list is empty')
+
+    zero_lag_list_index = None
+    zero_lag_list_index = []
+    zero_lag_list_values = None
+    zero_lag_list_values = []
+
+    for i in range(len(neuron_list)):
+        for j in range(i+1, len(neuron_list)):
+            # select spike timestamps within on/off times for ith neuron
+            stimes1 =\
+                neuron_list[i].spike_time_sec[(neuron_list[i].spike_time_sec >
+                                              neuron_list[i].on_times[0])
+                                              &
+                                              (neuron_list[i].spike_time_sec <
+                                              neuron_list[i].off_times[-1])]
+            stimes2 =\
+                neuron_list[j].spike_time_sec[(neuron_list[j].spike_time_sec >
+                                              neuron_list[j].on_times[0])
+                                              &
+                                              (neuron_list[j].spike_time_sec <
+                                              neuron_list[j].off_times[-1])]
+
+            corr = fftconvolve(stimes1, stimes2[::-1])
+            zero_lag_corr = corr[(len(corr) - 1)//2]
+            zero_lag_list_index.append([i, j])
+            zero_lag_list_values.append(zero_lag_corr)
+
+    # get descending order and apply to index and values
+    order = np.argsort(zero_lag_list_values)[::-1]
+    zcl_in = np.asarray(zero_lag_list_index)
+    zcl_vn = np.asarray(zero_lag_list_values)
+    zcl_in = zcl_in[order]
+    zcl_vn = zcl_vn[order]
+
+    return zcl_in, zcl_vn
 
 
 def n_save_modified_neuron_list(neuron_list, file_name):
