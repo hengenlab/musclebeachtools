@@ -396,6 +396,21 @@ br1, br2, acc1, acc2 = mbt.n_branching_ratio(neuron_list, ava_binsz=0.004,
                                 plotname='/home/kbn/hhh.png')
 print("Branching ratio ", br1, " pearson corr ", acc1, flush=True)
 
+# check two neurons are from same tetrode
+# check_sametetrode_neurons(channel1, channel2,
+                            ch_grp_size=4,
+                            lverbose=1)
+# channel1: first channel
+# channel2: second channel
+# ch_grp_size : default (4) for tetrodes
+# lverbose: default(1) to print tetrodes check
+#
+# return True or False
+lsamechannel = \
+    check_sametetrode_neurons(neurons[0].peak_channel
+                              neurons[1].peak_channel
+                              ch_grp_size=4,
+                              lverbose=1)
 
 # find keys
 import numpy as np
