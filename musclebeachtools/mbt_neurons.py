@@ -4185,13 +4185,13 @@ def n_branching_ratio(neuron_list, ava_binsz=0.004,
     return fit1.mre, fit2.mre, fit_acc1, fit_acc2
 
 
-def n_zero_crosscorr(neuron_list):
+def n_zero_crosscorr(neuron_list, ltetrode=1):
     '''
 
     Calculate zero lag cross correlation in descending order
     and return neuron indices
 
-    n_zero_crosscorr(neuron_list)
+    n_zero_crosscorr(neuron_list, ltetrode=1)
 
     returns
      zcl_in, zcl_vn
@@ -4208,26 +4208,32 @@ def n_zero_crosscorr(neuron_list):
     zero_lag_list_index = []
     zero_lag_list_values = None
     zero_lag_list_values = []
+    waveform_mse_list = None
+    waveform_mse_list = []
 
     for i in range(len(neuron_list)):
         for j in range(i+1, len(neuron_list)):
             # select spike timestamps within on/off times for ith neuron
             stimes1 = neuron_list[i].spike_time_sec_onoff
             stimes2 = neuron_list[j].spike_time_sec_onoff
-
-            corr = fftconvolve(stimes1, stimes2[::-1])
+            _, mse, _ = wf_comparison(neuron_list[i].waveforms,
+                                      neuron_list[j].waveforms)
+            corr = sc.stats.zscore(fftconvolve(stimes1, stimes2))
             zero_lag_corr = corr[(len(corr) - 1)//2]
             zero_lag_list_index.append([i, j])
             zero_lag_list_values.append(zero_lag_corr)
+            waveform_mse_list.append(mse)
 
     # get descending order and apply to index and values
     order = np.argsort(zero_lag_list_values)[::-1]
     zcl_in = np.asarray(zero_lag_list_index)
     zcl_vn = np.asarray(zero_lag_list_values)
+    zcl_mse = np.asarray(waveform_mse_list)
     zcl_in = zcl_in[order]
     zcl_vn = zcl_vn[order]
+    zcl_mse = zcl_mse[order]
 
-    return zcl_in, zcl_vn
+    return zcl_in, zcl_vn, zcl_mse
 
 
 def n_save_modified_neuron_list(neuron_list, file_name):
