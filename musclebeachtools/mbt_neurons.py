@@ -3667,7 +3667,8 @@ def check_sametetrode_neurons(channel1, channel2,
 
     '''
     check_sametetrode_neurons(channel1, channel2,
-                              ch_grp_size=4)
+                              ch_grp_size=4,
+                              lverbose=1)
 
     channel1: first channel
     channel2: second channel
@@ -3680,7 +3681,8 @@ def check_sametetrode_neurons(channel1, channel2,
     lsamechannel = \
         check_sametetrode_neurons(neurons[0].peak_channel
                                   neurons[1].peak_channel
-                                  ch_grp_size=4)
+                                  ch_grp_size=4,
+                                  lverbose=1)
     '''
 
     ch_grp_size = 4
