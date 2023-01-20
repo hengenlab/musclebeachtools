@@ -3661,6 +3661,39 @@ def autoqual(neuron_list, model_file,
         return preds, neuron_indices_test
 
 
+def check_sametetrode_neurons(channel1, channel2,
+                              ch_grp_size=4):
+
+    '''
+    check_sametetrode_neurons(channel1, channel2,
+                              ch_grp_size=4)
+
+    channel1: first channel
+    channel2: second channel
+    ch_grp_size : default (4) for tetrodes
+
+    return True or False
+
+
+    lsamechannel = \
+        check_sametetrode_neurons(neurons[0].peak_channel
+                                  neurons[1].peak_channel
+                                  ch_grp_size=4)
+    '''
+
+    ch_grp_size = 4
+    tet = np.arange(channel1 - (channel1 % ch_grp_size),
+                    channel1 + (ch_grp_size -
+                    (channel1 % ch_grp_size)))
+
+    tet2 = np.arange(channel2 - (channel2 % ch_grp_size),
+                     channel2 + (ch_grp_size -
+                     (channel2 % ch_grp_size)))
+    print(channel1,  " ", channel2,  "", tet, "", tet2, "",
+          np.array_equal(tet, tet2))
+    return np.array_equal(tet, tet2)
+
+
 # def n_update_behavior(neuron_list, behavior=None):
 #
 #     '''
