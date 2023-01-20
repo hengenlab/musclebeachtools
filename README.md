@@ -268,8 +268,13 @@ for neuron in neurons:
     neuron.checkqual(savepng=0, png_outdir=None, fix_amp_ylim=500)
 
 # Remove spikes for neuron with large amplitudes
-# Default method based on standard deviation, for example 1.5
+# Default method based on standard deviation,
+For example for neurons of quality 1 and 2,  1.5 to 2.5 standard deviation is fine.
+But quality 3 neurons make sure to use larger deviations or check manualy with lplot=True
+as it contains multiple nuerons/MUA.
+
 n[4].remove_large_amplitude_spikes(1.5, lstd_deviation=True, start=False, end=False, lplot=True)
+
 # Based on threshold value, for example 1000
 n[4].remove_large_amplitude_spikes(1000, lstd_deviation=False, start=False, end=False, lplot=True)
 If you are sure and do not want to check plots
