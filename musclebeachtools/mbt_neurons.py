@@ -3662,7 +3662,8 @@ def autoqual(neuron_list, model_file,
 
 
 def check_sametetrode_neurons(channel1, channel2,
-                              ch_grp_size=4):
+                              ch_grp_size=4,
+                              lverbose=1):
 
     '''
     check_sametetrode_neurons(channel1, channel2,
@@ -3671,6 +3672,7 @@ def check_sametetrode_neurons(channel1, channel2,
     channel1: first channel
     channel2: second channel
     ch_grp_size : default (4) for tetrodes
+    lverbose: default(1) to print tetrodes check
 
     return True or False
 
@@ -3689,8 +3691,9 @@ def check_sametetrode_neurons(channel1, channel2,
     tet2 = np.arange(channel2 - (channel2 % ch_grp_size),
                      channel2 + (ch_grp_size -
                      (channel2 % ch_grp_size)))
-    print(channel1,  " ", channel2,  "", tet, "", tet2, "",
-          np.array_equal(tet, tet2))
+    if lverbose:
+        print(channel1,  " ", channel2,  "", tet, "", tet2, "",
+              np.array_equal(tet, tet2))
     return np.array_equal(tet, tet2)
 
 
