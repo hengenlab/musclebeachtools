@@ -407,7 +407,7 @@ print("Branching ratio ", br1, " pearson corr ", acc1, flush=True)
 #
 # return True or False
 lsamechannel = \
-    check_sametetrode_neurons(neurons[0].peak_channel
+    check_sametetrode_neurons(neurons[0].peak_channel,
                               neurons[1].peak_channel
                               ch_grp_size=4,
                               lverbose=1)
