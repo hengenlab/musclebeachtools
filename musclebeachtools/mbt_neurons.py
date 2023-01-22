@@ -72,7 +72,7 @@ except ImportError:
     if sys.platform == "darwin":
         print('\n\nIn mac please install brew and gcc first')
         print('bash -c "$(curl -fsSL', m, ')"')
-        print('Run command : brew install gcc@5')
+        print('Run command : brew install gcc')
         print('Run command : conda install -c conda-forge xgboost\n\n')
         raise \
             ImportError('Run: conda install -c conda-forge xgboost'
