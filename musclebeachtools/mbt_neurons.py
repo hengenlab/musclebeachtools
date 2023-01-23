@@ -4364,7 +4364,11 @@ def n_check_date_validity(neurons_group0_files_list,
         # check file exist
         if not (op.exists(neurons_file) and op.isfile(neurons_file)):
             raise FileNotFoundError("File {} not found".format(neurons_file))
+
         neurons = np.load(neurons_file, allow_pickle=True)
+        # check neurons is not empty
+        if (len(neurons) == 0):
+            raise ValueError(f'Neuron list is empty {neurons_file}')
 
         if birthday_time_string is None:
             birthday = neurons[0].birthday
