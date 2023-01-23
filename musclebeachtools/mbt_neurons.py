@@ -4322,6 +4322,91 @@ def n_save_modified_neuron_list(neuron_list, file_name):
     logger.info('Saved modified neuron_list, %s.', file_name)
 
 
+def n_check_date_validity(neurons_group0_files_list,
+                          surgeryday_time_string,
+                          sacday_time_string,
+                          birthday_time_string=None):
+    '''
+    def n_check_date_validity(neurons_group0_files_list,
+                              sujday_time_string,
+                              sacday_time_string,
+                              birthday_time_string=None)
+
+    neurons_group0_files_list : list of neurons_group0.npy files
+    surgeryday_time_string : surgery date in the format ('2021-04-15_07-30-00')
+                same as ecube file time format
+    sacday_time_string : sac date in the format ('2021-12-10_07-30-00')
+                same as ecube file time format
+    birthday_time_string : birthday default(None)
+                get birthday from neurons_grou0 file
+                or give date in the format ('2021-01-10_07-30-00')
+                same as ecube file time format
+
+    returns None
+        crashes if the checks fails
+
+
+    import numpy as np
+    import musclebeachtools as mbt
+    import glob
+
+    main_dir = '/media/HlabShare/Clustering_Data/CAF00080/'
+    neurons_group0_files_list = \
+        sorted(glob.glob(main_dir + '/*/*/*/*/H*neurons_group0*'))
+    n_check_date_validity(neurons_group0_files_list,
+                          surgeryday_time_string='2021-02-04_07-30-00',
+                          sacday_time_string='2021-03-08_07-30-00',
+                          birthday_time_string='2020-04-19_07-30-00')
+
+    '''
+
+    for neurons_file in neurons_group0_files_list:
+        neurons = np.load(neurons_file, allow_pickle=True)
+
+        if birthday_time_string is None:
+            birthday = neurons[0].birthday
+        else:
+            birthday = \
+                datetime.strptime(birthday_time_string.replace("_", " "),
+                                  "%Y-%m-%d %H-%M-%S")
+
+        sujday = \
+            datetime.strptime(surgeryday_time_string.replace("_", " "),
+                              "%Y-%m-%d %H-%M-%S")
+
+        sacday = \
+            datetime.strptime(sacday_time_string.replace("_", " "),
+                              "%Y-%m-%d %H-%M-%S")
+
+        e_time_string = neurons[0].rstart_time
+        clust_date = datetime.strptime(e_time_string.replace("_", " "),
+                                       "%Y-%m-%d %H-%M-%S")
+
+        # Check clustering not happened before birthday
+        if (clust_date - birthday).total_seconds() < 0:
+            print(f'birthday is {birthday}')
+            print(f'surgery date is {sujday}')
+            print(f'Clustering date is {clust_date}')
+            print(f'sac date is {sacday}')
+            raise ValueError(f'Clustering data before surjery {neurons_file}')
+
+        # Check clustering not happened before surjery
+        if (clust_date - sujday).total_seconds() < 0:
+            print(f'birthday is {birthday}')
+            print(f'surgery date is {sujday}')
+            print(f'Clustering date is {clust_date}')
+            print(f'sac date is {sacday}')
+            raise ValueError(f'Clustering data before surjery {neurons_file}')
+
+        # Check clustering not happened after sacday
+        if (sacday - clust_date).total_seconds() < 0:
+            print(f'birthday is {birthday}')
+            print(f'surgery date is {sujday}')
+            print(f'Clustering date is {clust_date}')
+            print(f'sac date is {sacday}')
+            raise ValueError(f'Clustering data after sac date {neurons_file}')
+
+
 def load_spike_amplitudes(neuron_list, file_name):
 
     '''
