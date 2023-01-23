@@ -37,6 +37,10 @@ class Test_mbt_load_neuron(unittest.TestCase):
     output_stsec = n[0].spike_time_sec
     expected_output_stsec = np.loadtxt('spike_time_sec.csv', delimiter=',')
 
+    output_gender = n[0].sex
+    expected_output_gender = np.loadtxt('animal_gender.csv',
+                                        delimiter=',', dtype='str')
+
     def test_checkspk(self):
         print(self.expected_output_st)
         print(type(self.expected_output_st))
@@ -92,3 +96,12 @@ class Test_mbt_load_neuron(unittest.TestCase):
         msg = 'spike times sec are different'
         self.assertEqual(self.expected_output_stsec.tolist(),
                          self.output_stsec.tolist(), msg)
+
+    def test_gender(self):
+        print(self.expected_output_gender)
+        print(type(self.expected_output_gender))
+        print(self.output_gender)
+        print(type(self.output_gender))
+        msg = 'gender is different'
+        self.assertEqual(self.expected_output_gender,
+                         self.output_gender, msg)
