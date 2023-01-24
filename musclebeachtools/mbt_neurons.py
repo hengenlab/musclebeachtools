@@ -2077,10 +2077,10 @@ class Neuron:
         amps = self.spike_amplitude * 1.0
         if lstd_deviation:
             amps_m = abs(amps - np.mean(amps))
-            idx_largeamps = np.where(amps_m < (threshold * np.std(amps)))[0]
+            idx_normalamps = np.where(amps_m < (threshold * np.std(amps)))[0]
 
         else:
-            idx_largeamps = np.where(amps < threshold)[0]
+            idx_normalamps = np.where(amps < threshold)[0]
         if lplot:
             with plt.style.context('seaborn-dark-palette'):
                 fig, ax = plt.subplots(nrows=3, ncols=1, squeeze=False,
@@ -2099,9 +2099,10 @@ class Neuron:
                             col.set_xlabel('Time')
                             col.set_ylabel('Amplitude')
                         elif i == 1:
-                            col.plot(amps[idx_largeamps], 'g.')
+                            col.plot(amps[idx_normalamps], 'g.')
                             # col.set_xlim(left=-100,
-                            #             right=len(amps[idx_largeamps]) + 100)
+                            #              right=len(amps[idx_normalamps]) +
+                            #              100)
                             if lstd_deviation:
                                 col.set_title('With large amplitudes removed '
                                               + 'above standard deviation ' +
@@ -2127,12 +2128,12 @@ class Neuron:
                             def remove_ampl(yes_no):
                                 if yes_no == 'Yes':
                                     self.spike_time = \
-                                        self.spike_time[idx_largeamps]
+                                        self.spike_time[idx_normalamps]
                                     self.spike_amplitude = \
-                                        self.spike_amplitude[idx_largeamps]
+                                        self.spike_amplitude[idx_normalamps]
                                     logger.info('Removed %d spikes',
                                                 (len_spks -
-                                                 len(idx_largeamps)))
+                                                 len(idx_normalamps)))
                             radio.on_clicked(remove_ampl)
 
                             col.yaxis.set_label_coords(0.0, 0.15)
@@ -2143,10 +2144,13 @@ class Neuron:
                 plt.show(block=True)
         else:
             self.spike_time = \
-                self.spike_time[idx_largeamps]
+                self.spike_time[idx_normalamps]
             self.spike_amplitude = \
-                self.spike_amplitude[idx_largeamps]
-            logger.info('Removed %d spikes', (len_spks - len(idx_largeamps)))
+                self.spike_amplitude[idx_normalamps]
+            # print(f'Total spikes {len_spks} spikes')
+            # print(f'Normal spikes {len(idx_normalamps)} spikes')
+            # print(f'Removed {len_spks - len(idx_normalamps)} spikes')
+            logger.info('Removed %d spikes', (len_spks - len(idx_normalamps)))
 
     def signal_to_noise(self, file_name):
 
