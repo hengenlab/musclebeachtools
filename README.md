@@ -480,10 +480,10 @@ import glob
 main_dir = '/media/HlabShare/Clustering_Data/CAF00080/'
 neurons_group0_files_list = \
     sorted(glob.glob(main_dir + '/*/*/*/*/H*neurons_group0*'))
-n_check_date_validity(neurons_group0_files_list,
-                      surgeryday_time_string='2021-02-04_07-30-00',
-                      sacday_time_string='2021-03-08_07-30-00',
-                      birthday_time_string='2020-04-19_07-30-00')
+mbt.n_check_date_validity(neurons_group0_files_list,
+                          surgeryday_time_string='2021-02-04_07-30-00',
+                          sacday_time_string='2021-03-08_07-30-00',
+                          birthday_time_string='2020-04-19_07-30-00')
 ```
 ---
 ## FAQ
