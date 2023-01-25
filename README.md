@@ -459,9 +459,11 @@ import musclebeachtools as mbt
 fl = '/media/ckbn/H_2022-05-12_08-59-26_2022-05-12_17-54-28_neurons_group0.npy'
 n = np.load(fl, allow_pickle=True)
 # Autocorr
-n[1].crosscorr(friend=None)
+# default savefig_loc=None, to show plot
+# savefig_loc='/home/kbn/fig_crosscorr.png' to save fig
+n[1].crosscorr(friend=None, savefig_loc=None)
 # Crosscorr
-n[10].crosscorr(friend=n[11])
+n[10].crosscorr(friend=n[11], savefig_loc=None)
 
 
 # zero cross corr
