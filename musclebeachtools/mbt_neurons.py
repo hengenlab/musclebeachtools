@@ -1336,7 +1336,8 @@ class Neuron:
                                           size=np.size(self.spike_time),
                                           dtype='int64'))
 
-    def crosscorr(self, friend=None, dt=1e-3, tspan=1.0, nsegs=None):
+    def crosscorr(self, friend=None, dt=1e-3, tspan=1.0, nsegs=None,
+                  savefig_loc=None):
         # if "friend" argument is not give, compute autocorrelation
         if friend is None:
             print('Computing autocorrelation for cell {:d}.'
@@ -1414,7 +1415,7 @@ class Neuron:
 
             # plotting ----------------------
             # -------------------------------
-            plt.ion()
+            # plt.ion()
             fig = plt.figure(facecolor='white')
             fig.suptitle('Auto-correlation, cell {:d}'.format(self.clust_idx))
             ax2 = fig.add_subplot(311, frame_on=False)
@@ -1446,8 +1447,11 @@ class Neuron:
             ax4.plot(self.waveform)
             plt.tight_layout()
 
-            fig.show()
-            plt.show()
+            if savefig_loc is None:
+                # fig.show()
+                plt.show()
+            else:
+                plt.savefig(savefig_loc)
 
             # -------------------------------
 
@@ -1533,7 +1537,7 @@ class Neuron:
 
             elapsed = time.time() - t_start
             print('Elapsed time: {:.2f} seconds'.format(elapsed))
-            plt.ion()
+            # plt.ion()
             figx = plt.figure(facecolor='white')
             figx.suptitle('Cross-correlation, cells {:d} and {:d}'
                           .format(self.clust_idx, friend.clust_idx))
@@ -1569,8 +1573,11 @@ class Neuron:
             ax4.plot(friend.waveform)
             plt.tight_layout()
 
-            figx.show()
-            plt.show()
+            if savefig_loc is None:
+                # fig.show()
+                plt.show()
+            else:
+                plt.savefig(savefig_loc)
 
         elif not isinstance(friend, Neuron):
             # error out
