@@ -5,19 +5,19 @@ This package used to analyze neuronal data, from basic plotting
  to hard core computational work (ising models, branching ratios, etc).  
 
 ---
-![Tests](https://github.com/hengenlab/musclebeachtools_hlab/actions/workflows/pytests.yml/badge.svg)
+![Tests](https://github.com/hengenlab/musclebeachtools/actions/workflows/pytests.yml/badge.svg)
 
 
 ## Installation
 
 ### Download musclebeachtools
 ```
-git clone https://github.com/hengenlab/musclebeachtools_hlab.git   
+git clone https://github.com/hengenlab/musclebeachtools.git   
 ```
 ### Using pip
 ```
-cd locationofmusclebeachtools_hlab/musclebeachtools_hlab/  
-For example /home/kbn/git/musclebeachtools_hlab  
+cd locationofmusclebeachtools/musclebeachtools/  
+For example /home/kbn/git/musclebeachtools  
 pip install .
 
 # In Linux and windows
@@ -38,7 +38,7 @@ conda install -c conda-forge xgboost
 My Computer > Properties > Advanced System Settings > Environment Variables >  
 In system variables, create a new variable  
     Variable name  : PYTHONPATH  
-    Variable value : location where musclebeachtools_hlab is located  
+    Variable value : location where musclebeachtools is located  
     Click OK
 ```
 
@@ -47,7 +47,7 @@ In system variables, create a new variable
 If you are using bash shell  
 In terminal open .barshrc or .bash_profile  
 add this line  
-export PYTHONPATH=/location_of_musclebeachtools_hlab:$PYTHONPATH
+export PYTHONPATH=/location_of_musclebeachtools:$PYTHONPATH
 ```
 
 ##### Mac
@@ -56,7 +56,7 @@ If you are using bash shell
 In terminal cd ~/  
 then open  .profile using your favourite text editor  
 add this line  
-export PYTHONPATH=/location_of_musclebeachtools_hlab:$PYTHONPATH
+export PYTHONPATH=/location_of_musclebeachtools:$PYTHONPATH
 ```
 -->
 ---
