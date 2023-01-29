@@ -24,7 +24,6 @@ setup(
                (ISI histograms, firing rate, cross corr), to hard core\
                computational work (ising models, branching ratios, etc).',
    license="",
-   long_description=long_description,
    keywords='musclebeachtools, neuroscience, electrophysiology',
    package_dir={'musclebeachtools': 'musclebeachtools'},
    author='Keith Hengen, Sahara Ensley, Kiran Bhaskaran-Nair\
@@ -39,13 +38,14 @@ setup(
    install_requires=[
     'ipython', 'numpy', 'matplotlib', 'seaborn', 'pandas',
     'joblib', 'scipy', 'scikit-learn',
-    'mrestimator@git+https://github.com/Priesemann-Group/mrestimator.git',
-    'neuraltoolkit@git+https://github.com/hengenlab/neuraltoolkit.git',
+    'mrestimator',
+    'neuraltoolkit',
+    # 'mrestimator@git+https://github.com/Priesemann-Group/mrestimator.git',
+    # 'neuraltoolkit@git+https://github.com/hengenlab/neuraltoolkit.git',
     'xgboost'],
    # not added as may be users have their own changes in neuraltoolkit
    # 'neuraltoolkit@git+https://github.com/hengenlab/neuraltoolkit.git'],
    classifiers=[
-        'Development Status :: 3 - Alpha',
         'Natural Language :: English',
         'Programming Language :: Python :: 3',
     ],
