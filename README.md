@@ -12,7 +12,9 @@ This package used to analyze neuronal data, from basic plotting
 
 ### Download musclebeachtools
 ```
-git clone https://github.com/hengenlab/musclebeachtools.git   
+git clone https://github.com/hengenlab/musclebeachtools.git  
+Remember musclebeachtools also installs
+neuraltoolkit (https://github.com/hengenlab/neuraltoolkit)
 ```
 ### Using pip
 ```
