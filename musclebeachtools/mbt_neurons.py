@@ -2015,6 +2015,7 @@ class Neuron:
 
     def remove_large_amplitude_spikes(self, threshold,
                                       lstd_deviation=True,
+                                      lpercentile=False,
                                       start=False, end=False,
                                       lplot=True, lonoff=0):
 
@@ -2024,6 +2025,7 @@ class Neuron:
 
         remove_large_amplitude_spikes(self, threshold,
                                       lstd_deviation=True,
+                                      lpercentile=False,
                                       start=False, end=False,
                                       lplot=True)
 
@@ -2034,6 +2036,11 @@ class Neuron:
             in standard deviation 1.5 for example. If
             lstd_deviation is False then threshold is value
             above which amplitudes are to be remove.
+        lpercentile : default False,  if True, turns off lstd_deviation
+              and remove based on np.percentile
+             amps_m = abs(amps - np.mean(amps))
+             idx_normalamps = np.where(amps_m <
+                                      (np.percentile(amps, threshold)))[0]
         start : Start time (default self.start_time)
         end : End time (default self.end_time)
         lplot : Show plots (default True) allows selection
@@ -2056,12 +2063,14 @@ class Neuron:
         --------
         n1[0].remove_large_amplitude_spikes(threshold,
                                             lstd_deviation=True,
+                                            lpercentile=True,
                                             start=False, end=False,
                                             lplot=True)
 
         '''
 
         logger.info('Removing large amplitude spikes')
+
         # Sample time to time in seconds
         if lonoff:
             time_s = self.spike_time_sec_onoff
@@ -2082,12 +2091,19 @@ class Neuron:
         # Remove spikes based on threshold
         len_spks = len(self.spike_time)
         amps = self.spike_amplitude * 1.0
-        if lstd_deviation:
+        if lpercentile:
             amps_m = abs(amps - np.mean(amps))
-            idx_normalamps = np.where(amps_m < (threshold * np.std(amps)))[0]
-
+            idx_normalamps = np.where(amps_m <
+                                      (np.percentile(amps, threshold)))[0]
         else:
-            idx_normalamps = np.where(amps < threshold)[0]
+            if lstd_deviation:
+                amps_m = abs(amps - np.mean(amps))
+                idx_normalamps = \
+                    np.where(amps_m < (threshold * np.std(amps)))[0]
+
+            else:
+                idx_normalamps = np.where(amps < threshold)[0]
+
         if lplot:
             with plt.style.context('seaborn-dark-palette'):
                 fig, ax = plt.subplots(nrows=3, ncols=1, squeeze=False,
@@ -2110,14 +2126,22 @@ class Neuron:
                             # col.set_xlim(left=-100,
                             #              right=len(amps[idx_normalamps]) +
                             #              100)
-                            if lstd_deviation:
+                            if lpercentile:
                                 col.set_title('With large amplitudes removed '
-                                              + 'above standard deviation ' +
+                                              + 'using percentile ' +
                                               str(threshold))
                             else:
-                                col.set_title('With large amplitudes removed '
-                                              + ' above threshold ' +
-                                              str(threshold))
+                                if lstd_deviation:
+                                    col.set_title('With large amplitudes '
+                                                  + 'removed '
+                                                  + 'above standard '
+                                                  + 'deviation ' +
+                                                  str(threshold))
+                                else:
+                                    col.set_title('With large amplitudes '
+                                                  + 'removed '
+                                                  + ' above threshold ' +
+                                                  str(threshold))
                             col.set_xlabel('Time')
                             col.set_ylabel('Amplitude')
                         elif i == 2:
