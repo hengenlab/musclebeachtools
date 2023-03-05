@@ -258,7 +258,8 @@ neurons = \
 # neuron_list : List of neurons from (usually output from ksout)
 # model_file : model file with path
 mbt.autoqual(neurons, '/media/HlabShare/models/xgb_model')
-
+```
+```
 # Verify quality is correct using checkqual
 # lsavepng : Save checkqual results as png's, default 0
 # png_outdir : Directory to save png files
