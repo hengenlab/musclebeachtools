@@ -2093,8 +2093,13 @@ class Neuron:
         amps = self.spike_amplitude * 1.0
         if lpercentile:
             # amps_m = abs(amps - np.mean(amps))
-            idx_normalamps = np.where(amps <
-                                      (np.percentile(amps, threshold)))[0]
+            # idx_normalamps = np.where(abs(amps) <
+            #                        (np.percentile(abs(amps), threshold)))[0]
+            idx_normalamps = \
+                np.where(np.logical_and(amps >=
+                                        np.percentile(amps, 100-threshold),
+                                        amps <=
+                                        np.percentile(amps, threshold)))[0]
         else:
             if lstd_deviation:
                 amps_m = abs(amps - np.mean(amps))
