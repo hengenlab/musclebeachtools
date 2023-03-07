@@ -2092,8 +2092,8 @@ class Neuron:
         len_spks = len(self.spike_time)
         amps = self.spike_amplitude * 1.0
         if lpercentile:
-            amps_m = abs(amps - np.mean(amps))
-            idx_normalamps = np.where(amps_m <
+            # amps_m = abs(amps - np.mean(amps))
+            idx_normalamps = np.where(amps <
                                       (np.percentile(amps, threshold)))[0]
         else:
             if lstd_deviation:
