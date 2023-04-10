@@ -153,6 +153,7 @@ n1[4].mean_amplitude
 n1[4].cell_type
 n1[4].peaklatency
 n1[4].clust_idx
+n1[4].spike_time_sec_onoff
 
 # Plot mean waveform of 4th neuron
 n1[4].plot_wf()
