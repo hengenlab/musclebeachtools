@@ -2588,7 +2588,7 @@ class Neuron:
         self.off_times = offtimes
 
     def checkqual(self, binsz=3600, start=False, end=False, lsavepng=0,
-                  png_outdir=None, fix_amp_ylim=0):
+                  png_outdir=None, fix_amp_ylim=1):
         # copied from musclebeachtools
 
         '''
@@ -2607,7 +2607,7 @@ class Neuron:
         png_outdir : Directory to save png files
                      if lsavepng=1 and png_outdir=None
                      png's will be saved in current working directory
-        fix_amp_ylim : default 0, yaxis max in amplitude plot.
+        fix_amp_ylim : default 1, yaxis max in amplitude plot.
                        For example can be fix_amp_ylim=500 to see from 0 to 500
                        in amplitude plot.
 
