@@ -260,6 +260,17 @@ neurons = \
 # model_file : model file with path
 mbt.autoqual(neurons, '/media/HlabShare/models/xgb_model')
 ```
+
+```
+# Total number or neurons in one quality
+neurons = np.load(neuron_file, allow_pickle=True)
+
+# print(len(cells))
+q12 = sum( 1 for neuron in neurons if neuron.quality < 3)
+q3 = sum( 1 for neuron in neurons if neuron.quality == 3)
+print(f'Quality 1 and 2 has {q12} neurons and quality 3 has {q3} neurons')
+```
+
 ```
 # Verify quality is correct using checkqual
 # lsavepng : Save checkqual results as png's, default 0
