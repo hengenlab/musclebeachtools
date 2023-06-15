@@ -262,7 +262,7 @@ mbt.autoqual(neurons, '/media/HlabShare/models/xgb_model')
 ```
 
 ```
-# Total number or neurons in one quality
+# Total number of neurons in one quality
 neurons = np.load(neuron_file, allow_pickle=True)
 
 # print(len(cells))
