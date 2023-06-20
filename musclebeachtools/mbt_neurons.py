@@ -3725,7 +3725,7 @@ def check_sametetrode_neurons(channel1, channel2,
                                   lverbose=1)
     '''
 
-    ch_grp_size = 4
+    # ch_grp_size = 4
     tet = np.arange(channel1 - (channel1 % ch_grp_size),
                     channel1 + (ch_grp_size -
                     (channel1 % ch_grp_size)))
