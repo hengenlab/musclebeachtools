@@ -2878,8 +2878,11 @@ class Neuron:
             qual_ax.spines['bottom'].set_visible(False)
             qual_ax.spines['left'].set_visible(False)
             axbox = plt.axes(qual_ax)
+            # radio = RadioButtons(axbox, ('1', '2', '3', '4'))  # ,
+            #                      active=(0, 0, 0, 0))
             radio = RadioButtons(axbox, ('1', '2', '3', '4'),
-                                 active=(0, 0, 0, 0))
+                                 radio_props={'s': [80, 80, 80, 80]})
+
             if self.quality in list([1, 2, 3, 4]):
                 radio.set_active((self.quality - 1))
                 logger.info('Quality is now %d',
