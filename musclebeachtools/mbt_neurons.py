@@ -710,12 +710,16 @@ class Neuron:
         '''
 
         logger.debug('Neuron %d', sp_c)
-        self.clust_idx = np.int16(sp_c)[0]
-        self.spike_time = np.int64(sp_t)
-        self.quality = np.int8(qual)
+        # self.clust_idx = np.int16(sp_c)[0]
+        self.clust_idx = int(sp_c)[0]
+        # self.spike_time = np.int64(sp_t)
+        self.spike_time = int(sp_t)
+        # self.quality = np.int8(qual)
+        self.quality = int(qual)
         self.waveform = mwf
         self.waveforms = mwfs
-        self.peak_channel = np.int16(max_channel)[0]
+        # self.peak_channel = np.int16(max_channel)[0]
+        self.peak_channel = int(max_channel)[0]
 
         self.fs = fs
         self.start_time = start_time
@@ -766,12 +770,15 @@ class Neuron:
             self.rend_time = str(rend_time)
 
         if estart_time is not None:
-            self.estart_time = np.int64(estart_time)
+            # self.estart_time = np.int64(estart_time)
+            self.estart_time = int(estart_time)
         if eend_time is not None:
-            self.eend_time = np.int64(eend_time)
+            # self.eend_time = np.int64(eend_time)
+            self.eend_time = int(eend_time)
 
         if sp_amp is not None:
-            self.spike_amplitude = np.int32(sp_amp)
+            # self.spike_amplitude = np.int32(sp_amp)
+            self.spike_amplitude = int(sp_amp)
 
         if region_loc is not None:
             self.region = region_loc
@@ -782,10 +789,13 @@ class Neuron:
             self.wf_e = wf_e
 
         if key is not None:
-            self.key = np.asarray([np.int16(key[0]), np.int16(key[1]),
+            # self.key = np.asarray([np.int16(key[0]), np.int16(key[1]),
+            #                        str(key[2])])
+            self.key = np.asarray([int(key[0]), int(key[1]),
                                    str(key[2])])
         else:
-            self.key = np.asarray([np.int16(-1), np.int16(-1), str("")])
+            # self.key = np.asarray([np.int16(-1), np.int16(-1), str("")])
+            self.key = np.asarray([int(-1), int(-1), str("")])
 
         if qual_prob is not None:
             self.qual_prob = qual_prob
@@ -862,7 +872,8 @@ class Neuron:
                 print("ik ", ik, " jk ", jk)
                 if ik == "clust_idx":
                     new_clust_idx = np.array([10000 + iv])
-                    print(np.int16(new_clust_idx)[0])
+                    # print(np.int16(new_clust_idx)[0])
+                    print(int(new_clust_idx)[0])
                     print("new_clust_idx ", new_clust_idx)
                 elif ik == "spike_time":
                     new_spike_time = np.concatenate((iv, jv), axis=0)
@@ -1080,13 +1091,15 @@ class Neuron:
             if len(good_times) < 1:
                 raise ValueError('No spikes for this cell with onoff times')
             else:
-                good_times = np.int64(np.asarray(good_times).flatten())
+                # good_times = np.int64(np.asarray(good_times).flatten())
+                good_times = int(np.asarray(good_times).flatten())
                 # print("g0 ", good_times)
                 good_times = good_times[(np.where(good_times >= 0)[0])]
                 # print("g0 ", good_times)
                 # time_s_onoff = time_s_onoff[np.int64(np.asarray(good_times)
                 # .flatten())]
-                time_s_onoff = time_s_onoff[np.int64(good_times)]
+                # time_s_onoff = time_s_onoff[np.int64(good_times)]
+                time_s_onoff = time_s_onoff[int(good_times)]
                 # print("time_s_onoff ", time_s_onoff)
                 # check whether length of on off time is greater
                 if (len(time_s_onoff) > len(self.spike_time)):
@@ -1363,7 +1376,8 @@ class Neuron:
             # between the first and last one in subset
             if nsegs is None:
                 # #ckbn nsegs = np.int(np.ceil(np.max(self.spike_time/120)))
-                nsegs = np.int(np.ceil(np.max(self.spike_time_sec/120)))
+                # nsegs = np.int(np.ceil(np.max(self.spike_time_sec/120)))
+                nsegs = int(np.ceil(np.max(self.spike_time_sec/120)))
             print('\tUsing {:d} segments.'.format(nsegs))
             segindx = np.ceil(np.linspace(subset[0], subset[-1], nsegs))
             # The spikes pointed at by the indices in "segindx" are
@@ -1487,8 +1501,10 @@ class Neuron:
             if nsegs is None:
                 # #ckbn nsegs1 = np.int(np.ceil(np.max(self.spike_time/120)))
                 # #ckbn nsegs2 = np.int(np.ceil(np.max(friend.spike_time/120)))
-                nsegs1 = np.int(np.ceil(np.max(self.spike_time_sec/120)))
-                nsegs2 = np.int(np.ceil(np.max(friend.spike_time_sec/120)))
+                # nsegs1 = np.int(np.ceil(np.max(self.spike_time_sec/120)))
+                nsegs1 = int(np.ceil(np.max(self.spike_time_sec/120)))
+                # nsegs2 = np.int(np.ceil(np.max(friend.spike_time_sec/120)))
+                nsegs2 = int(np.ceil(np.max(friend.spike_time_sec/120)))
                 nsegs = max(nsegs1, nsegs2)
             print('\tUsing {:d} segments.'.format(nsegs))
             # Take a subset of indices. We want "nsegs" elements,
@@ -2291,7 +2307,8 @@ class Neuron:
         tmp_qual_prob = np.zeros(4)
         tmp_qual_prob[qual - 1] = 100.00
         self.qual_prob = tmp_qual_prob
-        self.quality = np.int8(qual)
+        # self.quality = np.int8(qual)
+        self.quality = int(qual)
         logger.info('Changing quality of unit {} is now {}'
                     .format(self.clust_idx, self.quality))
 
@@ -4116,14 +4133,18 @@ def n_spiketimes_to_spikewords(neuron_list, binsz=0.02,
 
     if binarize == 1:
         if (spikewords_array < 128).all():
-            return (spikewords_array.astype(np.int8))
+            # return (spikewords_array.astype(np.int8))
+            return (spikewords_array.astype(int))
         else:
-            return (spikewords_array.astype(np.int32))
+            # return (spikewords_array.astype(np.int32))
+            return (spikewords_array.astype(int))
     elif binarize == 0:
         if (spikewords_array < 2147483647).all():
-            return (spikewords_array.astype(np.int32))
+            # return (spikewords_array.astype(np.int32))
+            return (spikewords_array.astype(int))
         else:
-            return (spikewords_array.astype(np.int64))
+            # return (spikewords_array.astype(np.int64))
+            return (spikewords_array.astype(int))
 
 
 def n_branching_ratio(neuron_list, ava_binsz=0.004,
@@ -4873,7 +4894,8 @@ def ksout(datadir, filenum=0, prbnum=1, filt=None):
     end_time = re.search('%s(.*)%s' % ('-timee_', '_length_'),
                          basename).group(1)
     # Convert to seconds
-    end_time = (np.double(np.int64(end_time) - np.int64(start_time))/1e9)
+    # end_time = (np.double(np.int64(end_time) - np.int64(start_time))/1e9)
+    end_time = (np.double(int(end_time) - int(start_time))/1e9)
     # reset start to zero
     start_time = np.double(0.0)
     print((end_time - start_time))
@@ -5022,7 +5044,8 @@ def amp_spike_projection(cells, clust_num, num_chans, probe_num, raw_dir,
     point = [0]
 
     def onclick(event):
-        point[0] = np.int(event.xdata)
+        # point[0] = np.int(event.xdata)
+        point[0] = int(event.xdata)
         print("You have selected ", point[0])
 
     plt.ion()
