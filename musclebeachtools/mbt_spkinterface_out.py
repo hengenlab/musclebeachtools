@@ -146,9 +146,13 @@ def siout(sorted_data, noflylist, rec_time,
                                          rstart_time=str(file_datetime_list
                                                          [0]),
                                          rend_time=str(file_datetime_list[1]),
-                                         estart_time=np.int64(ecube_time_list
+                                         # estart_time=np.int64(ecube_time_list
+                                         #                      [0]),
+                                         estart_time=int(ecube_time_list
                                                               [0]),
-                                         eend_time=np.int64(ecube_time_list
+                                         # eend_time=np.int64(ecube_time_list
+                                         #                    [1]),
+                                         eend_time=int(ecube_time_list
                                                             [1]),
                                          sp_amp=amps[unit_idx],
                                          wf_b=np.asarray(wf_b[unit_idx]).T,
@@ -170,9 +174,13 @@ def siout(sorted_data, noflylist, rec_time,
                                          rstart_time=str(file_datetime_list
                                                          [0]),
                                          rend_time=str(file_datetime_list[1]),
-                                         estart_time=np.int64(ecube_time_list
+                                         # estart_time=np.int64(ecube_time_list
+                                         #                      [0]),
+                                         estart_time=int(ecube_time_list
                                                               [0]),
-                                         eend_time=np.int64(ecube_time_list
+                                         # eend_time=np.int64(ecube_time_list
+                                         #                    [1]),
+                                         eend_time=int(ecube_time_list
                                                             [1]),
                                          sp_amp=amps[unit_idx],
                                          sex=sex, birthday=birthday,
@@ -194,8 +202,10 @@ def siout(sorted_data, noflylist, rec_time,
                                  mwft=mwf_list,
                                  rstart_time=str(file_datetime_list[0]),
                                  rend_time=str(file_datetime_list[1]),
-                                 estart_time=np.int64(ecube_time_list[0]),
-                                 eend_time=np.int64(ecube_time_list[1]),
+                                 # estart_time=np.int64(ecube_time_list[0]),
+                                 estart_time=int(ecube_time_list[0]),
+                                 # eend_time=np.int64(ecube_time_list[1]),
+                                 eend_time=int(ecube_time_list[1]),
                                  sex=sex, birthday=birthday, species=species,
                                  animal_name=animal_name,
                                  region_loc=region_loc,
@@ -342,7 +352,8 @@ def mbt_spkinterface_out(
 
     try:
         rl = glob.glob('*_t_ch_size0.npy')[0]
-        t_ch_size = np.int(mb.load_np(rl, lpickle=True))
+        # t_ch_size = np.int(mb.load_np(rl, lpickle=True))
+        t_ch_size = int(mb.load_np(rl, lpickle=True))
     except Exception as e:
         print("Error: ", e)
         t_ch_size = 4
