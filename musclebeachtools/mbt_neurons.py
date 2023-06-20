@@ -1092,14 +1092,16 @@ class Neuron:
                 raise ValueError('No spikes for this cell with onoff times')
             else:
                 # good_times = np.int64(np.asarray(good_times).flatten())
-                good_times = int(np.asarray(good_times).flatten())
+                # good_times = int(np.asarray(good_times).flatten())
+                good_times = np.asarray(good_times, dtype=int).flatten()
                 # print("g0 ", good_times)
                 good_times = good_times[(np.where(good_times >= 0)[0])]
                 # print("g0 ", good_times)
                 # time_s_onoff = time_s_onoff[np.int64(np.asarray(good_times)
                 # .flatten())]
                 # time_s_onoff = time_s_onoff[np.int64(good_times)]
-                time_s_onoff = time_s_onoff[int(good_times)]
+                # time_s_onoff = time_s_onoff[int(good_times)]
+                time_s_onoff = time_s_onoff[good_times]
                 # print("time_s_onoff ", time_s_onoff)
                 # check whether length of on off time is greater
                 if (len(time_s_onoff) > len(self.spike_time)):
