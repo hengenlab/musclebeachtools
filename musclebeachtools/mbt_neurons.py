@@ -711,15 +711,15 @@ class Neuron:
 
         logger.debug('Neuron %d', sp_c)
         # self.clust_idx = np.int16(sp_c)[0]
-        self.clust_idx = int(sp_c)[0]
+        self.clust_idx = int(sp_c[0])
         # self.spike_time = np.int64(sp_t)
-        self.spike_time = int(sp_t)
+        self.spike_time = np.array(sp_t, dtype=int)
         # self.quality = np.int8(qual)
         self.quality = int(qual)
         self.waveform = mwf
         self.waveforms = mwfs
         # self.peak_channel = np.int16(max_channel)[0]
-        self.peak_channel = int(max_channel)[0]
+        self.peak_channel = int(max_channel[0])
 
         self.fs = fs
         self.start_time = start_time
