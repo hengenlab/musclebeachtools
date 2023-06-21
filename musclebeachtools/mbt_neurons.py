@@ -2176,8 +2176,15 @@ class Neuron:
                             col.spines['bottom'].set_visible(False)
                             col.spines['left'].set_visible(False)
                             axbox = plt.axes([0.128, 0.04, 0.17, 0.17])
-                            radio = RadioButtons(axbox, ('Yes', 'No'),
-                                                 active=(0, 0))
+                            try:
+                                radio = RadioButtons(axbox, ('Yes', 'No'),
+                                                     active=(0, 0))
+                            except Exception as e:
+                                # ugly until old every update to latest
+                                e = e + ""
+                                radio = RadioButtons(axbox, ('Yes', 'No'),
+                                                     radio_props={'s':
+                                                                  [80, 80]})
 
                             def remove_ampl(yes_no):
                                 if yes_no == 'Yes':
@@ -2878,10 +2885,13 @@ class Neuron:
             qual_ax.spines['bottom'].set_visible(False)
             qual_ax.spines['left'].set_visible(False)
             axbox = plt.axes(qual_ax)
-            # radio = RadioButtons(axbox, ('1', '2', '3', '4'))  # ,
-            #                      active=(0, 0, 0, 0))
-            radio = RadioButtons(axbox, ('1', '2', '3', '4'),
-                                 radio_props={'s': [80, 80, 80, 80]})
+            try:
+                radio = RadioButtons(axbox, ('1', '2', '3', '4'),
+                                     active=(0, 0, 0, 0))
+            except Exception as e:
+                e = e + ""  # ugly until old every update to latest
+                radio = RadioButtons(axbox, ('1', '2', '3', '4'),
+                                     radio_props={'s': [80, 80, 80, 80]})
 
             if self.quality in list([1, 2, 3, 4]):
                 radio.set_active((self.quality - 1))
