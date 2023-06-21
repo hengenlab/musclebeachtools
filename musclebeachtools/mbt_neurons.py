@@ -778,7 +778,7 @@ class Neuron:
 
         if sp_amp is not None:
             # self.spike_amplitude = np.int32(sp_amp)
-            self.spike_amplitude = int(sp_amp)
+            self.spike_amplitude = np.array(sp_amp, dtype=int)
 
         if region_loc is not None:
             self.region = region_loc
