@@ -2186,7 +2186,7 @@ class Neuron:
                                                      active=(0, 0))
                             except Exception as e:
                                 # ugly until old every update to latest
-                                e = e + ""
+                                e = e
                                 radio = RadioButtons(axbox, ('Yes', 'No'),
                                                      radio_props={'s':
                                                                   [80, 80]})
@@ -2894,7 +2894,7 @@ class Neuron:
                 radio = RadioButtons(axbox, ('1', '2', '3', '4'),
                                      active=(0, 0, 0, 0))
             except Exception as e:
-                e = e + ""  # ugly until old every update to latest
+                e = e  # ugly until old every update to latest
                 radio = RadioButtons(axbox, ('1', '2', '3', '4'),
                                      radio_props={'s': [80, 80, 80, 80]})
 
