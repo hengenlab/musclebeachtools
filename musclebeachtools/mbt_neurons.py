@@ -869,11 +869,12 @@ class Neuron:
         for ik, iv, jk, jv in zip(self_dict.keys(), self_dict.values(),
                                   new_dict.keys(), new_dict.values()):
             if ik == jk:
-                print("ik ", ik, " jk ", jk)
+                # print("ik ", ik, " iv ", iv, " jk ", jk, " jv ", jv)
                 if ik == "clust_idx":
-                    new_clust_idx = np.array([10000 + iv])
+                    # new_clust_idx = np.array([10000 + iv])
+                    new_clust_idx = np.random.randint(10000, 10000000000, 1)
                     # print(np.int16(new_clust_idx)[0])
-                    print(int(new_clust_idx)[0])
+                    # print(int(new_clust_idx[0]))
                     print("new_clust_idx ", new_clust_idx)
                 elif ik == "spike_time":
                     new_spike_time = np.concatenate((iv, jv), axis=0)
