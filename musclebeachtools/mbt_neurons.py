@@ -1352,7 +1352,7 @@ class Neuron:
                                           dtype='int64'))
 
     def crosscorr(self, friend=None, dt=1e-3, tspan=1.0, nsegs=None,
-                  savefig_loc=None):
+                  savefig_loc=None, lplot=1):
         # if "friend" argument is not give, compute autocorrelation
         if friend is None:
             print('Computing autocorrelation for cell {:d}.'
@@ -1432,42 +1432,44 @@ class Neuron:
             # plotting ----------------------
             # -------------------------------
             # plt.ion()
-            fig = plt.figure(facecolor='white')
-            fig.suptitle('Auto-correlation, cell {:d}'.format(self.clust_idx))
-            ax2 = fig.add_subplot(311, frame_on=False)
+            if lplot:
+                fig = plt.figure(facecolor='white')
+                fig.suptitle('Auto-correlation, cell {:d}'
+                             .format(self.clust_idx))
+                ax2 = fig.add_subplot(311, frame_on=False)
 
-            ax2.bar(1000*np.arange(-tspan+dt, tspan, dt), Y,
-                    width=0.5, color='k')
-            xlim2 = 100  # in milliseconds
-            tickstep2 = 20  # in milliseconds
-            ax2.set_xlim(0, xlim2)
-            ax2_ticks = [i for i in range(0, xlim2+1, tickstep2)]
-            ax2_labels = [str(i) for i in ax2_ticks]
-            ax2.set_xticks(ax2_ticks)
-            ax2.set_xticklabels(ax2_labels)
-            ax2.set_ylabel('Counts')
+                ax2.bar(1000*np.arange(-tspan+dt, tspan, dt), Y,
+                        width=0.5, color='k')
+                xlim2 = 100  # in milliseconds
+                tickstep2 = 20  # in milliseconds
+                ax2.set_xlim(0, xlim2)
+                ax2_ticks = [i for i in range(0, xlim2+1, tickstep2)]
+                ax2_labels = [str(i) for i in ax2_ticks]
+                ax2.set_xticks(ax2_ticks)
+                ax2.set_xticklabels(ax2_labels)
+                ax2.set_ylabel('Counts')
 
-            ax3 = fig.add_subplot(312, frame_on=False)
-            ax3.bar(1000*np.arange(-tspan+dt, tspan, dt), Y,
-                    width=0.5, color='k')
-            xlim3 = int(tspan*1000)  # milliseconds - set to tspan
-            tickstep3 = int(xlim3/5)  # milliseconds
-            ax3_ticks = [i for i in range(-xlim3, xlim3+1, tickstep3)]
-            ax3_labels = [str(i) for i in ax3_ticks]
-            ax3.set_xticks(ax3_ticks)
-            ax3.set_xticklabels(ax3_labels)
-            ax3.set_ylabel('Counts')
-            ax3.set_xlabel('Lag (ms)')
+                ax3 = fig.add_subplot(312, frame_on=False)
+                ax3.bar(1000*np.arange(-tspan+dt, tspan, dt), Y,
+                        width=0.5, color='k')
+                xlim3 = int(tspan*1000)  # milliseconds - set to tspan
+                tickstep3 = int(xlim3/5)  # milliseconds
+                ax3_ticks = [i for i in range(-xlim3, xlim3+1, tickstep3)]
+                ax3_labels = [str(i) for i in ax3_ticks]
+                ax3.set_xticks(ax3_ticks)
+                ax3.set_xticklabels(ax3_labels)
+                ax3.set_ylabel('Counts')
+                ax3.set_xlabel('Lag (ms)')
 
-            ax4 = fig.add_subplot(313, frame_on=False)
-            ax4.plot(self.waveform)
-            plt.tight_layout()
+                ax4 = fig.add_subplot(313, frame_on=False)
+                ax4.plot(self.waveform)
+                plt.tight_layout()
 
-            if savefig_loc is None:
-                # fig.show()
-                plt.show()
-            else:
-                plt.savefig(savefig_loc)
+                if savefig_loc is None:
+                    # fig.show()
+                    plt.show()
+                else:
+                    plt.savefig(savefig_loc)
 
             # -------------------------------
 
@@ -1556,52 +1558,54 @@ class Neuron:
             elapsed = time.time() - t_start
             print('Elapsed time: {:.2f} seconds'.format(elapsed))
             # plt.ion()
-            figx = plt.figure(facecolor='white')
-            figx.suptitle('Cross-correlation, cells {:d} and {:d}'
-                          .format(self.clust_idx, friend.clust_idx))
+            if lplot:
+                figx = plt.figure(facecolor='white')
+                figx.suptitle('Cross-correlation, cells {:d} and {:d}'
+                              .format(self.clust_idx, friend.clust_idx))
 
-            ax2 = figx.add_subplot(311, frame_on=False)
+                ax2 = figx.add_subplot(311, frame_on=False)
 
-            ax2.bar(1000*np.arange(-tspan+dt, tspan, dt), Y,
-                    width=0.5, color='k')
-            xlim2 = int(200)  # in milliseconds
-            tickstep2 = int(xlim2/5)  # in milliseconds
-            ax2.set_xlim(-xlim2, xlim2)
-            ax2_ticks = [i for i in range(-xlim2, xlim2+1, tickstep2)]
-            ax2_labels = [str(i) for i in ax2_ticks]
-            # ax2_labels = str(ax2_labels)
-            ax2.set_xticks(ax2_ticks)
-            ax2.set_xticklabels(ax2_labels)
-            ax2.set_ylabel('Counts')
+                ax2.bar(1000*np.arange(-tspan+dt, tspan, dt), Y,
+                        width=0.5, color='k')
+                xlim2 = int(200)  # in milliseconds
+                tickstep2 = int(xlim2/5)  # in milliseconds
+                ax2.set_xlim(-xlim2, xlim2)
+                ax2_ticks = [i for i in range(-xlim2, xlim2+1, tickstep2)]
+                ax2_labels = [str(i) for i in ax2_ticks]
+                # ax2_labels = str(ax2_labels)
+                ax2.set_xticks(ax2_ticks)
+                ax2.set_xticklabels(ax2_labels)
+                ax2.set_ylabel('Counts')
 
-            ax3 = figx.add_subplot(312, frame_on=False)
-            ax3.bar(1000*np.arange(-tspan+dt, tspan, dt), Y,
-                    width=0.5, color='k')
-            xlim3 = int(tspan*1000)  # milliseconds - set to tspan
-            tickstep3 = int(xlim3/5)  # milliseconds
-            ax3_ticks = [i for i in range(-xlim3, xlim3+1, tickstep3)]
-            ax3_labels = [str(i) for i in ax3_ticks]
-            ax3.set_xticks(ax3_ticks)
-            ax3.set_xticklabels(ax3_labels)
-            ax3.set_ylabel('Counts')
-            ax3.set_xlabel('Lag (ms)')
+                ax3 = figx.add_subplot(312, frame_on=False)
+                ax3.bar(1000*np.arange(-tspan+dt, tspan, dt), Y,
+                        width=0.5, color='k')
+                xlim3 = int(tspan*1000)  # milliseconds - set to tspan
+                tickstep3 = int(xlim3/5)  # milliseconds
+                ax3_ticks = [i for i in range(-xlim3, xlim3+1, tickstep3)]
+                ax3_labels = [str(i) for i in ax3_ticks]
+                ax3.set_xticks(ax3_ticks)
+                ax3.set_xticklabels(ax3_labels)
+                ax3.set_ylabel('Counts')
+                ax3.set_xlabel('Lag (ms)')
 
-            ax4 = figx.add_subplot(313, frame_on=False)
-            ax4.plot(self.waveform)
-            ax4.plot(friend.waveform)
-            plt.tight_layout()
+                ax4 = figx.add_subplot(313, frame_on=False)
+                ax4.plot(self.waveform)
+                ax4.plot(friend.waveform)
+                plt.tight_layout()
 
-            if savefig_loc is None:
-                # fig.show()
-                plt.show()
-            else:
-                plt.savefig(savefig_loc)
+                if savefig_loc is None:
+                    # fig.show()
+                    plt.show()
+                else:
+                    plt.savefig(savefig_loc)
 
         elif not isinstance(friend, Neuron):
             # error out
             msg = '''ERROR: Second argument to crosscorr should be an
                             instance of neuron class.'''
             raise TypeError(msg)
+        return Y
 
     def plot_wf(self):
         '''
