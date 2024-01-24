@@ -3997,6 +3997,85 @@ def n_plot_neuron_wfs(neuron_list, maxqual=None,
         plt.savefig(op.join(saveloc, pltname))
 
 
+def n_checkqual_pdf(neuron_list, savepdf, maxqual=None,
+                    binsz=3600, start=False, end=False,
+                    fix_amp_ylim=1):
+    '''
+    Plot all neurons checkqual and save in savepdf
+
+    n_checkqual_pdf(neuron_list, savepdf, maxqual=[1, 2, 3, 4],
+                    binsz=3600, start=False, end=False,
+                    fix_amp_ylim=1):
+
+    Parameters
+    ----------
+    neuron_list : List of neurons
+    savepdf : filename with path to save pdf
+    maxqual : default [1, 2, 3, 4], filter by quality,
+              neuron.quality in maxqual
+
+    binsz : Bin size (default 3600)
+    start : Start time (default self.start_time)
+    end : End time (default self.end_time)
+    fix_amp_ylim : default 1, yaxis max in amplitude plot.
+                   For example can be fix_amp_ylim=500 to see from 0 to 500
+                   in amplitude plot.
+
+
+    Returns
+    -------
+    Save pdf in savepdf file
+
+    Raises
+    ------
+    ValueError if neuron list is empty
+    FileExistsError if savepdf base directory not found
+
+    See Also
+    --------
+
+    Notes
+    -----
+
+    Examples
+    --------
+    n_checkqual_pdf(neuron_list, savepdf, maxqual=[1, 2, 3, 4],
+                    binsz=3600, start=False, end=False,
+                    fix_amp_ylim=1):
+
+    '''
+
+    try:
+        from matplotlib.backends.backend_pdf import PdfPages
+    except ImportError:
+        print("from matplotlib.backends.backend_pdf import PdfPages")
+        raise ImportError('Run command : pip install matplotlib')
+
+    logger.info('Plot all neurons checkqual and save in savepdf')
+    # check neuron_list is not empty
+    if (len(neuron_list) == 0):
+        raise ValueError('Neuron list is empty')
+
+    if maxqual is None:
+        maxqual = [1, 2, 3, 4]
+
+    # check savepdf
+    if not op.exists(op.dirname(savepdf)):
+        raise FileExistsError("Folder {} not found"
+                              .format(op.exists(op.dirname(savepdf))))
+
+    # Save checkqual to pdf
+    with PdfPages(savepdf) as pdf:
+        for neuron in neuron_list:
+            if neuron.quality in maxqual:
+                fig = neuron.checkqual(lsavepng=2)
+                pdf.savefig(fig)
+                plt.close(fig)
+
+    # print done
+    print(f"Done saving {savepdf}")
+
+
 def n_getspikes(neuron_list, start=False, end=False, lonoff=1):
 
     '''
