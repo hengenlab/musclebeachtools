@@ -332,6 +332,38 @@ mbt.n_plot_neuron_wfs(n, maxqual=[1, 2, 3, 4], pltname="block1")
 # To save plot
 mbt.n_plot_neuron_wfs(n, maxqual=[1], pltname="block1",
                       saveloc='/home/kbn/')
+```
+
+```
+Plot all neurons checkqual (figure) and save as pdf
+fl = '/home/kbn/probe1/co/H_2023-12-29_23-09-54_2023-12-30_11-04-55_neurons_group0.npy'
+
+# Load neurons
+neuron_list = np.load(fl, allow_pickle=True)
+
+# def n_checkqual_pdf(neuron_list, savepdf, maxqual=None,
+#                     binsz=3600, start=False, end=False,
+#                     fix_amp_ylim=1):
+#
+#     neuron_list : List of neurons
+#     savepdf : filename with path to save pdf
+#     maxqual : default [1, 2, 3, 4], filter by quality,
+#               neuron.quality in maxqual
+
+#     binsz : Bin size (default 3600)
+#     start : Start time (default self.start_time)
+#     end : End time (default self.end_time)
+#     fix_amp_ylim : default 1, yaxis max in amplitude plot.
+#                    For example can be fix_amp_ylim=500 to see from 0 to 500
+#                    in amplitude plot.
+savepdf = '/home/kbn/probe1/co/H_2023-12-29_23-09-54_2023-12-30_11-04-55_neurons_group0_checkqual.pdf'
+# call n_checkqual_pdf to save as savepdf
+mbt.n_checkqual_pdf(neuron_list, savepdf, maxqual=None,
+                    binsz=3600, start=False, end=False,
+                    fix_amp_ylim=1)
+```
+
+```
 
 # To create neuron list from spikeinteface output folder in spikeinterface environmnet
 import numpy as np
