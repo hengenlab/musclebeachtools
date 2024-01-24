@@ -4062,7 +4062,7 @@ def n_checkqual_pdf(neuron_list, savepdf, maxqual=None,
     # check savepdf
     if not op.exists(op.dirname(savepdf)):
         raise FileExistsError("Folder {} not found"
-                              .format(op.exists(op.dirname(savepdf))))
+                              .format(op.dirname(savepdf)))
 
     # Save checkqual to pdf
     with PdfPages(savepdf) as pdf:
