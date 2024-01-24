@@ -2635,9 +2635,13 @@ class Neuron:
         start : Start time (default self.start_time)
         end : End time (default self.end_time)
         lsavepng : Save checkqual results as png's
+                   if lsavepng is 1, save in png_outdir as png
+                   else lsavepng is 2, return figure
         png_outdir : Directory to save png files
                      if lsavepng=1 and png_outdir=None
                      png's will be saved in current working directory
+                     else lsavepng=1 and png_outdir is path to directory
+                     png's will be saved in png_outdir directory
         fix_amp_ylim : default 1, yaxis max in amplitude plot.
                        For example can be fix_amp_ylim=500 to see from 0 to 500
                        in amplitude plot.
@@ -2661,7 +2665,7 @@ class Neuron:
         '''
 
         logger.info('Plotting figures for checking quality')
-        if lsavepng:
+        if lsavepng == 1:
             if png_outdir is not None:
                 if not os.path.exists(png_outdir):
                     raise \
@@ -2974,7 +2978,7 @@ class Neuron:
             qual_ax.set_xlabel("Press 'q' to exit")
             qual_ax.xaxis.set_label_coords(0.1, -0.1)
 
-            if lsavepng:
+            if lsavepng == 1:
                 if png_outdir is None:
                     png_outdir = os.getcwd()
                 try:
@@ -2987,6 +2991,8 @@ class Neuron:
                 except Exception as e:
                     print("Error ", e)
                     raise RuntimeError('Error saving {}'.format(png_filename))
+            elif lsavepng == 2:
+                return fig
             else:
                 plt.show(block=True)
 
