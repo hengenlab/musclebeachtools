@@ -2673,7 +2673,18 @@ class Neuron:
                                            .format(png_outdir))
 
         # sharex=True, sharey=True,  figsize=(4, 4),
-        with plt.style.context('seaborn-dark-palette'):
+        try:
+            with plt.style.context('seaborn-dark-palette'):
+                fig_tmp = plt.figure(constrained_layout=True, figsize=(11, 8))
+                plt_background = 'seaborn-dark-palette'
+        except Exception as e:
+            print(f'{e} switching to dark-background')
+            with plt.style.context('dark-background'):
+                fig_tmp = plt.figure(constrained_layout=True, figsize=(11, 8))
+                plt_background = 'dark-background'
+        del fig_tmp
+
+        with plt.style.context(plt_background):
             # unsure what the constrained layout thing does
             fig = plt.figure(constrained_layout=True, figsize=(11, 8))
             gs = fig.add_gridspec(4, 3)
