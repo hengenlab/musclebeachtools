@@ -2678,10 +2678,10 @@ class Neuron:
                 fig_tmp = plt.figure(constrained_layout=True, figsize=(11, 8))
                 plt_background = 'seaborn-dark-palette'
         except Exception as e:
-            print(f'{e} switching to dark-background')
-            with plt.style.context('dark-background'):
+            print(f'{e} switching to dark_background')
+            with plt.style.context('dark_background'):
                 fig_tmp = plt.figure(constrained_layout=True, figsize=(11, 8))
-                plt_background = 'dark-background'
+                plt_background = 'dark_background'
         del fig_tmp
 
         with plt.style.context(plt_background):
