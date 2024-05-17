@@ -9,10 +9,17 @@ def get_group_value(channel, group_size):
     channel (int): The channel number.
     group_size (int): The number of groups.
 
-    group_size must be greater than 0.
+    Group size must not be zero or negative
+    channel must be non-negative
 
     Returns
         int: The group value (0 to group_size - 1).
 '''
+
+    # raise errors
+    if channel < 0:
+        raise ValueError("Channel must be non-negative")
+    if group_size <= 0:
+        raise ValueError("Group size must not be zero or negative")
 
     return int(channel % group_size)
