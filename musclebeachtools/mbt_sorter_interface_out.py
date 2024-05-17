@@ -15,5 +15,4 @@ def get_group_value(channel, group_size):
         int: The group value (0 to group_size - 1).
 '''
 
-
     return int(channel % group_size)
