@@ -22,14 +22,6 @@ def test_get_group_value():
     assert get_group_value(100, 6) == 4
     assert get_group_value(101, 10) == 1
 
-    # # Edge case: channel is negative
-    # with pytest.raises(ValueError):
-    #     get_group_value(-1, 3)
-
-    # # Edge case: group_size is zero
-    # with pytest.raises(ZeroDivisionError):
-    #     get_group_value(10, 0)
-
 
 if __name__ == "__main__":
     pytest.main()
