@@ -1,6 +1,7 @@
 import pytest
 from musclebeachtools import get_group_value
 
+
 def test_get_group_value():
     # Test with typical values
     assert get_group_value(5, 3) == 2
@@ -29,6 +30,6 @@ def test_get_group_value():
     # with pytest.raises(ZeroDivisionError):
     #     get_group_value(10, 0)
 
+
 if __name__ == "__main__":
     pytest.main()
-
