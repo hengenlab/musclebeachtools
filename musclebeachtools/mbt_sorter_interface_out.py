@@ -441,7 +441,7 @@ def mbt_sorter_interface_out(
                    genotype=genotype,
                    expt_cond=expt_cond,
                    lskipautoqual=None,
-                   min_amps=10)
+                   min_amps=15)
 
     # wfs=wfs,
     # peak_channels=peak_channel,
