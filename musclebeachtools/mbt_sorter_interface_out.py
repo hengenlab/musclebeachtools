@@ -399,6 +399,7 @@ def mbt_sorter_interface_out(
 
     rl = glob.glob('*_peak_channel_group0.npy')[0]
     peak_channels = mb.load_np(rl, lpickle=True)
+    peak_channels = list(peak_channels[()].values())
 
     rl = glob.glob('*_b_waveforms_group0.npy')[0]
     wf_b = mb.load_np(rl, lpickle=True)
