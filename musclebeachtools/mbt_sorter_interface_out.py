@@ -48,7 +48,8 @@ def ms5out(sorted_data, noflylist, rec_time,
            genotype=None,
            expt_cond=None,
            lskipautoqual=None,
-           min_amps=10):
+           min_amps=10,
+           lverbose=0):
     '''
     function to load neuron objects from the spike interface output
 
@@ -82,8 +83,9 @@ def ms5out(sorted_data, noflylist, rec_time,
     '''
 
     # filt to empty list
-    print("dir sorted_data ", dir(sorted_data), flush=True)
-    print(f'amps {amps}')
+    if lverbose:
+        print("dir sorted_data ", dir(sorted_data), flush=True)
+        print(f'amps {amps}')
     amps = amps[0]
     amps_keys = list(amps.keys())
     if filt is None:
