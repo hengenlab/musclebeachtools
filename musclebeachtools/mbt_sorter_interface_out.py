@@ -268,7 +268,6 @@ def ms5out(sorted_data, noflylist, rec_time,
                     # nblocked          expt_cond=expt_cond))
                 elif ((len(file_datetime_list) == 2) and
                         (len(ecube_time_list) == 0)):
-                    print("2.11111", flush=True)
                     n.append(mb.Neuron(sp_c, sp_t, qual, mwf,
                              mwfs, [max_channel],
                              fs=fs,
@@ -282,7 +281,6 @@ def ms5out(sorted_data, noflylist, rec_time,
                              genotype=genotype,
                              expt_cond=expt_cond))
                 else:
-                    print("3.11111", flush=True)
                     n.append(mb.Neuron(sp_c, sp_t, qual, mwf,
                              mwfs, [max_channel],
                              fs=fs,
@@ -291,8 +289,6 @@ def ms5out(sorted_data, noflylist, rec_time,
                              sex=sex, birthday=birthday, species=species,
                              animal_name=animal_name,
                              region_loc=region_loc))
-                #  except:
-                #  pdb.set_trace()
             elif len(filt) > 0:
                 print("sorry, we don't have qualities set yet, "
                       "run again with no filter")
