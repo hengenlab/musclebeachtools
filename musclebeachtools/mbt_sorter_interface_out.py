@@ -98,7 +98,8 @@ def ms5out(sorted_data, noflylist, rec_time,
     # print('Finding sampling rate')
     # mb.Neuron.fs = sorted_data.get_sampling_frequency()
     fs = sorted_data.get_sampling_frequency()
-    print("Sampling frequency ", fs)
+    if lverbose:
+        print("Sampling frequency ", fs)
     n = []
 
     # Start and end time
@@ -118,7 +119,8 @@ def ms5out(sorted_data, noflylist, rec_time,
     start_time = 0.0
 
     end_time = rec_time / fs
-    print("Start time ", start_time, " end time ", end_time)
+    if lverbose:
+        print("Start time ", start_time, " end time ", end_time)
 
     # Loop through unique clusters and make neuron list
     for unit_idx, unit in enumerate(unique_clusters):
@@ -136,11 +138,12 @@ def ms5out(sorted_data, noflylist, rec_time,
                 # mean WF @ Fs of recording
                 # nblocked mwf_list = \
                 # nblocked  sorted_data.get_unit_property(unit, "template").T
-                print(f'unit_idx {unit_idx}', flush=True)
-                print(f't_ch_size {t_ch_size}', flush=True)
-                print(f'peak_channels {peak_channels[unit_idx]}', flush=True)
-                print(f'unit {unit}')
-                print(f'sh wfs[unit_idx][:, :, :] {wfs[unit_idx].shape}')
+                if lverbose:
+                    print(f'unit_idx {unit_idx}', flush=True)
+                    print(f't_ch_size {t_ch_size}', flush=True)
+                    print(f'peak_channels {peak_channels[unit_idx]}')
+                    print(f'unit {unit}')
+                    print(f'sh wfs[unit_idx][:, :, :] {wfs[unit_idx].shape}')
                 mwf_list =\
                     np.mean(wfs[unit_idx][:, :, :],
                             axis=0)
@@ -151,15 +154,17 @@ def ms5out(sorted_data, noflylist, rec_time,
                 # nblocked       print("unit_idx ", unit_idx, " unit ", unit,
                 # nblocked             " max_channel : ", tmp_max_channel,
                 # nblocked             " ", max_channel)
-                print("unit_idx ", unit_idx, " unit ", unit,
-                      " max_channel : ", max_channel)
+                if lverbose:
+                    print("unit_idx ", unit_idx, " unit ", unit,
+                          " max_channel : ", max_channel)
                 # mwf = [row[tmp_max_channel] for row in mwf_list]
                 # mwf =\
                 #     np.mean(wfs[unit_idx][:, :, peak_channels[unit_idx]],
                 #             axis=0)
-                print(f'max_channel {max_channel} t_ch_size {t_ch_size}'
-                      f'get_group_value '
-                      f'{get_group_value(max_channel, t_ch_size)}')
+                if lverbose:
+                    print(f'max_channel {max_channel} t_ch_size {t_ch_size}'
+                          f'get_group_value '
+                          f'{get_group_value(max_channel, t_ch_size)}')
                 mwf =\
                     np.mean(wfs[unit_idx][:, :, get_group_value(max_channel,
                                                                 t_ch_size)],
@@ -183,15 +188,15 @@ def ms5out(sorted_data, noflylist, rec_time,
                         tmp_mean_amps = \
                             np.mean(np.abs(amps[amps_keys[unit_idx]]))
                         if tmp_mean_amps >= min_amps:
-                            print(f'unit_idx {unit_idx} unit {unit}',
-                                  flush=True)
-                            print(f'amps_keys {amps_keys}', flush=True)
-                            print(f'len wf_b {len(wf_b)} len wf_e {len(wf_e)}',
-                                  flush=True)
-                            print("mean amps ", unit_idx, " ", tmp_mean_amps,
-                                  flush=True)
+                            if lverbose:
+                                print(f'unit_idx {unit_idx} unit {unit}')
+                                print(f'amps_keys {amps_keys}')
+                                print(f'len wf_b {len(wf_b)}')
+                                print(f'len wf_e {len(wf_e)}')
+                                print("mean amps ", unit_idx,
+                                      " ", tmp_mean_amps,
+                                      flush=True)
                             if ((wf_b is not None) and (wf_e is not None)):
-                                print("1.11111", flush=True)
                                 n.append(mb.Neuron(sp_c, sp_t, qual, mwf,
                                          mwfs, [max_channel],
                                          fs=fs,
