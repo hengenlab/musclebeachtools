@@ -2132,8 +2132,21 @@ class Neuron:
             else:
                 idx_normalamps = np.where(amps < threshold)[0]
 
+        plt_background = 'seaborn-dark-palette'
+        try:
+            with plt.style.context(plt_background):
+                fig_tmp = plt.figure(constrained_layout=True, figsize=(11, 8))
+        except Exception as e:
+            print(f'{e} switching to dark_background')
+            plt_background = 'dark_background'
+            with plt.style.context(plt_background):
+                fig_tmp = plt.figure(constrained_layout=True, figsize=(11, 8))
+        # Clean up the temporary figure
+        plt.close(fig_tmp)
+        del fig_tmp
+
         if lplot:
-            with plt.style.context('seaborn-dark-palette'):
+            with plt.style.context(plt_background):
                 fig, ax = plt.subplots(nrows=3, ncols=1, squeeze=False,
                                        sharex=False, sharey=False,
                                        figsize=(8, 9),
