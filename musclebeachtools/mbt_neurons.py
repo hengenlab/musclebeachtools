@@ -2672,16 +2672,17 @@ class Neuron:
                         NotADirectoryError('Folder {} not found'
                                            .format(png_outdir))
 
-        # sharex=True, sharey=True,  figsize=(4, 4),
+        plt_background = 'seaborn-dark-palette'
         try:
-            with plt.style.context('seaborn-dark-palette'):
+            with plt.style.context(plt_background):
                 fig_tmp = plt.figure(constrained_layout=True, figsize=(11, 8))
-                plt_background = 'seaborn-dark-palette'
         except Exception as e:
             print(f'{e} switching to dark_background')
-            with plt.style.context('dark_background'):
+            plt_background = 'dark_background'
+            with plt.style.context(plt_background):
                 fig_tmp = plt.figure(constrained_layout=True, figsize=(11, 8))
-                plt_background = 'dark_background'
+        # Clean up the temporary figure
+        plt.close(fig_tmp)
         del fig_tmp
 
         with plt.style.context(plt_background):
