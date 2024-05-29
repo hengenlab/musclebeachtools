@@ -7,32 +7,6 @@ import neuraltoolkit as ntk
 import musclebeachtools as mb
 
 
-def get_group_value(channel, group_size):
-    '''
-    get_group_value(channel, group_size)
-
-    Calculates the group value of a channel
-     by finding the remainder when divided by group_size.
-
-    channel (int): The channel number.
-    group_size (int): The number of groups.
-
-    Group size must not be zero or negative
-    channel must be non-negative
-
-    Returns
-        int: The group value (0 to group_size - 1).
-'''
-
-    # raise errors
-    if channel < 0:
-        raise ValueError("Channel must be non-negative")
-    if group_size <= 0:
-        raise ValueError("Group size must not be zero or negative")
-
-    return int(channel % group_size)
-
-
 def ms5out(sorted_data, noflylist, rec_time,
            file_datetime_list, ecube_time_list,
            wfs=None,
@@ -161,14 +135,19 @@ def ms5out(sorted_data, noflylist, rec_time,
                 # mwf =\
                 #     np.mean(wfs[unit_idx][:, :, peak_channels[unit_idx]],
                 #             axis=0)
+                tmp_ch_num = \
+                    ntk.get_tetrodechannelnum_from_channel(max_channel,
+                                                           t_ch_size)
                 if lverbose:
-                    print(f'max_channel {max_channel} t_ch_size {t_ch_size}'
-                          f'get_group_value '
-                          f'{get_group_value(max_channel, t_ch_size)}')
-                mwf =\
-                    np.mean(wfs[unit_idx][:, :, get_group_value(max_channel,
-                                                                t_ch_size)],
-                            axis=0)
+                    print(
+                        f'max_channel {max_channel} t_ch_size {t_ch_size}'
+                        f'ntk.get_tetrodechannelnum_from_channel {tmp_ch_num}'
+                    )
+                mwf = np.mean(
+                    wfs[unit_idx][:, :, tmp_ch_num],
+                    axis=0
+                )
+                del tmp_ch_num
 
                 t = np.arange(0, len(mwf))
                 _, mwfs = ntk.data_intpl(t, mwf, 3, intpl_kind='cubic')
