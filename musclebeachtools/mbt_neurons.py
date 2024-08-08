@@ -2132,13 +2132,16 @@ class Neuron:
             else:
                 idx_normalamps = np.where(amps < threshold)[0]
 
-        plt_background = 'seaborn-dark-palette'
+        # plt_background = 'seaborn-dark-palette'
+        plt_background = \
+            [s for s in plt.style.available if 'seaborn' in s and 'dark' in s]
         try:
             with plt.style.context(plt_background):
                 fig_tmp = plt.figure(constrained_layout=True, figsize=(11, 8))
         except Exception as e:
-            print(f'{e} switching to dark_background')
-            plt_background = 'dark_background'
+            print(f'{e} switching to available ones {plt.style.available[0]}')
+            # plt_background = 'dark_background'
+            plt_background = plt.style.available[0]
             with plt.style.context(plt_background):
                 fig_tmp = plt.figure(constrained_layout=True, figsize=(11, 8))
         # Clean up the temporary figure
@@ -2685,13 +2688,17 @@ class Neuron:
                         NotADirectoryError('Folder {} not found'
                                            .format(png_outdir))
 
-        plt_background = 'seaborn-dark-palette'
+        # plt_background = 'seaborn-dark-palette'
+        plt_background = \
+            [s for s in plt.style.available if 'seaborn' in s and 'dark' in s]
         try:
             with plt.style.context(plt_background):
                 fig_tmp = plt.figure(constrained_layout=True, figsize=(11, 8))
         except Exception as e:
-            print(f'{e} switching to dark_background')
-            plt_background = 'dark_background'
+            print(f'{e} switching to available ones {plt.style.available[0]}')
+            # plt_background = 'dark_background'
+            # plt_background = 'seaborn-v0_8-colorblind'
+            plt_background = plt.style.available[0]
             with plt.style.context(plt_background):
                 fig_tmp = plt.figure(constrained_layout=True, figsize=(11, 8))
         # Clean up the temporary figure
