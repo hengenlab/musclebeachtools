@@ -88,23 +88,23 @@ n1 = mbt.ksout(datadir, filenum=0, prbnum=4, filt=[])
 import numpy as np
 import musclebeachtools as mbt
 
-n = np.load('neurons_group0.npy', allow_pickle=True)
+neurons = np.load('neurons_group0.npy', allow_pickle=True)
 
 # Get basic info of a neuron, here 6th in list n1
-print(n1[6])
+print(neurons[6])
 # Neuron with (clust_idx=6, quality=1, peak_channel=6)
 
 # Get sampling rate for 4th neuron
-n1[4].fs
+neurons[4].fs
 
 # Get sample time for 4th neuron
-n1[4].spike_time
+neurons[4].spike_time
 
 # Get spike time in seconds for 4th neuron
-n1[4].spike_time_sec
+neurons[4].spike_time_sec
 
 # Get spike time in seconds for 4th neuron from on off times
-n1[4].spike_time_sec_onoff
+neurons[4].spike_time_sec_onoff
 ```
 
 #### Get a test neurons group file in case you do not have one.
