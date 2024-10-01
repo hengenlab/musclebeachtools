@@ -1277,28 +1277,28 @@ class Neuron:
     def get_behavior(self):
         '''
         Get sleep wake behavioral states of animal
-    
+
         get_behavior(self)
-    
+
         Parameters
         ----------
-    
+
         Returns
         -------
         self.behavior : Get sleep wake states
-    
+
         Raises
         ------
-    
+
         See Also
         --------
-    
+
         Notes
         -----
-    
+
         Examples
         --------
-    
+
         '''
         # logger.info('Not implemented')
         if np.array_equal(self.behavior, np.zeros((2, 6))):
