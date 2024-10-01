@@ -245,7 +245,7 @@ neurons[2].checkqual(binsz=3600, start=False, end=False, lsavepng=0,
 
 ```
 # Check quality is changed also there is a log from checkqual
-print(n[2].quality)
+print(neurons[2].quality)
 
 # Find quality using xgboost
 import numpy as np
@@ -288,21 +288,21 @@ For example for neurons of quality 1 and 2,  1.5 to 2.5 standard deviation is fi
 But quality 3 neurons make sure to use larger deviations or check manualy with lplot=True
 as it contains multiple nuerons/MUA.
 
-n[4].remove_large_amplitude_spikes(1.5, lstd_deviation=True, start=False, end=False, lplot=True)
+neurons[4].remove_large_amplitude_spikes(1.5, lstd_deviation=True, start=False, end=False, lplot=True)
 
 # Based on threshold value, for example 1000
-n[4].remove_large_amplitude_spikes(1000, lstd_deviation=False, start=False, end=False, lplot=True)
+neurons[4].remove_large_amplitude_spikes(1000, lstd_deviation=False, start=False, end=False, lplot=True)
 If you are sure and do not want to check plots
  to confirm change lplot=False (not recommended)
 
 # Based on np percentile, 98
 # lpercentile : default False,  if True, turns off lstd_deviation
-n[4].remove_large_amplitude_spikes(98, lstd_deviation=False, lpercentile=True, start=False, end=False, lplot=True)
+neurons[4].remove_large_amplitude_spikes(98, lstd_deviation=False, lpercentile=True, start=False, end=False, lplot=True)
 If you are sure and do not want to check plots
  to confirm change lplot=False (not recommended)
 
 # Save a modified neuron list
-mbt.n_save_modified_neuron_list(n, '/home/kbn/neuron_mod.npy')
+mbt.n_save_modified_neuron_list(neurons, '/home/kbn/neuron_mod.npy')
 ```
 
 
@@ -328,9 +328,9 @@ neurons[0].get_behavior()
 # maxqual filter by quality, list
 # plot waveforms for neurons with quality in maxqual
 # To see plot
-mbt.n_plot_neuron_wfs(n, maxqual=[1, 2, 3, 4], pltname="block1")
+mbt.n_plot_neuron_wfs(neurons, maxqual=[1, 2, 3, 4], pltname="block1")
 # To save plot
-mbt.n_plot_neuron_wfs(n, maxqual=[1], pltname="block1",
+mbt.n_plot_neuron_wfs(neurons, maxqual=[1], pltname="block1",
                       saveloc='/home/kbn/')
 ```
 
@@ -339,13 +339,13 @@ mbt.n_plot_neuron_wfs(n, maxqual=[1], pltname="block1",
 fl = '/home/kbn/probe1/co/H_2023-12-29_23-09-54_2023-12-30_11-04-55_neurons_group0.npy'
 
 # Load neurons
-neuron_list = np.load(fl, allow_pickle=True)
+neurons = np.load(fl, allow_pickle=True)
 
-# def n_checkqual_pdf(neuron_list, savepdf, maxqual=None,
+# def n_checkqual_pdf(neurons, savepdf, maxqual=None,
 #                     binsz=3600, start=False, end=False,
 #                     fix_amp_ylim=1):
 #
-#     neuron_list : List of neurons
+#     neurons : List of neurons
 #     savepdf : filename with path to save pdf
 #     maxqual : default [1, 2, 3, 4], filter by quality,
 #               neuron.quality in maxqual
@@ -358,7 +358,7 @@ neuron_list = np.load(fl, allow_pickle=True)
 #                    in amplitude plot.
 savepdf = '/home/kbn/probe1/co/H_2023-12-29_23-09-54_2023-12-30_11-04-55_neurons_group0_checkqual.pdf'
 # call n_checkqual_pdf to save as savepdf
-mbt.n_checkqual_pdf(neuron_list, savepdf, maxqual=None,
+mbt.n_checkqual_pdf(neurons, savepdf, maxqual=None,
                     binsz=3600, start=False, end=False,
                     fix_amp_ylim=1)
 ```
@@ -370,7 +370,7 @@ import numpy as np
 import glob
 import musclebeachtools as mbt
 from datetime import datetime
-n = mbt.mbt_spkinterface_out('/home/kbn/co/',
+neurons = mbt.mbt_spkinterface_out('/home/kbn/co/',
                              '/media/HlabShare/models/xgboost_autoqual_prob',
                              sex='m', birthday=datetime(1970, 1, 1, 00, 00),
                              species='m',
@@ -378,32 +378,32 @@ n = mbt.mbt_spkinterface_out('/home/kbn/co/',
                              region_loc='CA1',
                              genotype='te4',
                              expt_cond='monocular deprivation')
-nnew[0].species
+neurons[0].species
 'm'
 
-nnew[0].region
+neurons[0].region
 'CA1'
 
-nnew[0].animal_name
+neurons[0].animal_name
 'ABC12345'
 
-nnew[0].sex
+neurons[0].sex
 'm'
 
-nnew[0].birthday
+neurons[0].birthday
 datetime.datetime(1970, 1, 1, 0, 0)
 
-nnew[0].age_rec # age based on first file in sorting block
+neurons[0].age_rec # age based on first file in sorting block
 datetime.timedelta(days=-18625, seconds=2958)
 
-nnew[0].genotype
+neurons[0].genotype
 'te4'
 
-nnew[0].expt_cond
+neurons[0].expt_cond
 'monocular deprivation'
 
 # Filter neuron list by quality
-neuron_list_filt = mbt.n_filt_quality(neuron_list, maxqual=[1, 2])
+neuron_list_filt = mbt.n_filt_quality(neurons, maxqual=[1, 2])
 
 
 # Add neurons
@@ -430,9 +430,9 @@ print("Length ", len(neurons))
 import numpy as np
 import musclebeachtools as mbt
 
-n = np.load('H_2020-12-17_13-19-30_2020-12-18_01-14-32_neurons_group0.npy', allow_pickle=True)
+neurons = np.load('H_2020-12-17_13-19-30_2020-12-18_01-14-32_neurons_group0.npy', allow_pickle=True)
 # filer by quality
-neuron_list = mbt.n_filt_quality(n, maxqual=[1, 2])
+neuron_list = mbt.n_filt_quality(neurons, maxqual=[1, 2])
 
 # start, end are starting time and end time for br calculation, in hours
 # ava_binsz binsize for branching ration, in seconds
@@ -442,7 +442,7 @@ neuron_list = mbt.n_filt_quality(n, maxqual=[1, 2])
 # br2 branching ratio with exp_offset fit
 # acc1 is pearson correlation coefficient with respect to data for complex (experimental not tested fully)
 # acc2 is pearson correlation coefficient with respect to data for exp_offset (experimental not tested fully)
-br1, br2, acc1, acc2 = mbt.n_branching_ratio(neuron_list, ava_binsz=0.004,
+br1, br2, acc1, acc2 = mbt.n_branching_ratio(neurons, ava_binsz=0.004,
                                 kmax=500,
                                 start=0, end=2,
                                 binarize=1,
@@ -510,13 +510,13 @@ for indx, neuron_new in enumerate(neurons_new):
 import numpy as np
 import musclebeachtools as mbt
 fl = '/media/ckbn/H_2022-05-12_08-59-26_2022-05-12_17-54-28_neurons_group0.npy'
-n = np.load(fl, allow_pickle=True)
+neurons = np.load(fl, allow_pickle=True)
 # Autocorr
 # default savefig_loc=None, to show plot
 # savefig_loc='/home/kbn/fig_crosscorr.png' to save fig
-n[1].crosscorr(friend=None, savefig_loc=None)
+neurons[1].crosscorr(friend=None, savefig_loc=None)
 # Crosscorr
-n[10].crosscorr(friend=n[11], savefig_loc=None)
+neurons[10].crosscorr(friend=neurons[11], savefig_loc=None)
 
 
 # zero cross corr
@@ -564,9 +564,9 @@ mbt.get_group_value(channel, group_size)
 1. spike_time vs spike_time_sec
 Property spike_time is in sample times.
 To to get spike time in seconds
-please use spike_time_sec, n1[4].spike_time_sec
+please use spike_time_sec, neurons[4].spike_time_sec
 or
-For example for 4th neuron n1[4].spike_time/n1[4].fs
+For example for 4th neuron neurons[4].spike_time/n1[4].fs
 Also spike_time_sec_onoff filters spike_time_sec based on on/off times
 
 ```
