@@ -134,29 +134,29 @@ print("\nSpike times in second ", neurons[0].spike_time_sec)
 
 #### Other properties and functions
 ```
-n1[4].start_time
-n1[4].end_time
-n1[4].on_times
-n1[4].off_times
-n1[4].peak_channel
-n1[4].quality
-n1[4].qual_prob
-n1[4].region
-n1[4].birthday
-n1[4].sex
-n1[4].species
-n1[4].region
-n1[4].waveform
-n1[4].waveform_tetrodes
-n1[4].waveforms
-n1[4].mean_amplitude
-n1[4].cell_type
-n1[4].peaklatency
-n1[4].clust_idx
-n1[4].spike_time_sec_onoff
+neurons[4].start_time
+neurons[4].end_time
+neurons[4].on_times
+neurons[4].off_times
+neurons[4].peak_channel
+neurons[4].quality
+neurons[4].qual_prob
+neurons[4].region
+neurons[4].birthday
+neurons[4].sex
+neurons[4].species
+neurons[4].region
+neurons[4].waveform
+neurons[4].waveform_tetrodes
+neurons[4].waveforms
+neurons[4].mean_amplitude
+neurons[4].cell_type
+neurons[4].peaklatency
+neurons[4].clust_idx
+neurons[4].spike_time_sec_onoff
 
 # Plot mean waveform of 4th neuron
-n1[4].plot_wf()
+neurons[4].plot_wf()
 
 # Plot isi of 4th neuron
 #  start : Start time (default self.start_time)
@@ -165,7 +165,7 @@ n1[4].plot_wf()
 #  nbins : Number of bins (default 101)
 #  lplot : To plot or not (default lplot=1, plot isi)
 #  lonoff : Apply on off times (default on, 1)
-n1[4].isi_hist(start=False, end=False, isi_thresh=0.1, nbins=101,
+neurons[4].isi_hist(start=False, end=False, isi_thresh=0.1, nbins=101,
                lplot=1, lonoff=1)
 
 # plot firing rate of 4th neuron
@@ -174,7 +174,7 @@ n1[4].isi_hist(start=False, end=False, isi_thresh=0.1, nbins=101,
 # end : End time (default self.end_time)
 # lplot : To plot or not (default lplot=1, plot firing rate)
 # lonoff : Apply on off times (default on, 1)
-n1[4].plotFR(binsz=3600, start=False, end=False,
+neurons[4].plotFR(binsz=3600, start=False, end=False,
              lplot=1, lonoff=1)
 
 # Calculate presence ratio
@@ -182,7 +182,7 @@ n1[4].plotFR(binsz=3600, start=False, end=False,
 # start : Start time (default self.start_time)
 # end : End time (default self.end_time)
 # lonoff : Apply on off times (default on, 1)
-n1[4].presence_ratio(nbins=101, start=False, end=False,
+neurons[4].presence_ratio(nbins=101, start=False, end=False,
                      lonoff=1)
 
 # Calculate isi contamination at various thresholds, 2 and 4 ms
@@ -191,11 +191,11 @@ n1[4].presence_ratio(nbins=101, start=False, end=False,
 # start : Start time (default self.start_time)
 # end : End time (default self.end_time)
 # lonoff : Apply on off times (default on, 1)
-n1[4].isi_contamination(cont_thresh_list=[0.002, 0.004], time_limit=np.inf)
+neurons[4].isi_contamination(cont_thresh_list=[0.002, 0.004], time_limit=np.inf)
                         start=False, end=False, lonoff=1)
 
 # Check quality and its probability from autoqual (see below).
-print(n[2].quality, "", n[2].qual_prob[n[2].quality - 1])
+print(neurons[2].quality, "", neurons[2].qual_prob[neurons[2].quality - 1])
 
 # Change quality of neuron n[0] to 1
 # qual : Quality values should be 1, 2, 3 or 4
@@ -205,28 +205,28 @@ print(n[2].quality, "", n[2].qual_prob[n[2].quality - 1])
 #        4 : Noise unit
 # qual_prob array with probabilities for each quality from autoqual.
 # When quality is assigned manualy qual_prob is set to 100% for that quality
-n[0].set_qual(1)
+neurons[0].set_qual(1)
 
 # get spiketimes from all neurons in n1 as a list
-spiketimes_list = n_getspikes(n1)
+spiketimes_list = n_getspikes(neurons)
 
 # Get spikewords from all neurons in n as a list
 import numpy as np
 import musclebeachtools as mbt
-n = np.load('neurons_group0.npy', allow_pickle=True)
-sw = mbt.n_spiketimes_to_spikewords(n)
+neurons = np.load('neurons_group0.npy', allow_pickle=True)
+sw = mbt.n_spiketimes_to_spikewords(neurons)
 
 # Set on off times
-n[2].set_onofftimes_from_list([0, 3600], [900, 7200])
-print(n[2].on_times)
+neurons[2].set_onofftimes_from_list([0, 3600], [900, 7200])
+print(neurons[2].on_times)
 [0, 3600]
-print(n[2].off_times)
+print(neurons[2].off_times)
 [900, 7200]
 
 # Change quality with plot of ISI, Firingrate and Waveform
 import numpy as np
 import musclebeachtools as mbt
-n = np.load('neurons_group0.npy', allow_pickle=True)
+neurons = np.load('neurons_group0.npy', allow_pickle=True)
 
 # binsz : Bin size (default 3600)
 # start : Start time (default self.start_time)
@@ -238,7 +238,7 @@ n = np.load('neurons_group0.npy', allow_pickle=True)
 # fix_amp_ylim : default 0, yaxis max in amplitude plot.
 #                For example can be fix_amp_ylim=500 to see from 0 to 500
 #                in amplitude plot.
-n[2].checkqual(binsz=3600, start=False, end=False, lsavepng=0,
+neurons[2].checkqual(binsz=3600, start=False, end=False, lsavepng=0,
                png_outdir=None, fix_amp_ylim=0)
 ```
 ![checkqual](https://biolinux2.wustl.edu/hlabdata/images/mbt_checkqual.png)
