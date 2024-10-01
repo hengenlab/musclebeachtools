@@ -304,7 +304,20 @@ If you are sure and do not want to check plots
 # Save a modified neuron list
 mbt.n_save_modified_neuron_list(neurons, '/home/kbn/neuron_mod.npy')
 ```
+---
 
+
+```
+# Sort neurons by peak_channel in ascending order
+import numpy as np
+import musclebeachtools as mbt
+# Load neurons
+neurons = \
+    np.load('H_2020-04-09_09-11-37_2020-04-10_01-06-37_neurons_group0.npy',
+            allow_pickle=True)
+neurons = sorted(neurons, key=lambda i: i.peak_channel)
+```
+---
 
 ```
 # Load behavior to neurons
