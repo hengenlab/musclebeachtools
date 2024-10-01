@@ -90,7 +90,7 @@ import musclebeachtools as mbt
 
 neurons = np.load('neurons_group0.npy', allow_pickle=True)
 
-# Get basic info of a neuron, here 6th in list n1
+# Get basic info of a neuron, here 6th in list neurons
 print(neurons[6])
 # Neuron with (clust_idx=6, quality=1, peak_channel=6)
 
