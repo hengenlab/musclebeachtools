@@ -1274,37 +1274,37 @@ class Neuron:
         else:
             raise ValueError('No attribute wf_e')
 
-    # def get_behavior(self):
-    #     '''
-    #     Get sleep wake behavioral states of animal
-    #
-    #     get_behavior(self)
-    #
-    #     Parameters
-    #     ----------
-    #
-    #     Returns
-    #     -------
-    #     self.behavior : Get sleep wake states
-    #
-    #     Raises
-    #     ------
-    #
-    #     See Also
-    #     --------
-    #
-    #     Notes
-    #     -----
-    #
-    #     Examples
-    #     --------
-    #
-    #     '''
-    #     # logger.info('Not implemented')
-    #     if np.array_equal(self.behavior, np.zeros((2, 6))):
-    #         raise ValueError('behavior not added')
-    #     else:
-    #         return self.behavior
+    def get_behavior(self):
+        '''
+        Get sleep wake behavioral states of animal
+    
+        get_behavior(self)
+    
+        Parameters
+        ----------
+    
+        Returns
+        -------
+        self.behavior : Get sleep wake states
+    
+        Raises
+        ------
+    
+        See Also
+        --------
+    
+        Notes
+        -----
+    
+        Examples
+        --------
+    
+        '''
+        # logger.info('Not implemented')
+        if np.array_equal(self.behavior, np.zeros((2, 6))):
+            raise ValueError('behavior not added')
+        else:
+            return self.behavior
 
     def shuffle_times(self, shuffle_alg=1, time_offset=10):
         '''
