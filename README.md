@@ -154,11 +154,18 @@ neurons[4].cell_type
 neurons[4].peaklatency
 neurons[4].clust_idx
 neurons[4].spike_time_sec_onoff
+```
+---
 
-# Plot mean waveform of 4th neuron
+
+#### Plot mean waveform of 4th neuron
+```
 neurons[4].plot_wf()
+```
+---
 
-# Plot isi of 4th neuron
+#### Plot isi of 4th neuron
+```
 #  start : Start time (default self.start_time)
 #  end : End time (default self.end_time)
 #  isi_thresh : isi threshold (default 0.1)
@@ -167,8 +174,11 @@ neurons[4].plot_wf()
 #  lonoff : Apply on off times (default on, 1)
 neurons[4].isi_hist(start=False, end=False, isi_thresh=0.1, nbins=101,
                lplot=1, lonoff=1)
+```
+---
 
-# plot firing rate of 4th neuron
+#### plot firing rate of 4th neuron
+```
 # binsz : Bin size (default 3600)
 # start : Start time (default self.start_time)
 # end : End time (default self.end_time)
@@ -176,7 +186,10 @@ neurons[4].isi_hist(start=False, end=False, isi_thresh=0.1, nbins=101,
 # lonoff : Apply on off times (default on, 1)
 neurons[4].plotFR(binsz=3600, start=False, end=False,
              lplot=1, lonoff=1)
+```
+---
 
+```
 # Calculate presence ratio
 # nbins : Number of bins (default 101)
 # start : Start time (default self.start_time)
