@@ -189,15 +189,18 @@ neurons[4].plotFR(binsz=3600, start=False, end=False,
 ```
 ---
 
+#### Calculate presence ratio
 ```
-# Calculate presence ratio
 # nbins : Number of bins (default 101)
 # start : Start time (default self.start_time)
 # end : End time (default self.end_time)
 # lonoff : Apply on off times (default on, 1)
 neurons[4].presence_ratio(nbins=101, start=False, end=False,
                      lonoff=1)
+````
+---
 
+```
 # Calculate isi contamination at various thresholds, 2 and 4 ms
 # cont_thresh_list : threshold lists for calculating isi contamination
 # time_limit : count spikes upto, default np.inf. Try also 100 ms, 0.1
