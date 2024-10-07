@@ -200,8 +200,9 @@ neurons[4].presence_ratio(nbins=101, start=False, end=False,
 ````
 ---
 
+
+#### Calculate isi contamination at various thresholds, 2 and 4 ms
 ```
-# Calculate isi contamination at various thresholds, 2 and 4 ms
 # cont_thresh_list : threshold lists for calculating isi contamination
 # time_limit : count spikes upto, default np.inf. Try also 100 ms, 0.1
 # start : Start time (default self.start_time)
@@ -209,11 +210,17 @@ neurons[4].presence_ratio(nbins=101, start=False, end=False,
 # lonoff : Apply on off times (default on, 1)
 neurons[4].isi_contamination(cont_thresh_list=[0.002, 0.004], time_limit=np.inf)
                         start=False, end=False, lonoff=1)
+```
+---
 
-# Check quality and its probability from autoqual (see below).
+### Check quality and its probability from autoqual (see below).
+```
 print(neurons[2].quality, "", neurons[2].qual_prob[neurons[2].quality - 1])
+```
+---
 
-# Change quality of neuron n[0] to 1
+```
+# Change quality of neuron neurons[0] to 1
 # qual : Quality values should be 1, 2, 3 or 4
 #        1 : Good
 #        2 : Good but some contamination
@@ -223,10 +230,10 @@ print(neurons[2].quality, "", neurons[2].qual_prob[neurons[2].quality - 1])
 # When quality is assigned manualy qual_prob is set to 100% for that quality
 neurons[0].set_qual(1)
 
-# get spiketimes from all neurons in n1 as a list
+# get spiketimes from all neurons in neurons as a list
 spiketimes_list = n_getspikes(neurons)
 
-# Get spikewords from all neurons in n as a list
+# Get spikewords from all neurons in neurons as a list
 import numpy as np
 import musclebeachtools as mbt
 neurons = np.load('neurons_group0.npy', allow_pickle=True)
