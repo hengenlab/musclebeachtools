@@ -1274,14 +1274,17 @@ class Neuron:
         else:
             raise ValueError('No attribute wf_e')
 
-    def get_behavior(self):
+    def get_behavior(self, tolerance=10):
         '''
         Get sleep wake behavioral states of animal
 
-        get_behavior(self)
+        get_behavior(self, tolerance)
 
         Parameters
         ----------
+        tolerance = 10 (default)
+            check difference between end_time and behavior length
+             is close to tolerance for binsize 1 or 4
 
         Returns
         -------
@@ -1289,6 +1292,9 @@ class Neuron:
 
         Raises
         ------
+        ValueError : behavior not added
+        ValueError : if behavior length is not close to
+                      binsize of 1 or 4 w.r.t end_time
 
         See Also
         --------
@@ -1304,7 +1310,23 @@ class Neuron:
         if np.array_equal(self.behavior, np.zeros((2, 6))):
             raise ValueError('behavior not added')
         else:
-            return self.behavior
+            time_int = int(self.end_time)
+            time_int_1 = time_int // 1
+            time_int_4 = time_int // 4
+            behavior_len = len(self.behavior)
+
+            # Tolerance
+
+            # Check if the length is close to binsize of 1 or 4 seconds
+            if (abs(behavior_len - time_int_4) <= tolerance or
+                    abs(behavior_len - time_int_1) <= tolerance):
+                # print(f'time_int {time_int}')
+                # print(f'time_int_1 {time_int_1} time_int_4 {time_int_4}')
+                # print(f'behavior_len {behavior_len}')
+                return self.behavior
+            else:
+                raise \
+                    ValueError("Check behavior length has binsize 1 or 4")
 
     def shuffle_times(self, shuffle_alg=1, time_offset=10):
         '''
