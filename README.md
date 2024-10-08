@@ -367,9 +367,20 @@ behavior = np.load('Sleepstates.npy', allow_pickle=True)
 mbt.Neuron.update_behavior(behavior))
 
 # To get behavior
-neurons[0].get_behavior()
+# tolerance : 2 (default)
+#    check difference between end_time and behavior length
+#    is close to tolerance for binsize
+#
+# binsize : 4 (default) binsize used for behavior
+#     4 here means 4 second bins
+#
+neurons[0].get_behavior(tolerance=2, binsize=4)
 # if behavior is not loaded using above step (using Sleepstates.npy)
 # it will raise error ValueError: behavior not added
+#
+# if behavior length is not close to binsize w.r.t end_time
+# it will raise error ValueError
+                      
 ```
 
 ```
