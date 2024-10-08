@@ -219,8 +219,8 @@ print(neurons[2].quality, "", neurons[2].qual_prob[neurons[2].quality - 1])
 ```
 ---
 
+#### Change quality of neuron neurons[0] to 1
 ```
-# Change quality of neuron neurons[0] to 1
 # qual : Quality values should be 1, 2, 3 or 4
 #        1 : Good
 #        2 : Good but some contamination
@@ -229,10 +229,16 @@ print(neurons[2].quality, "", neurons[2].qual_prob[neurons[2].quality - 1])
 # qual_prob array with probabilities for each quality from autoqual.
 # When quality is assigned manualy qual_prob is set to 100% for that quality
 neurons[0].set_qual(1)
+```
+---
 
-# get spiketimes from all neurons in neurons as a list
+#### get spiketimes from all neurons in neurons as a list
+```
 spiketimes_list = n_getspikes(neurons)
+```
+---
 
+```
 # Get spikewords from all neurons in neurons as a list
 import numpy as np
 import musclebeachtools as mbt
