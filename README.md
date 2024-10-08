@@ -238,20 +238,27 @@ spiketimes_list = n_getspikes(neurons)
 ```
 ---
 
+
+#### Get spikewords from all neurons in neurons as a list
 ```
-# Get spikewords from all neurons in neurons as a list
 import numpy as np
 import musclebeachtools as mbt
 neurons = np.load('neurons_group0.npy', allow_pickle=True)
 sw = mbt.n_spiketimes_to_spikewords(neurons)
+```
+---
 
-# Set on off times
+#### Set on off times
+```
 neurons[2].set_onofftimes_from_list([0, 3600], [900, 7200])
 print(neurons[2].on_times)
 [0, 3600]
 print(neurons[2].off_times)
 [900, 7200]
+```
+---
 
+```
 # Change quality with plot of ISI, Firingrate and Waveform
 import numpy as np
 import musclebeachtools as mbt
