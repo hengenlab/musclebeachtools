@@ -1274,7 +1274,7 @@ class Neuron:
         else:
             raise ValueError('No attribute wf_e')
 
-    def get_behavior(self, tolerance=10):
+    def get_behavior(self, tolerance=2, binsize=4):
         '''
         Get sleep wake behavioral states of animal
 
@@ -1282,9 +1282,12 @@ class Neuron:
 
         Parameters
         ----------
-        tolerance = 10 (default)
+        tolerance : 2 (default)
             check difference between end_time and behavior length
-             is close to tolerance for binsize 1 or 4
+             is close to tolerance for binsize
+
+        binsize : 4 (default) binsize used for behavior
+                  4 here means 4 second bins
 
         Returns
         -------
@@ -1294,7 +1297,7 @@ class Neuron:
         ------
         ValueError : behavior not added
         ValueError : if behavior length is not close to
-                      binsize of 1 or 4 w.r.t end_time
+                      binsize w.r.t end_time
 
         See Also
         --------
@@ -1306,27 +1309,30 @@ class Neuron:
         --------
 
         '''
-        # logger.info('Not implemented')
+
         if np.array_equal(self.behavior, np.zeros((2, 6))):
             raise ValueError('behavior not added')
         else:
+
             time_int = int(self.end_time)
-            time_int_1 = time_int // 1
-            time_int_4 = time_int // 4
+            time_int_binsize = time_int // int(binsize)
             behavior_len = len(self.behavior)
 
             # Tolerance
 
             # Check if the length is close to binsize of 1 or 4 seconds
-            if (abs(behavior_len - time_int_4) <= tolerance or
-                    abs(behavior_len - time_int_1) <= tolerance):
+            if (abs(behavior_len - time_int_binsize) <= tolerance):
                 # print(f'time_int {time_int}')
-                # print(f'time_int_1 {time_int_1} time_int_4 {time_int_4}')
+                # print(f'time_int_4 {time_int_4}')
                 # print(f'behavior_len {behavior_len}')
                 return self.behavior
             else:
                 raise \
-                    ValueError("Check behavior length has binsize 1 or 4")
+                    ValueError(f"Check behavior length: binsize {binsize} "
+                               f"length of behavior {behavior_len} "
+                               f"length of recording is {time_int} difference "
+                               f"{abs(behavior_len - time_int_binsize)}"
+                               )
 
     def shuffle_times(self, shuffle_alg=1, time_offset=10):
         '''
