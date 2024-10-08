@@ -355,12 +355,13 @@ neurons = sorted(neurons, key=lambda i: i.peak_channel)
 ```
 ---
 
+
+#### Add behavior to neurons
 ```
-# Load behavior to neurons
-# behavior has default values of np.zeros(2,6) to update behaviour of all cells
 # behavior is a 2d array with
 # first one with time in each state and
 # second one with behavioral states (sleep states),
+#
 # As Sleepstates can be modified using Sleep_Wake_Scoring
 # please remember to load these everytime in case they are modified.
 behavior = np.load('Sleepstates.npy', allow_pickle=True)
@@ -376,12 +377,13 @@ mbt.Neuron.update_behavior(behavior))
 #
 neurons[0].get_behavior(tolerance=2, binsize=4)
 # if behavior is not loaded using above step (using Sleepstates.npy)
-# it will raise error ValueError: behavior not added
+# it will raise error ValueError
 #
-# if behavior length is not close to binsize w.r.t end_time
+# if behavior length is not close to binsize w.r.t neurons[0].end_time
 # it will raise error ValueError
                       
 ```
+---
 
 ```
 # Plot all waveforms in a neuron list
