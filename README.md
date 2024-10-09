@@ -285,10 +285,11 @@ neurons[2].checkqual(binsz=3600, start=False, end=False, lsavepng=0,
 ```
 print(neurons[2].quality)
 ```
----
 
+
+
+#### Find quality using xgboost
 ```
-# Find quality using xgboost
 import numpy as np
 import musclebeachtools as mbt
 # Load neurons
@@ -302,18 +303,23 @@ neurons = \
 mbt.autoqual(neurons, '/media/HlabShare/models/xgb_model')
 ```
 
-```
-# Total number of neurons in one quality
-neurons = np.load(neuron_file, allow_pickle=True)
 
-# print(len(cells))
+
+#### Total number of neurons in one quality
+```
+neurons = np.load(neuron_file, allow_pickle=True)
+```
+
+#### print(len(cells))
+```
 q12 = sum( 1 for neuron in neurons if neuron.quality < 3)
 q3 = sum( 1 for neuron in neurons if neuron.quality == 3)
 print(f'Quality 1 and 2 has {q12} neurons and quality 3 has {q3} neurons')
 ```
 
+
+#### Verify quality is correct using checkqual
 ```
-# Verify quality is correct using checkqual
 # lsavepng : Save checkqual results as png's, default 0
 # png_outdir : Directory to save png files
 #              if lsavepng=1 and png_outdir=None
@@ -322,7 +328,10 @@ print(f'Quality 1 and 2 has {q12} neurons and quality 3 has {q3} neurons')
 # fix_amp_ylim=500, to change amplitude plot ylim from 0 to 500.
 for neuron in neurons:
     neuron.checkqual(savepng=0, png_outdir=None, fix_amp_ylim=500)
+```
+---
 
+```
 # Remove spikes for neuron with large amplitudes
 # Default method based on standard deviation,
 For example for neurons of quality 1 and 2,  1.5 to 2.5 standard deviation is fine.
