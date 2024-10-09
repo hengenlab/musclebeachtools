@@ -258,8 +258,9 @@ print(neurons[2].off_times)
 ```
 ---
 
+
+#### Change quality with plot of ISI, Firingrate and Waveform
 ```
-# Change quality with plot of ISI, Firingrate and Waveform
 import numpy as np
 import musclebeachtools as mbt
 neurons = np.load('neurons_group0.npy', allow_pickle=True)
@@ -279,10 +280,14 @@ neurons[2].checkqual(binsz=3600, start=False, end=False, lsavepng=0,
 ```
 ![checkqual](https://biolinux2.wustl.edu/hlabdata/images/mbt_checkqual.png)
 
-```
-# Check quality is changed also there is a log from checkqual
-print(neurons[2].quality)
 
+#### Check quality is changed also there is a log from checkqual
+```
+print(neurons[2].quality)
+```
+---
+
+```
 # Find quality using xgboost
 import numpy as np
 import musclebeachtools as mbt
