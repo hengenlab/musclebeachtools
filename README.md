@@ -617,7 +617,10 @@ mbt.n_check_date_validity(neurons_group0_files_list,
                           sacday_time_string='2021-03-08_07-30-00',
                           birthday_time_string='2020-04-19_07-30-00')
 ```
+---
 
+
+#### Calculates the group value of a channel
 ```
 import numpy as np
 import musclebeachtools as mbt
@@ -634,8 +637,8 @@ mbt.get_group_value(channel, group_size)
 # Returns
 #     int: The group value (0 to group_size - 1).
 ```
-
 ---
+
 ## FAQ
 ```
 1. spike_time vs spike_time_sec
