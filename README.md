@@ -356,9 +356,8 @@ mbt.n_save_modified_neuron_list(neurons, '/home/kbn/neuron_mod.npy')
 ```
 ---
 
-
+#### Sort neurons by peak_channel in ascending order
 ```
-# Sort neurons by peak_channel in ascending order
 import numpy as np
 import musclebeachtools as mbt
 # Load neurons
@@ -411,8 +410,8 @@ mbt.n_plot_neuron_wfs(neurons, maxqual=[1], pltname="block1",
 ```
 ---
 
+#### Plot all neurons checkqual (figure) and save as pdf
 ```
-# Plot all neurons checkqual (figure) and save as pdf
 fl = '/home/kbn/probe1/co/H_2023-12-29_23-09-54_2023-12-30_11-04-55_neurons_group0.npy'
 
 # Load neurons
@@ -439,6 +438,7 @@ mbt.n_checkqual_pdf(neurons, savepdf, maxqual=None,
                     binsz=3600, start=False, end=False,
                     fix_amp_ylim=1)
 ```
+---
 
 ```
 
