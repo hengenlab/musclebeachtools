@@ -331,8 +331,8 @@ for neuron in neurons:
 ```
 ---
 
+#### Remove spikes for neuron with large amplitudes
 ```
-# Remove spikes for neuron with large amplitudes
 # Default method based on standard deviation,
 For example for neurons of quality 1 and 2,  1.5 to 2.5 standard deviation is fine.
 But quality 3 neurons make sure to use larger deviations or check manualy with lplot=True
@@ -351,7 +351,7 @@ neurons[4].remove_large_amplitude_spikes(98, lstd_deviation=False, lpercentile=T
 If you are sure and do not want to check plots
  to confirm change lplot=False (not recommended)
 
-# Save a modified neuron list
+# Save the modified neuron list
 mbt.n_save_modified_neuron_list(neurons, '/home/kbn/neuron_mod.npy')
 ```
 ---
