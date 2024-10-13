@@ -399,8 +399,8 @@ neurons[0].get_behavior(tolerance=2, binsize=4)
 ```
 ---
 
+#### Plot all waveforms in a neuron list
 ```
-# Plot all waveforms in a neuron list
 # maxqual filter by quality, list
 # plot waveforms for neurons with quality in maxqual
 # To see plot
@@ -409,6 +409,7 @@ mbt.n_plot_neuron_wfs(neurons, maxqual=[1, 2, 3, 4], pltname="block1")
 mbt.n_plot_neuron_wfs(neurons, maxqual=[1], pltname="block1",
                       saveloc='/home/kbn/')
 ```
+---
 
 ```
 # Plot all neurons checkqual (figure) and save as pdf
