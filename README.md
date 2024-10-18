@@ -308,15 +308,17 @@ mbt.autoqual(neurons, '/media/HlabShare/models/xgb_model')
 #### Total number of neurons in one quality
 ```
 neurons = np.load(neuron_file, allow_pickle=True)
-```
+print(f'Total number of neurons {len(cells)}')
 
-#### print(len(cells))
-```
 q12 = sum( 1 for neuron in neurons if neuron.quality < 3)
 q3 = sum( 1 for neuron in neurons if neuron.quality == 3)
 print(f'Quality 1 and 2 has {q12} neurons and quality 3 has {q3} neurons')
 ```
 
+#### Filter neuron list by quality
+````
+neuron_list_filt = mbt.n_filt_quality(neurons, maxqual=[1, 2])
+````
 
 #### Verify quality is correct using checkqual
 ```
@@ -484,10 +486,6 @@ neurons[0].expt_cond
 ---
 
 ```
-# Filter neuron list by quality
-neuron_list_filt = mbt.n_filt_quality(neurons, maxqual=[1, 2])
-
-
 # Add neurons
 import numpy as np
 import musclebeachtools as mbt
