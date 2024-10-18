@@ -442,7 +442,7 @@ mbt.n_checkqual_pdf(neurons, savepdf, maxqual=None,
 
 
 
-# To create neuron list from sorter_interface output
+#### To create neuron list from sorter_interface output
 You need to be in sorter_interface conda environment (spike15)
 ```
 import numpy as np
