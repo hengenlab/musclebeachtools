@@ -440,45 +440,50 @@ mbt.n_checkqual_pdf(neurons, savepdf, maxqual=None,
 ```
 ---
 
-```
 
-# To create neuron list from spikeinteface output folder in spikeinterface environmnet
+
+# To create neuron list from sorter_interface output
+You need to be in sorter_interface conda environment (spike15)
+```
 import numpy as np
 import glob
 import musclebeachtools as mbt
 from datetime import datetime
-neurons = mbt.mbt_spkinterface_out('/home/kbn/co/',
-                             '/media/HlabShare/models/xgboost_autoqual_prob',
-                             sex='m', birthday=datetime(1970, 1, 1, 00, 00),
+co_dir = '/home/kbn/co/'
+model_file = '/media/HlabShare/models/xgboost_autoqual_prob'
+neurons = mbt.mbt.mbt_sorter_interface_out(co_dir,
+                             model_file=model_file,
+                             sex='m',
+                             birthday=datetime(1970, 1, 1, 00, 00),
                              species='m',
                              animal_name='ABC12345',
                              region_loc='CA1',
                              genotype='te4',
                              expt_cond='monocular deprivation')
 neurons[0].species
-'m'
+# 'm'
 
 neurons[0].region
-'CA1'
+# 'CA1'
 
 neurons[0].animal_name
-'ABC12345'
+# 'ABC12345'
 
 neurons[0].sex
-'m'
+# 'm'
 
 neurons[0].birthday
-datetime.datetime(1970, 1, 1, 0, 0)
-
-neurons[0].age_rec # age based on first file in sorting block
-datetime.timedelta(days=-18625, seconds=2958)
+# datetime.datetime(1970, 1, 1, 0, 0)
 
 neurons[0].genotype
-'te4'
+# 'te4'
 
 neurons[0].expt_cond
-'monocular deprivation'
+# 'monocular deprivation'
+```
+---
 
+```
 # Filter neuron list by quality
 neuron_list_filt = mbt.n_filt_quality(neurons, maxqual=[1, 2])
 
