@@ -485,8 +485,8 @@ neurons[0].expt_cond
 ```
 ---
 
+#### Add neurons
 ```
-# Add neurons
 import numpy as np
 import musclebeachtools as mbt
 
@@ -497,7 +497,7 @@ neurons[51].checkqual()
 neurons[61].checkqual()
 new_neuron.checkqual()
 
-# if you agree merge is right
+# If you agree merge is correct
 print("Length ", len(neurons))
 # delete neurons used to merge
 neurons = np.delete(neurons, [51, 61])
@@ -505,7 +505,10 @@ print("Length ", len(neurons))
 # add merged new merged neuron
 neurons = np.append(neurons, new_neuron)
 print("Length ", len(neurons))
+```
+---
 
+```
 # branching ratio from Viola Priesemann
 import numpy as np
 import musclebeachtools as mbt
