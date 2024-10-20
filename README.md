@@ -132,20 +132,27 @@ print("\nSpike times in second ", neurons[0].spike_time_sec)
 ```
 ![checkqual](https://biolinux2.wustl.edu/hlabdata/images/mbt_loadtestneuron.png)
 
-#### Other properties and functions
+#### Start and end time of the sorted block
 ```
 neurons[4].start_time
 neurons[4].end_time
+```
+
+#### Find region, birthday, sex and species
+```
+neurons[4].region
+neurons[4].birthday
+neurons[4].sex
+neurons[4].species
+```
+
+#### Other properties
+```
 neurons[4].on_times
 neurons[4].off_times
 neurons[4].peak_channel
 neurons[4].quality
 neurons[4].qual_prob
-neurons[4].region
-neurons[4].birthday
-neurons[4].sex
-neurons[4].species
-neurons[4].region
 neurons[4].waveform
 neurons[4].waveform_tetrodes
 neurons[4].waveforms
