@@ -315,7 +315,7 @@ mbt.autoqual(neurons, '/media/HlabShare/models/xgb_model')
 #### Total number of neurons in one quality
 ```
 neurons = np.load(neuron_file, allow_pickle=True)
-print(f'Total number of neurons {len(cells)}')
+print(f'Total number of neurons {len(neurons)}')
 
 q12 = sum( 1 for neuron in neurons if neuron.quality < 3)
 q3 = sum( 1 for neuron in neurons if neuron.quality == 3)
