@@ -16,7 +16,8 @@ This package used to analyze neuronal data, from basic plotting
 ![Tests](https://github.com/hengenlab/musclebeachtools/actions/workflows/pytests.yml/badge.svg)
 
 
-## Installation
+## $\textcolor{#6897bb}{\textbf{Installation}}$
+
 
 ### Download musclebeachtools
 ```
