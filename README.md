@@ -378,6 +378,37 @@ neurons = sorted(neurons, key=lambda i: i.peak_channel)
 ---
 
 
+#### Shuffle spike times
+```
+import numpy as np
+import musclebeachtools as mbt
+import os.path as op
+
+# get new file name
+fl = '/media/ckbn/H_2022-05-12_08-59-26_2022-05-12_17-54-28_neurons_group0.npy'
+print(op.splitext(fl)[0]+'_shuffle_spiketimes.npy')
+fl_new = op.splitext(fl)[0]+'_shuffle_spiketimes.npy'
+
+# load neuons and shuffle times and save
+neurons = np.load(fl, allow_pickle=True)
+for indx, neuron in enumerate(neurons):
+    print("indx ",indx)
+    neuron.shuffle_times(shuffle_alg=1)
+np.save(fl_new, neurons)
+```
+```
+# to test whether everything worked
+# check quality of some neurons
+neurons = np.load(fl, allow_pickle=True)
+for indx, neuron in enumerate(neurons):
+        neuron.checkqual()
+print("shuffled")
+neurons_new = np.load(fl_new, allow_pickle=True)
+for indx, neuron_new in enumerate(neurons_new):
+        neuron_new.checkqual()
+```
+
+
 #### Add behavior to neurons
 ```
 # behavior is a 2d array with
@@ -575,31 +606,6 @@ mbt.track_blocks(fl, ch_grp_size=4, maxqual=3, corr_fact=0.97, lsaveneuron=1, ls
 n_amp = mbt.load_spike_amplitudes(n, '/home/kbn/amplitudes0.npy')
 n_amp[4].spike_amplitude
 
-# Shuffle spike times
-import numpy as np
-import musclebeachtools as mbt
-import os.path as op
-# get new file name
-fl = '/media/ckbn/H_2022-05-12_08-59-26_2022-05-12_17-54-28_neurons_group0.npy'
-print(op.splitext(fl)[0]+'_shuffle_spiketimes.npy')
-fl_new = op.splitext(fl)[0]+'_shuffle_spiketimes.npy'
-# load neuons and shuffle times and save
-neurons = np.load(fl, allow_pickle=True)
-for indx, neuron in enumerate(neurons):
-    print("indx ",indx)
-    neuron.shuffle_times(shuffle_alg=1)
-np.save(fl_new, neurons)
-# to test whether everything worked
-# check quality of some neurons
-neurons = np.load(fl, allow_pickle=True)
-for indx, neuron in enumerate(neurons):
-    if neuron.quality < 3:
-        neuron.checkqual()
-print("shuffled")
-neurons_new = np.load(fl_new, allow_pickle=True)
-for indx, neuron_new in enumerate(neurons_new):
-    if neuron_new.quality < 3:
-        neuron_new.checkqual()
 
 # Correlograms
 import numpy as np
