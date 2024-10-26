@@ -1,4 +1,12 @@
-# musclebeachtools
+# $\textcolor{#fa8072}{\textbf{Musclebeachtools}}$
+
+<!-- 
+# title  color  #fa8072
+# header color  #6897bb
+# warnings color #ff4040
+# best color #b4eeb4
+-->
+
 ---
 This package used to analyze neuronal data, from basic plotting
  (ISI histograms, firing rate, cross correlation),
