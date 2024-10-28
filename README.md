@@ -90,7 +90,8 @@ n1 = mbt.ksout(datadir, filenum=0, prbnum=4, filt=[])
 ```
 -->
 
-## Usage
+## $\textcolor{#6897bb}{\textbf{Usage}}$
+
 
 #### Load neurons group file (from spikeinteface output) and get basic properties
 ```
@@ -674,7 +675,8 @@ mbt.get_group_value(channel, group_size)
 ```
 ---
 
-## FAQ
+
+## $\textcolor{#6897bb}{\textbf{FAQ}}$
 ```
 1. spike_time vs spike_time_sec
 Property spike_time is in sample times.
