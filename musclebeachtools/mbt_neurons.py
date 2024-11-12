@@ -3644,6 +3644,7 @@ def autoqual(neuron_list, model_file,
         # print("tmp_fet ", tmp_fet)
         fet_idx = fet_idx + tmp_fet.shape[0]
         tmp_fet = None
+        tmp_fet_wf = tmp_fet_wf.astype(np.float64)
         tmp_fet = np.array([sc.stats.kurtosis(tmp_fet_wf)])
         neuron_features[idx, fet_idx:fet_idx+tmp_fet.shape[0]] = tmp_fet
         # print("tmp_fet ", tmp_fet)
