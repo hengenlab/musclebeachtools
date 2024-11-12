@@ -1,4 +1,12 @@
-# musclebeachtools
+# $\textcolor{#fa8072}{\textbf{Musclebeachtools}}$
+
+<!-- 
+# title  color  #fa8072
+# header color  #6897bb
+# warnings color #ff4040
+# best color #b4eeb4
+-->
+
 ---
 This package used to analyze neuronal data, from basic plotting
  (ISI histograms, firing rate, cross correlation),
@@ -8,7 +16,8 @@ This package used to analyze neuronal data, from basic plotting
 ![Tests](https://github.com/hengenlab/musclebeachtools/actions/workflows/pytests.yml/badge.svg)
 
 
-## Installation
+## $\textcolor{#6897bb}{\textbf{Installation}}$
+
 
 ### Download musclebeachtools
 ```
@@ -81,7 +90,8 @@ n1 = mbt.ksout(datadir, filenum=0, prbnum=4, filt=[])
 ```
 -->
 
-## Usage
+## $\textcolor{#6897bb}{\textbf{Usage}}$
+
 
 #### Load neurons group file (from spikeinteface output) and get basic properties
 ```
@@ -132,20 +142,27 @@ print("\nSpike times in second ", neurons[0].spike_time_sec)
 ```
 ![checkqual](https://biolinux2.wustl.edu/hlabdata/images/mbt_loadtestneuron.png)
 
-#### Other properties and functions
+#### Start and end time of the sorted block
 ```
 neurons[4].start_time
 neurons[4].end_time
+```
+
+#### Find region, birthday, sex and species
+```
+neurons[4].region
+neurons[4].birthday
+neurons[4].sex
+neurons[4].species
+```
+
+#### Other properties
+```
 neurons[4].on_times
 neurons[4].off_times
 neurons[4].peak_channel
 neurons[4].quality
 neurons[4].qual_prob
-neurons[4].region
-neurons[4].birthday
-neurons[4].sex
-neurons[4].species
-neurons[4].region
 neurons[4].waveform
 neurons[4].waveform_tetrodes
 neurons[4].waveforms
@@ -308,15 +325,17 @@ mbt.autoqual(neurons, '/media/HlabShare/models/xgb_model')
 #### Total number of neurons in one quality
 ```
 neurons = np.load(neuron_file, allow_pickle=True)
-```
+print(f'Total number of neurons {len(neurons)}')
 
-#### print(len(cells))
-```
 q12 = sum( 1 for neuron in neurons if neuron.quality < 3)
 q3 = sum( 1 for neuron in neurons if neuron.quality == 3)
 print(f'Quality 1 and 2 has {q12} neurons and quality 3 has {q3} neurons')
 ```
 
+#### Filter neuron list by quality
+````
+neuron_list_filt = mbt.n_filt_quality(neurons, maxqual=[1, 2])
+````
 
 #### Verify quality is correct using checkqual
 ```
@@ -367,6 +386,37 @@ neurons = \
 neurons = sorted(neurons, key=lambda i: i.peak_channel)
 ```
 ---
+
+
+#### Shuffle spike times
+```
+import numpy as np
+import musclebeachtools as mbt
+import os.path as op
+
+# get new file name
+fl = '/media/ckbn/H_2022-05-12_08-59-26_2022-05-12_17-54-28_neurons_group0.npy'
+print(op.splitext(fl)[0]+'_shuffle_spiketimes.npy')
+fl_new = op.splitext(fl)[0]+'_shuffle_spiketimes.npy'
+
+# load neuons and shuffle times and save
+neurons = np.load(fl, allow_pickle=True)
+for indx, neuron in enumerate(neurons):
+    print("indx ",indx)
+    neuron.shuffle_times(shuffle_alg=1)
+np.save(fl_new, neurons)
+```
+```
+# to test whether everything worked
+# check quality of some neurons
+neurons = np.load(fl, allow_pickle=True)
+for indx, neuron in enumerate(neurons):
+        neuron.checkqual()
+print("shuffled")
+neurons_new = np.load(fl_new, allow_pickle=True)
+for indx, neuron_new in enumerate(neurons_new):
+        neuron_new.checkqual()
+```
 
 
 #### Add behavior to neurons
@@ -440,50 +490,70 @@ mbt.n_checkqual_pdf(neurons, savepdf, maxqual=None,
 ```
 ---
 
-```
 
-# To create neuron list from spikeinteface output folder in spikeinterface environmnet
+#### check two neurons are from same tetrode
+```
+# check_sametetrode_neurons(channel1, channel2,
+                            ch_grp_size=4,
+                            lverbose=1)
+# channel1: first channel
+# channel2: second channel
+# ch_grp_size : default (4) for tetrodes
+# lverbose: default(1) to print tetrodes check
+#
+# return True or False
+lsamechannel = \
+    check_sametetrode_neurons(neurons[0].peak_channel,
+                              neurons[1].peak_channel,
+                              ch_grp_size=4,
+                              lverbose=1)
+```
+---
+
+
+#### To create neuron list from sorter_interface output
+You need to be in sorter_interface conda environment (spike15)
+```
 import numpy as np
 import glob
 import musclebeachtools as mbt
 from datetime import datetime
-neurons = mbt.mbt_spkinterface_out('/home/kbn/co/',
-                             '/media/HlabShare/models/xgboost_autoqual_prob',
-                             sex='m', birthday=datetime(1970, 1, 1, 00, 00),
+co_dir = '/home/kbn/co/'
+model_file = '/media/HlabShare/models/xgboost_autoqual_prob'
+neurons = mbt.mbt.mbt_sorter_interface_out(co_dir,
+                             model_file=model_file,
+                             sex='m',
+                             birthday=datetime(1970, 1, 1, 00, 00),
                              species='m',
                              animal_name='ABC12345',
                              region_loc='CA1',
                              genotype='te4',
                              expt_cond='monocular deprivation')
 neurons[0].species
-'m'
+# 'm'
 
 neurons[0].region
-'CA1'
+# 'CA1'
 
 neurons[0].animal_name
-'ABC12345'
+# 'ABC12345'
 
 neurons[0].sex
-'m'
+# 'm'
 
 neurons[0].birthday
-datetime.datetime(1970, 1, 1, 0, 0)
-
-neurons[0].age_rec # age based on first file in sorting block
-datetime.timedelta(days=-18625, seconds=2958)
+# datetime.datetime(1970, 1, 1, 0, 0)
 
 neurons[0].genotype
-'te4'
+# 'te4'
 
 neurons[0].expt_cond
-'monocular deprivation'
+# 'monocular deprivation'
+```
+---
 
-# Filter neuron list by quality
-neuron_list_filt = mbt.n_filt_quality(neurons, maxqual=[1, 2])
-
-
-# Add neurons
+#### Add neurons
+```
 import numpy as np
 import musclebeachtools as mbt
 
@@ -494,7 +564,7 @@ neurons[51].checkqual()
 neurons[61].checkqual()
 new_neuron.checkqual()
 
-# if you agree merge is right
+# If you agree merge is correct
 print("Length ", len(neurons))
 # delete neurons used to merge
 neurons = np.delete(neurons, [51, 61])
@@ -502,7 +572,10 @@ print("Length ", len(neurons))
 # add merged new merged neuron
 neurons = np.append(neurons, new_neuron)
 print("Length ", len(neurons))
+```
+---
 
+```
 # branching ratio from Viola Priesemann
 import numpy as np
 import musclebeachtools as mbt
@@ -526,21 +599,7 @@ br1, br2, acc1, acc2 = mbt.n_branching_ratio(neurons, ava_binsz=0.004,
                                 plotname='/home/kbn/hhh.png')
 print("Branching ratio ", br1, " pearson corr ", acc1, flush=True)
 
-# check two neurons are from same tetrode
-# check_sametetrode_neurons(channel1, channel2,
-                            ch_grp_size=4,
-                            lverbose=1)
-# channel1: first channel
-# channel2: second channel
-# ch_grp_size : default (4) for tetrodes
-# lverbose: default(1) to print tetrodes check
-#
-# return True or False
-lsamechannel = \
-    check_sametetrode_neurons(neurons[0].peak_channel,
-                              neurons[1].peak_channel,
-                              ch_grp_size=4,
-                              lverbose=1)
+
 
 # find keys
 import numpy as np
@@ -557,31 +616,6 @@ mbt.track_blocks(fl, ch_grp_size=4, maxqual=3, corr_fact=0.97, lsaveneuron=1, ls
 n_amp = mbt.load_spike_amplitudes(n, '/home/kbn/amplitudes0.npy')
 n_amp[4].spike_amplitude
 
-# Shuffle spike times
-import numpy as np
-import musclebeachtools as mbt
-import os.path as op
-# get new file name
-fl = '/media/ckbn/H_2022-05-12_08-59-26_2022-05-12_17-54-28_neurons_group0.npy'
-print(op.splitext(fl)[0]+'_shuffle_spiketimes.npy')
-fl_new = op.splitext(fl)[0]+'_shuffle_spiketimes.npy'
-# load neuons and shuffle times and save
-neurons = np.load(fl, allow_pickle=True)
-for indx, neuron in enumerate(neurons):
-    print("indx ",indx)
-    neuron.shuffle_times(shuffle_alg=1)
-np.save(fl_new, neurons)
-# to test whether everything worked
-# check quality of some neurons
-neurons = np.load(fl, allow_pickle=True)
-for indx, neuron in enumerate(neurons):
-    if neuron.quality < 3:
-        neuron.checkqual()
-print("shuffled")
-neurons_new = np.load(fl_new, allow_pickle=True)
-for indx, neuron_new in enumerate(neurons_new):
-    if neuron_new.quality < 3:
-        neuron_new.checkqual()
 
 # Correlograms
 import numpy as np
@@ -603,8 +637,10 @@ fl = 'H_2020-08-07_14-00-15_2020-08-08_01-55-16_neurons_group0.jake_scored_q12.n
 neurons = np.load(fl, allow_pickle=True)
 zcl_i, zcl_v, zcl_mse = mbt.n_zero_crosscorr(neurons)
 print(zcl_i, "\n", zcl_v)
+```
 
-
+#### Check validity of neurons_group0 files
+```
 import numpy as np
 import musclebeachtools as mbt
 import glob
@@ -639,7 +675,8 @@ mbt.get_group_value(channel, group_size)
 ```
 ---
 
-## FAQ
+
+## $\textcolor{#6897bb}{\textbf{FAQ}}$
 ```
 1. spike_time vs spike_time_sec
 Property spike_time is in sample times.
