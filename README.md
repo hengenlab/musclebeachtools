@@ -80,11 +80,15 @@ export PYTHONPATH=/location_of_musclebeachtools:$PYTHONPATH
 ```
 -->
 ---
-### Test import
+
+#### $\textcolor{#81d8d0}{\textbf{Test import}}$
+
 ```
-Open powershell/terminal     
-    ipython    
-    import musclebeachtools as mbt   
+# Open powershell/terminal     
+ipython
+```
+```
+import musclebeachtools as mbt   
 ```
 ---
 
