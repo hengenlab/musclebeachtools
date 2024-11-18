@@ -105,8 +105,7 @@ n1 = mbt.ksout(datadir, filenum=0, prbnum=4, filt=[])
 
 ## $\textcolor{#6897bb}{\textbf{Usage}}$
 
-
-#### Load neurons group file (from spikeinteface output) and get basic properties
+#### $\textcolor{#81d8d0}{\textbf{Load neurons group file (from spikeinteface output) and get basic properties}}$
 ```
 import numpy as np
 import musclebeachtools as mbt
