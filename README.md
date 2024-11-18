@@ -19,18 +19,27 @@ This package used to analyze neuronal data, from basic plotting
 ## $\textcolor{#6897bb}{\textbf{Installation}}$
 
 
-### Download musclebeachtools
-```
-git clone https://github.com/hengenlab/musclebeachtools.git  
-Remember musclebeachtools also installs
-neuraltoolkit (https://github.com/hengenlab/neuraltoolkit)
-```
-### Using pip
-```
-cd locationofmusclebeachtools/musclebeachtools/  
-For example /home/kbn/git/musclebeachtools  
-pip install .
+#### $\textcolor{#81d8d0}{\textbf{Download and install musclebeachtools}}$
 
+```
+cd  ~/git/
+git clone https://github.com/hengenlab/neuraltoolkit.git
+git clone https://github.com/hengenlab/musclebeachtools.git  
+```
+
+```
+# cd locationofneuraltoolkit/neuraltoolkit/  
+# For example /home/kbn/git/neuraltoolkit
+pip install .
+```
+
+```
+# cd locationofmusclebeachtools/musclebeachtools/  
+# For example /home/kbn/git/musclebeachtools
+pip install .
+```
+
+```
 # In Linux and windows
 pip install xgboost
 
