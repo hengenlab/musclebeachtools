@@ -277,7 +277,7 @@ import musclebeachtools as mbt
 
 neurons = np.load('neurons_group0.npy', allow_pickle=True)
 
-# neurons : List of neurons from (usually output from ksout)
+# neurons : List of neurons
 # binsz : Bin size (default 0.02 (20 ms))
 # start : Start time (default (False uses self.start_time))
 # end : End time (default (False uses self.end_time))
@@ -285,6 +285,27 @@ neurons = np.load('neurons_group0.npy', allow_pickle=True)
 #   if binarize is 1, binarize to 0 and 1
 # lonoff : Apply on off times (default on, 1)
 sw = mbt.n_spiketimes_to_spikewords(neurons, binsz=0.02,
+                                    start=False, end=False,
+                                    binarize=0, lonoff=1)
+```
+
+```
+import numpy as np
+import musclebeachtools as mbt
+
+
+neurons = np.load('neurons_group0.npy', allow_pickle=True)
+# Filter by quality
+neuron_list_filt = mbt.n_filt_quality(neurons, maxqual=[1, 2])
+
+# neuron_list_filt : List of neurons filtered by quality
+# binsz : Bin size (default 0.02 (20 ms))
+# start : Start time (default (False uses self.start_time))
+# end : End time (default (False uses self.end_time))
+# binarize : Get counts (default 0) in bins,
+#   if binarize is 1, binarize to 0 and 1
+# lonoff : Apply on off times (default on, 1)
+sw = mbt.n_spiketimes_to_spikewords(neuron_list_filt, binsz=0.02,
                                     start=False, end=False,
                                     binarize=0, lonoff=1)
 ```
