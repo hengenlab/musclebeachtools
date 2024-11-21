@@ -268,12 +268,25 @@ spiketimes_list = n_getspikes(neurons)
 ---
 
 
-#### Get spikewords from all neurons in neurons as a list
+#### $\textcolor{#81d8d0}{\textbf{Get spikewords from all neurons in neurons as a list}}$
+
 ```
 import numpy as np
 import musclebeachtools as mbt
+
+
 neurons = np.load('neurons_group0.npy', allow_pickle=True)
-sw = mbt.n_spiketimes_to_spikewords(neurons)
+
+# neurons : List of neurons from (usually output from ksout)
+# binsz : Bin size (default 0.02 (20 ms))
+# start : Start time (default (False uses self.start_time))
+# end : End time (default (False uses self.end_time))
+# binarize : Get counts (default 0) in bins,
+#   if binarize is 1, binarize to 0 and 1
+# lonoff : Apply on off times (default on, 1)
+sw = mbt.n_spiketimes_to_spikewords(neurons, binsz=0.02,
+                                    start=False, end=False,
+                                    binarize=0, lonoff=1)
 ```
 ---
 
