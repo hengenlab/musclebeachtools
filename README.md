@@ -270,6 +270,7 @@ spiketimes_list = n_getspikes(neurons)
 
 #### $\textcolor{#81d8d0}{\textbf{Get spikewords from all neurons in neurons as a list}}$
 
+$\textcolor{#b4eeb4}{\textbf{Here binsz, start, end are in seconds}}$
 ```
 import numpy as np
 import musclebeachtools as mbt
