@@ -4147,7 +4147,7 @@ def n_getspikes(neuron_list, start=False, end=False, lonoff=1):
 
     Parameters
     ----------
-    neuron_list : List of neurons from (usually output from ksout)
+    neuron_list : List of neurons
     start : Start time (default self.start_time)
     end : End time (default self.end_time)
     lonoff : Apply on off times (default on, 1)
@@ -4219,7 +4219,7 @@ def n_spiketimes_to_spikewords(neuron_list, binsz=0.02,
 
     Parameters
     ----------
-    neuron_list : List of neurons from (usually output from ksout)
+    neuron_list : List of neurons
     binsz : Bin size (default 0.02 (20 ms))
     start : Start time (default self.start_time)
     end : End time (default self.end_time)
