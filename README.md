@@ -261,9 +261,19 @@ neurons[0].set_qual(1)
 ```
 ---
 
-#### get spiketimes from all neurons in neurons as a list
+#### $\textcolor{#81d8d0}{\textbf{Get spiketimes from all neurons as a list}}$
 ```
-spiketimes_list = n_getspikes(neurons)
+import numpy as np
+import musclebeachtools as mbt
+
+
+neurons = np.load('neurons_group0.npy', allow_pickle=True)
+
+# neurons : List of neurons
+# start : Start time (default (False uses self.start_time))
+# end : End time (default (False uses self.end_time))
+# lonoff : Apply on off times (default on, 1)
+spiketimes_list = mbt.n_getspikes(neurons, start=False, end=False, lonoff=1)
 ```
 ---
 
