@@ -199,16 +199,22 @@ neurons[4].plot_wf()
 ```
 ---
 
-#### Plot isi of 4th neuron
+#### $\textcolor{#81d8d0}{\textbf{Plot isi of 4th neuron}}$
 ```
-#  start : Start time (default self.start_time)
-#  end : End time (default self.end_time)
+import numpy as np
+import musclebeachtools as mbt
+
+# Load neurons
+neurons = np.load('neurons_group0.npy', allow_pickle=True)
+
+#  start : Start time (default False uses self.start_time)
+#  end : End time (default False uses self.end_time)
 #  isi_thresh : isi threshold (default 0.1)
 #  nbins : Number of bins (default 101)
 #  lplot : To plot or not (default lplot=1, plot isi)
 #  lonoff : Apply on off times (default on, 1)
 neurons[4].isi_hist(start=False, end=False, isi_thresh=0.1, nbins=101,
-               lplot=1, lonoff=1)
+                    lplot=1, lonoff=1)
 ```
 ---
 
