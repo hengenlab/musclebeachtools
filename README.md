@@ -384,14 +384,36 @@ mbt.autoqual(neurons, '/media/HlabShare/models/xgb_model')
 neurons = np.load(neuron_file, allow_pickle=True)
 print(f'Total number of neurons {len(neurons)}')
 
-q12 = sum( 1 for neuron in neurons if neuron.quality < 3)
+q1 = sum( 1 for neuron in neurons if neuron.quality == 1)
+q2 = sum( 1 for neuron in neurons if neuron.quality == 2)
 q3 = sum( 1 for neuron in neurons if neuron.quality == 3)
-print(f'Quality 1 and 2 has {q12} neurons and quality 3 has {q3} neurons')
+
+print(f'Quality 1 has {q1} neurons and 2  has {q2} neurons and quality 3 has {q3} neurons')
 ```
 
-#### Filter neuron list by quality
+#### $\textcolor{#81d8d0}{\textbf{Filter neuron list by quality}}$
+
 ````
+import numpy as np
+import musclebeachtools as mbt
+# Load neurons
+neurons = \
+    np.load('H_2020-04-09_09-11-37_2020-04-10_01-06-37_neurons_group0.npy',
+            allow_pickle=True)
+print(f'Total number of neurons {len(neurons)}')
+q1 = sum( 1 for neuron in neurons if neuron.quality == 1)
+q2 = sum( 1 for neuron in neurons if neuron.quality == 2)
+q3 = sum( 1 for neuron in neurons if neuron.quality == 3)
+print(f'Quality 1 has {q1} neurons and 2  has {q2} neurons and quality 3 has {q3} neurons')
+
+# Filter to have quality 1 and 2 only
 neuron_list_filt = mbt.n_filt_quality(neurons, maxqual=[1, 2])
+
+q1 = sum( 1 for neuron in neurons if neuron.quality == 1)
+q2 = sum( 1 for neuron in neurons if neuron.quality == 2)
+q3 = sum( 1 for neuron in neurons if neuron.quality == 3)
+
+print(f'Quality 1 has {q1} neurons and 2  has {q2} neurons and quality 3 has {q3} neurons')
 ````
 
 #### Verify quality is correct using checkqual
