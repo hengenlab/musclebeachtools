@@ -157,7 +157,34 @@ print("\nSpike times in second ", neurons[0].spike_time_sec)
 #### $\textcolor{#81d8d0}{\textbf{Find start and end time of the 4th neuron}}$
 ```
 neurons[4].start_time
+# 0
+# 
+
 neurons[4].end_time
+# 14400.0
+# 14400.0/(60*60) = 4
+# 4 hours of data sorted
+```
+
+#### $\textcolor{#81d8d0}{\textbf{Find start and end time of the 4th neuron}}$
+```
+neurons[4].rstart_time
+# 2022-12-31_11-15-55
+# Date and time in the filename of the first binary file used for sorting
+
+neurons[4].rend_time
+# 2022-12-31_15-10-55
+# Date and time in the filename of the last binary file used for sorting
+```
+
+#### $\textcolor{#81d8d0}{\textbf{Find ecube start and rend time of the 4th neuron}}$
+```
+neurons[4].estart_time
+# np.int64(43228511909775)
+
+neurons[4].eend_time
+# np.int64(57628511869775)
+# (np.int64(57628511869775) - np.int64(43228511909775))/ (60* 60 * 10**9) = 4 hours
 ```
 
 #### $\textcolor{#81d8d0}{\textbf{Find region, birthday, sex and species of the 4th neuron}}$
