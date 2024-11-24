@@ -205,9 +205,16 @@ $\textcolor{#a0db8e}{\textbf{however, if the last binary file is shorter, add it
 #### $\textcolor{#81d8d0}{\textbf{Find region, birthday, sex and species of the 4th neuron}}$
 ```
 neurons[4].region
+# 'ACC'
+
 neurons[4].birthday
+# datetime.datetime(2022, 9, 20, 7, 30)
+
 neurons[4].sex
+# 'f'
+
 neurons[4].species
+# 'mouse'
 ```
 
 #### $\textcolor{#81d8d0}{\textbf{Find other properties of the 4th neuron}}$
