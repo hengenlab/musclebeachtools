@@ -187,8 +187,14 @@ neurons[4].spike_time_sec_onoff
 ---
 
 
-#### Plot mean waveform of 4th neuron
+#### $\textcolor{#81d8d0}{\textbf{Plot mean waveform of 4th neuron}}$
 ```
+import numpy as np
+import musclebeachtools as mbt
+
+# Load neurons
+neurons = np.load('neurons_group0.npy', allow_pickle=True)
+
 neurons[4].plot_wf()
 ```
 ---
