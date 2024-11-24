@@ -129,7 +129,7 @@ neurons[4].spike_time_sec
 neurons[4].spike_time_sec_onoff
 ```
 
-#### Get a test neurons group file in case you do not have one.
+#### $\textcolor{#81d8d0}{\textbf{Get a test neurons group file in case you do not have one}}$
 ```
 import requests
 import io
@@ -154,13 +154,13 @@ print("\nSpike times in second ", neurons[0].spike_time_sec)
 ```
 ![checkqual](https://biolinux2.wustl.edu/hlabdata/images/mbt_loadtestneuron.png)
 
-#### Start and end time of the sorted block
+#### $\textcolor{#81d8d0}{\textbf{Find start and end time of the 4th neuron}}$
 ```
 neurons[4].start_time
 neurons[4].end_time
 ```
 
-#### Find region, birthday, sex and species
+#### $\textcolor{#81d8d0}{\textbf{Find region, birthday, sex and species of the 4th neuron}}$
 ```
 neurons[4].region
 neurons[4].birthday
@@ -168,7 +168,7 @@ neurons[4].sex
 neurons[4].species
 ```
 
-#### Other properties
+#### $\textcolor{#81d8d0}{\textbf{Find other properties of the 4th neuron}}$
 ```
 neurons[4].on_times
 neurons[4].off_times
