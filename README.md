@@ -166,6 +166,8 @@ neurons[4].end_time
 # 4 hours of data sorted
 ```
 
+$\textcolor{#a0db8e}{\textbf{How many hours of data sorted}, end time - start time}$
+
 #### $\textcolor{#81d8d0}{\textbf{Find start and end time of the 4th neuron}}$
 ```
 neurons[4].rstart_time
@@ -177,6 +179,11 @@ neurons[4].rend_time
 # Date and time in the filename of the last binary file used for sorting
 ```
 
+
+$\textcolor{#a0db8e}{\textbf{If the binary file contains 5 minutes of data, you must add those 5 minutes to rend time to calculate the true rend time;}}$
+$\textcolor{#a0db8e}{\textbf{however, if the last binary file is shorter, add its actual length instead.}}$
+
+
 #### $\textcolor{#81d8d0}{\textbf{Find ecube start and rend time of the 4th neuron}}$
 ```
 neurons[4].estart_time
@@ -184,7 +191,15 @@ neurons[4].estart_time
 
 neurons[4].eend_time
 # np.int64(57628511869775)
-# (np.int64(57628511869775) - np.int64(43228511909775))/ (60* 60 * 10**9) = 4 hours
+# (np.int64(57628511869775) - np.int64(43228511909775))/ (60* 60 * 10**9) = 3.9 hours
+```
+
+$\textcolor{#a0db8e}{\textbf{If the binary file contains 5 minutes of data, you must add those 5 minutes in nano seconds to eend time to calculate the true eend time;}}$
+$\textcolor{#a0db8e}{\textbf{however, if the last binary file is shorter, add its actual length instead.}}$
+
+```
+((np.int64(57628511869775)+ np.int64(300 * 10**9) ) - np.int64(43228511909775))/ (60* 60 * 10**9)
+#  np.float64(4.083333322222222)# hours
 ```
 
 #### $\textcolor{#81d8d0}{\textbf{Find region, birthday, sex and species of the 4th neuron}}$
