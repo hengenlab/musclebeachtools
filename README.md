@@ -267,15 +267,22 @@ neurons[4].isi_hist(start=False, end=False, isi_thresh=0.1, nbins=101,
 ```
 ---
 
-#### plot firing rate of 4th neuron
+#### $\textcolor{#81d8d0}{\textbf{Plot firing rate of 4th neuron}}$
+
 ```
+import numpy as np
+import musclebeachtools as mbt
+
+# Load neurons
+neurons = np.load('neurons_group0.npy', allow_pickle=True)
+
 # binsz : Bin size (default 3600)
-# start : Start time (default self.start_time)
-# end : End time (default self.end_time)
+#  start : Start time (default False uses self.start_time)
+#  end : End time (default False uses self.end_time)
 # lplot : To plot or not (default lplot=1, plot firing rate)
 # lonoff : Apply on off times (default on, 1)
 neurons[4].plotFR(binsz=3600, start=False, end=False,
-             lplot=1, lonoff=1)
+                  lplot=1, lonoff=1)
 ```
 ---
 
