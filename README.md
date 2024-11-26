@@ -295,7 +295,7 @@ import musclebeachtools as mbt
 # Load neurons
 neurons = np.load('neurons_group0.npy', allow_pickle=True)
 
-# binsz : Bin size (default 0.05 (50ms)
+# binsz : Bin size (default 0.05 (50ms))
 # start : Start time (default False uses self.start_time)
 # end : End time (default False uses self.end_time)
 # lonoff : Apply on off times (default on, 1)
@@ -303,6 +303,24 @@ neurons = np.load('neurons_group0.npy', allow_pickle=True)
 # returns : fano factor
 neurons[4].calculate_fano_factor(binsz=0.05, start=False, end=False,
                                  lonoff=1)
+
+```
+---
+
+#### $\textcolor{#81d8d0}{\textbf{Calculate coefficient of variation (cv) of the ISIs of the 4th neuron}}$
+```
+import numpy as np
+import musclebeachtools as mbt
+
+# Load neurons
+neurons = np.load('neurons_group0.npy', allow_pickle=True)
+
+# start : Start time (default False uses self.start_time)
+# end : End time (default False uses self.end_time)
+# lonoff : Apply on off times (default on, 1)
+#
+# returns : coefficient of variation (cv) of the ISIs
+neurons[4].calculate_cv(start=False, end=False, lonoff=1)
 
 ```
 ---
