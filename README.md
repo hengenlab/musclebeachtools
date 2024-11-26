@@ -286,6 +286,27 @@ neurons[4].plotFR(binsz=3600, start=False, end=False,
 ```
 ---
 
+#### $\textcolor{#81d8d0}{\textbf{calculate Fano factor of the 4th neuron}}$
+
+```
+import numpy as np
+import musclebeachtools as mbt
+
+# Load neurons
+neurons = np.load('neurons_group0.npy', allow_pickle=True)
+
+# binsz : Bin size (default 0.05 (50ms)
+# start : Start time (default False uses self.start_time)
+# end : End time (default False uses self.end_time)
+# lonoff : Apply on off times (default on, 1)
+#
+# returns : fano factor
+neurons[4].calculate_fano_factor(binsz=0.05, start=False, end=False,
+                                 lonoff=1)
+
+```
+---
+
 #### Calculate presence ratio
 ```
 # nbins : Number of bins (default 101)
