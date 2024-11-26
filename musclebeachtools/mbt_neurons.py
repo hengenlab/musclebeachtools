@@ -1680,6 +1680,9 @@ class Neuron:
                  lplot=1, lonoff=1):
         # copied from musclebeachtools
         '''
+        For a view of how much this cell is like a "real" neuron,
+         calculate the ISI distribution between 0 and 100 msec.
+
         Return a histogram of the interspike interval (ISI) distribution.
         This is typically used to evaluate whether a spike train exhibits
         a refractory period and is thus consistent with a
@@ -1719,8 +1722,6 @@ class Neuron:
 
         '''
 
-        # For a view of how much this cell is like a "real" neuron,
-        # calculate the ISI distribution between 0 and 100 msec.
 
         logger.info('Calculating ISI')
         # Sample time to time in seconds
@@ -1851,7 +1852,7 @@ class Neuron:
 
         Parameters
         ---------
-        binsz : Bin size (default 0.05 (50ms)
+        binsz : Bin size (default 0.05 (50ms))
         start : Start time (default False uses self.start_time)
         end : End time (default False uses self.end_time)
         lonoff : Apply on off times (default on, 1)
@@ -1908,6 +1909,63 @@ class Neuron:
             fano = np.nan
 
         return fano
+
+    def calculate_cv(self, start=False, end=False,
+                     lonoff=1):
+        '''
+        Calculate coefficient of variation (cv) of the ISIs.
+
+        calculate_cv(self, start=False, end=False, lonoff=1)
+
+        Parameters
+        ----------
+        start : Start time (default False uses self.start_time)
+        end : End time (default False uses self.end_time)
+        lonoff : Apply on off times (default on, 1)
+
+        Returns
+        -------
+        cv : coefficient of variation (cv) of the ISIs
+
+        Raises
+        ------
+
+        See Also
+        --------
+
+        Notes
+        -----
+
+        Examples
+        --------
+        neurons[0].calculate_cv(start=False, end=False, lonoff=1)
+
+        '''
+
+        logger.info('Calculating coefficient of variation (cv)')
+        # Sample time to time in seconds
+        if lonoff:
+            time_s = self.spike_time_sec_onoff
+        else:
+            time_s = self.spike_time_sec
+
+        if start is False:
+            start = self.start_time
+        if end is False:
+            end = self.end_time
+        logger.debug('start and end is %s and %s', start, end)
+
+        # Calulate isi
+        idx = np.where(np.logical_and(time_s >= start, time_s <= end))[0]
+        isis = np.diff(time_s[idx])
+
+        # Mean and standard deviation of ISIs
+        mean_isi = np.mean(isis)
+        std_isi = np.std(isis)
+
+        # Calculate CV
+        cv = std_isi / mean_isi
+        return cv
 
     def isi_contamination_over_time(self, cont_thresh_list, binsz=300,
                                     lonoff=1):
