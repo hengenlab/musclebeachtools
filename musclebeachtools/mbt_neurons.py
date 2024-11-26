@@ -1722,7 +1722,6 @@ class Neuron:
 
         '''
 
-
         logger.info('Calculating ISI')
         # Sample time to time in seconds
         if lonoff:
