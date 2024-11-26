@@ -1840,6 +1840,75 @@ class Neuron:
         # plt.show()
         return hzcount, xbins
 
+    def calculate_fano_factor(self, binsz=0.05, start=False, end=False,
+                              lonoff=1):
+        '''
+        This will calculate fano factor from spike times
+        unless otherwise specified binsz, start, end are in seconds
+
+        calculate_fano_factor(self, binsz=0.05, start=False, end=False,
+                              lonoff=1)
+
+        Parameters
+        ---------
+        binsz : Bin size (default 0.05 (50ms)
+        start : Start time (default False uses self.start_time)
+        end : End time (default False uses self.end_time)
+        lonoff : Apply on off times (default on, 1)
+
+        Returns
+        -------
+        fano : fano factor
+
+        Raises
+        ------
+
+        See Also
+        --------
+
+        Notes
+        -----
+
+        Examples
+        --------
+        neurons[0].calculate_fano_factor(binsz=0.05, start=False, end=False,
+                              lonoff=1)
+
+        '''
+
+        # logger.debug('Calculating fano factor')
+        # Sample time to time in seconds
+        if lonoff:
+            time_s = self.spike_time_sec_onoff
+        else:
+            time_s = self.spike_time_sec
+
+        if start is False:
+            start = self.start_time
+        if end is False:
+            end = self.end_time
+        logger.debug('start and end is %s and %s', start, end)
+
+        # range
+        idx_l = np.where(np.logical_and(time_s >= start, time_s <= end))[0]
+        time_s = time_s[idx_l]
+
+        edges = np.arange(start, end + binsz, binsz)
+        bin_count, _ = np.histogram(time_s, edges)
+
+        # Compute mean and variance of spike counts
+        mean_count = np.mean(bin_count)
+        variance_count = np.var(bin_count)
+
+        # Calculate Fano Factor
+        if mean_count > 0:
+            fano = variance_count / mean_count
+        else:
+            # Return NaN if mean count is 0 to avoid division by zero
+            fano = np.nan
+
+        return fano
+
     def isi_contamination_over_time(self, cont_thresh_list, binsz=300,
                                     lonoff=1):
 
