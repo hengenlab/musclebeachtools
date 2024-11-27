@@ -3023,11 +3023,11 @@ class Neuron:
                 amp_ax.plot((self.spike_time[np.where(z <= th_zs)] / self.fs),
                             self.spike_amplitude[np.where(z <= th_zs)],
                             'bo',
-                            markersize=1.0, alpha=0.1)
+                            markersize=0.5, alpha=0.1)
                 amp_ax.plot((self.spike_time[np.where(z > th_zs)] / self.fs),
                             self.spike_amplitude[np.where(z > th_zs)],
                             'ro',
-                            markersize=1.0, alpha=0.1)
+                            markersize=0.5, alpha=0.1)
                 if (hasattr(self, 'on_times') and hasattr(self, 'off_times')):
                     for on_1, off_1 in zip(self.on_times, self.off_times):
                         # print(on_1, " ", off_1)
