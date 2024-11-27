@@ -325,14 +325,21 @@ neurons[4].calculate_cv(start=False, end=False, lonoff=1)
 ```
 ---
 
-#### Calculate presence ratio
+#### $\textcolor{#81d8d0}{\textbf{Calculate presence ratio of the 4th neuron}}$
+
 ```
+import numpy as np
+import musclebeachtools as mbt
+
+# Load neurons
+neurons = np.load('neurons_group0.npy', allow_pickle=True)
+
 # nbins : Number of bins (default 101)
-# start : Start time (default self.start_time)
-# end : End time (default self.end_time)
+# start : Start time (default False uses self.start_time)
+# end : End time (default False uses self.end_time)
 # lonoff : Apply on off times (default on, 1)
 neurons[4].presence_ratio(nbins=101, start=False, end=False,
-                     lonoff=1)
+                          lonoff=1)
 ````
 ---
 
