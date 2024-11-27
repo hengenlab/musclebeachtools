@@ -1704,8 +1704,10 @@ class Neuron:
         Returns
         -------
         ISI : spike time difference (a[i+1] - a[i]) along axis
-        edges
-        hist_isi
+        edges, hist_isi : To plot later
+            fig1 = plt.figure()
+            ax = fig1.add_subplot(111)
+            ax.bar(edges[1:]*1000-0.5, hist_isi[0], color='#0b559f')
 
         Raises
         ------
