@@ -1694,8 +1694,8 @@ class Neuron:
 
         Parameters
         ----------
-        start : Start time (default self.start_time)
-        end : End time (default self.end_time)
+        start : Start time (default False uses self.start_time)
+        end : End time (default False uses self.end_time)
         isi_thresh : isi threshold (default 0.1)
         nbins : Number of bins (default 101)
         lplot : To plot or not (default lplot=1, plot isi)
@@ -1777,8 +1777,8 @@ class Neuron:
         Parameters
         ----------
         binsz : Bin size (default 3600)
-        start : Start time (default self.start_time)
-        end : End time (default self.end_time)
+        start : Start time (default False uses self.start_time)
+        end : End time (default False uses self.end_time)
         lplot : To plot or not (default lplot=1, plot firing rate)
         lonoff : Apply on off times (default on, 1)
 
@@ -2071,8 +2071,8 @@ class Neuron:
         ----------
         cont_thresh_list : threshold lists for calculating isi contamination
         time_limit : count spikes upto, default np.inf. Try also 100 ms, 0.1
-        start : Start time (default self.start_time)
-        end : End time (default self.end_time)
+        start : Start time (default False uses self.start_time)
+        end : End time (default False uses self.end_time)
         lonoff : Apply on off times (default on, 1)
 
         Returns
@@ -2143,8 +2143,8 @@ class Neuron:
         Parameters
         ----------
         nbins : Number of bins (default 101)
-        start : Start time (default self.start_time)
-        end : End time (default self.end_time)
+        start : Start time (default False uses self.start_time)
+        end : End time (default False uses self.end_time)
         lonoff : Apply on off times (default on, 1)
 
         Returns
@@ -2218,8 +2218,8 @@ class Neuron:
              amps_m = abs(amps - np.mean(amps))
              idx_normalamps = np.where(amps_m <
                                       (np.percentile(amps, threshold)))[0]
-        start : Start time (default self.start_time)
-        end : End time (default self.end_time)
+        start : Start time (default False uses self.start_time)
+        end : End time (default False uses self.end_time)
         lplot : Show plots (default True) allows selection
             else remove amplitudes above threshold without plotting
         lonoff : Apply on off times (default off, 0)
@@ -2802,8 +2802,8 @@ class Neuron:
         Parameters
         ----------
         binsz : Bin size (default 3600)
-        start : Start time (default self.start_time)
-        end : End time (default self.end_time)
+        start : Start time (default False uses self.start_time)
+        end : End time (default False uses self.end_time)
         lsavepng : Save checkqual results as png's
                    if lsavepng is 1, save in png_outdir as png
                    else lsavepng is 2, return figure
@@ -4202,8 +4202,8 @@ def n_checkqual_pdf(neuron_list, savepdf, maxqual=None,
               neuron.quality in maxqual
 
     binsz : Bin size (default 3600)
-    start : Start time (default self.start_time)
-    end : End time (default self.end_time)
+    start : Start time (default False uses self.start_time)
+    end : End time (default False uses self.end_time)
     fix_amp_ylim : default 1, yaxis max in amplitude plot.
                    For example can be fix_amp_ylim=500 to see from 0 to 500
                    in amplitude plot.
@@ -4274,8 +4274,8 @@ def n_getspikes(neuron_list, start=False, end=False, lonoff=1):
     Parameters
     ----------
     neuron_list : List of neurons
-    start : Start time (default self.start_time)
-    end : End time (default self.end_time)
+    start : Start time (default False uses self.start_time)
+    end : End time (default False uses self.end_time)
     lonoff : Apply on off times (default on, 1)
 
     Returns
@@ -4347,8 +4347,8 @@ def n_spiketimes_to_spikewords(neuron_list, binsz=0.02,
     ----------
     neuron_list : List of neurons
     binsz : Bin size (default 0.02 (20 ms))
-    start : Start time (default self.start_time)
-    end : End time (default self.end_time)
+    start : Start time (default False uses self.start_time)
+    end : End time (default False uses self.end_time)
     binarize : Get counts (default 0) in bins,
     if binarize is 1,binarize to 0 and 1
     lonoff : Apply on off times (default on, 1)
