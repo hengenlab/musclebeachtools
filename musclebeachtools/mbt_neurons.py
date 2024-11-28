@@ -2967,7 +2967,7 @@ class Neuron:
             isi_time_ax.set_ylim((0, 20))
             # isi_time_ax.set_xlim((self.start_time, self.end_time/300))
             isi_time_ax.set_xlim(left=self.start_time)
-            isi_time_ax.set_xlim(right=len(contamination_lines.T))
+            # isi_time_ax.set_xlim(right=len(contamination_lines.T))
             isi_time_ax.set_xlabel('Time')
             isi_time_ax.set_ylabel('Perc. contamination')
             isi_time_ax.legend(['@1ms', '@2ms', '@3ms', '@5ms'],
