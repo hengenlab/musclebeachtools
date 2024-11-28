@@ -2927,15 +2927,17 @@ class Neuron:
                 hzcount, xbins = self.plotFR(binsz=300, lplot=0)
                 fr_ax.plot(xbins[:-1], hzcount, color='#703be7')
                 fr_ax.set_xlim(left=self.start_time)
+                fr_ax.set_xlim(right=xbins[-2:-1])
                 fr_ax.set_xticks([])
                 fr_ax.set_xlabel('Time')
                 fr_ax.set_ylabel('Firing rate (Hz)')
             else:
                 hzcount, xbins = \
-                    self.plotFR(binsz=self.end_time/60,
+                    self.plotFR(binsz=self.end_time/(60*4),
                                 lplot=0)
                 fr_ax.plot(xbins[:-1], hzcount, color='#703be7')
                 fr_ax.set_xlim(left=self.start_time)
+                fr_ax.set_xlim(right=xbins[-2:-1])
                 fr_ax.set_xticks([])
                 fr_ax.set_xlabel('Time')
                 fr_ax.set_ylabel('Firing rate (Hz)')
