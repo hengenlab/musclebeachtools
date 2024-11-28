@@ -2923,6 +2923,8 @@ class Neuron:
                     (self.end_time - self.start_time))
             logger.info('Total FR is %f', total_fr)
             prsc_ratio = self.presence_ratio()
+            fanofactor_v = self.calculate_fano_factor()
+            cv_v = self.calculate_cv()
             if self.end_time > 3600 * 4:
                 hzcount, xbins = self.plotFR(binsz=300, lplot=0)
                 fr_ax.plot(xbins[:-1], hzcount, color='#703be7')
@@ -2944,6 +2946,8 @@ class Neuron:
             fr_stats_str = '\n'.join((
                 r'$Nspikes=%d$' % (len(self.spike_time), ),
                 r'$TotalFr=%.2f$' % (total_fr, ),
+                r'$Fanofactor=%.2f$' % (fanofactor_v, ),
+                r'$CV=%.2f$' % (cv_v, ),
                 r'$Pratio=%.2f$' % (prsc_ratio, )))
             props = dict(boxstyle='round', facecolor='wheat',
                          alpha=0.5)
