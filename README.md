@@ -216,20 +216,35 @@ neurons[4].sex
 neurons[4].species
 # 'mouse'
 ```
+#### $\textcolor{#81d8d0}{\textbf{Find qulaity of the 4th neuron}}$
+
+```
+neurons[4].quality
+neurons[4].qual_prob
+# qual : Quality values should be 1, 2, 3 or 4
+#        1 : Good
+#        2 : Good but some contamination
+#        3 : Multiunit contaminated unit
+#        4 : Noise unit
+# qual_prob array with probabilities for each quality from autoqual.
+```
 
 #### $\textcolor{#81d8d0}{\textbf{Find other properties of the 4th neuron}}$
 ```
 neurons[4].on_times
 neurons[4].off_times
+
 neurons[4].peak_channel
-neurons[4].quality
-neurons[4].qual_prob
+
 neurons[4].waveform
 neurons[4].waveform_tetrodes
 neurons[4].waveforms
+
 neurons[4].mean_amplitude
+
 neurons[4].cell_type
 neurons[4].peaklatency
+
 neurons[4].clust_idx
 neurons[4].spike_time_sec_onoff
 ```
