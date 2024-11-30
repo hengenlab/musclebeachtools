@@ -229,6 +229,22 @@ neurons[4].qual_prob
 # qual_prob array with probabilities for each quality from autoqual.
 ```
 
+#### $\textcolor{#81d8d0}{\textbf{Check total number of neurons and check quality}}$
+```
+import numpy as np
+import musclebeachtools as mbt
+# Load neurons
+neurons = \
+    np.load('H_2020-04-09_09-11-37_2020-04-10_01-06-37_neurons_group0.npy',
+            allow_pickle=True)
+print(f'Total number of neurons {len(neurons)}')
+q1 = sum( 1 for neuron in neurons if neuron.quality == 1)
+q2 = sum( 1 for neuron in neurons if neuron.quality == 2)
+q3 = sum( 1 for neuron in neurons if neuron.quality == 3)
+print(f'Quality 1 has {q1} neurons and 2  has {q2} neurons and quality 3 has {q3} neurons')
+```
+
+
 #### $\textcolor{#81d8d0}{\textbf{Find other properties of the 4th neuron}}$
 ```
 neurons[4].peak_channel
@@ -522,20 +538,7 @@ mbt.autoqual(neurons, '/media/HlabShare/models/xgb_model')
 ```
 
 
-#### $\textcolor{#81d8d0}{\textbf{Check total number of neurons and check quality}}$
-```
-import numpy as np
-import musclebeachtools as mbt
-# Load neurons
-neurons = \
-    np.load('H_2020-04-09_09-11-37_2020-04-10_01-06-37_neurons_group0.npy',
-            allow_pickle=True)
-print(f'Total number of neurons {len(neurons)}')
-q1 = sum( 1 for neuron in neurons if neuron.quality == 1)
-q2 = sum( 1 for neuron in neurons if neuron.quality == 2)
-q3 = sum( 1 for neuron in neurons if neuron.quality == 3)
-print(f'Quality 1 has {q1} neurons and 2  has {q2} neurons and quality 3 has {q3} neurons')
-```
+
 
 #### $\textcolor{#81d8d0}{\textbf{Filter neuron list by quality}}$
 
