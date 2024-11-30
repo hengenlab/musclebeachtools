@@ -331,14 +331,16 @@ import musclebeachtools as mbt
 # Load neurons
 neurons = np.load('neurons_group0.npy', allow_pickle=True)
 
-# binsz : Bin size (default 3600)
+# binsz : Bin size (default 60)
 #  start : Start time (default False uses self.start_time)
 #  end : End time (default False uses self.end_time)
 # lplot : To plot or not (default lplot=1, plot firing rate)
 # lonoff : Apply on off times (default on, 1)
-neurons[4].plotFR(binsz=3600, start=False, end=False,
+neurons[4].plotFR(binsz=60, start=False, end=False,
                   lplot=1, lonoff=1)
 ```
+$\textcolor{#a0db8e}{\textbf{Here binsz, start, end are in seconds}}$
+
 ---
 
 #### $\textcolor{#81d8d0}{\textbf{calculate Fano factor of the 4th neuron}}$
