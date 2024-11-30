@@ -1767,18 +1767,18 @@ class Neuron:
             sns.despine()
         return ISI, edges, hist_isi
 
-    def plotFR(self, binsz=3600, start=False, end=False,
+    def plotFR(self, binsz=60, start=False, end=False,
                lplot=1, lonoff=1):
         # copied from musclebeachtools
         '''
         This will produce a firing rate plot for all loaded spike times
         unless otherwise specified binsz, start, end are in seconds
 
-        plotFR(self, binsz=3600, start=False, end=False)
+        plotFR(self, binsz=60, start=False, end=False)
 
         Parameters
         ----------
-        binsz : Bin size (default 3600)
+        binsz : Bin size (default 60)
         start : Start time (default False uses self.start_time)
         end : End time (default False uses self.end_time)
         lplot : To plot or not (default lplot=1, plot firing rate)
@@ -1800,7 +1800,7 @@ class Neuron:
 
         Examples
         --------
-        n1[0].plotFR(binsz=3600, start=False, end=False)
+        n1[0].plotFR(binsz=60, start=False, end=False)
 
         '''
 
