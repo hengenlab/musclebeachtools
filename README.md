@@ -216,7 +216,7 @@ neurons[4].sex
 neurons[4].species
 # 'mouse'
 ```
-#### $\textcolor{#81d8d0}{\textbf{Find qulaity of the 4th neuron}}$
+#### $\textcolor{#81d8d0}{\textbf{Find quality of the 4th neuron}}$
 
 ```
 neurons[4].quality
@@ -320,6 +320,9 @@ neurons = np.load('neurons_group0.npy', allow_pickle=True)
 neurons[4].isi_hist(start=False, end=False, isi_thresh=0.1, nbins=101,
                     lplot=1, lonoff=1)
 ```
+
+$\textcolor{#a0db8e}{\textbf{Here isi_thresh, start, end are in seconds}}$
+
 ---
 
 #### $\textcolor{#81d8d0}{\textbf{Plot firing rate of 4th neuron}}$
