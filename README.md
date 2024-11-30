@@ -293,13 +293,13 @@ neurons[4].off_times
 # Also from 7200 seconds (hour 2) to end of the recording neurons[0].end_time data is good
 #
 # This can be set using set_onofftimes_from_list function like this
-neurons[0].set_onofftimes_from_list([neurons[0].start_time, 7200],
+neurons[4].set_onofftimes_from_list([neurons[0].start_time, 7200],
                                     [3600,  neurons[0].end_time])
 
 # To verify this is done correctly print on off times
-print(neurons[2].on_times)
+print(neurons[4].on_times)
 # [0.0, 7200]
-print(neurons[2].off_times)
+print(neurons[4].off_times)
 # [3600, 14400.0]
 ```
 
