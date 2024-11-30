@@ -231,9 +231,6 @@ neurons[4].qual_prob
 
 #### $\textcolor{#81d8d0}{\textbf{Find other properties of the 4th neuron}}$
 ```
-neurons[4].on_times
-neurons[4].off_times
-
 neurons[4].peak_channel
 
 neurons[4].waveform
@@ -262,6 +259,33 @@ neurons = np.load('neurons_group0.npy', allow_pickle=True)
 neurons[4].plot_wf()
 ```
 ---
+
+#### $\textcolor{#81d8d0}{\textbf{Check on off times of 4th neuron}}$
+```
+neurons[4].on_times
+# [0.0]
+
+neurons[4].off_times
+# [14400.0]
+```
+
+#### $\textcolor{#81d8d0}{\textbf{Set on off times of 4th neuron}}$
+```
+# If we find we have noise in recording from hour 1 to 2
+#
+# This means from neurons[0].start_time or 0 seconds to 3600 seconds (hour 1) data is good
+# Also from 7200 seconds (hour 2) to end of the recording neurons[0].end_time data is good
+#
+# This can be set using set_onofftimes_from_list function like this
+neurons[0].set_onofftimes_from_list([neurons[0].start_time, 7200],
+                                    [3600,  neurons[0].end_time])
+
+# To verify this is done correctly print on off times
+print(neurons[2].on_times)
+# [0.0, 7200]
+print(neurons[2].off_times)
+# [3600, 14400.0]
+```
 
 #### $\textcolor{#81d8d0}{\textbf{Plot isi of 4th neuron}}$
 ```
@@ -449,16 +473,7 @@ sw = mbt.n_spiketimes_to_spikewords(neuron_list_filt, binsz=0.02,
                                     start=False, end=False,
                                     binarize=0, lonoff=1)
 ```
----
 
-#### Set on off times
-```
-neurons[2].set_onofftimes_from_list([0, 3600], [900, 7200])
-print(neurons[2].on_times)
-[0, 3600]
-print(neurons[2].off_times)
-[900, 7200]
-```
 ---
 
 
