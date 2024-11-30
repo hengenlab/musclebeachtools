@@ -1843,7 +1843,7 @@ class Neuron:
                 # Update labels
                 ax.set_xticklabels(np.round(new_ticks, decimals=1))
 
-                ax.set_xlabel(f'Time (seconds)')
+                ax.set_xlabel('Time (seconds)')
                 ax.set_ylabel('Firing rate (Hz)')
 
         if lplot:
