@@ -321,7 +321,7 @@ neurons[4].isi_hist(start=False, end=False, isi_thresh=0.1, nbins=101,
                     lplot=1, lonoff=1)
 ```
 
-$\textcolor{#a0db8e}{\textbf{Here isi_thresh, start, end are in seconds}}$
+$\textcolor{#a0db8e}{\textbf{Here isi thresh, start, end are in seconds}}$
 
 ---
 
@@ -365,6 +365,8 @@ neurons[4].calculate_fano_factor(binsz=0.05, start=False, end=False,
                                  lonoff=1)
 
 ```
+$\textcolor{#a0db8e}{\textbf{Here binsz, start, end are in seconds}}$
+
 ---
 
 #### $\textcolor{#81d8d0}{\textbf{Calculate coefficient of variation (cv) of the ISIs of the 4th neuron}}$
