@@ -1834,7 +1834,16 @@ class Neuron:
                 ax = fig1.add_subplot(111)
                 # print(hzcount)
                 ax.plot(xbins[:-1], hzcount, color='#703be7')
-                ax.set_xlabel('Time (hours)')
+
+                # Change x-tick values while keeping the current range
+                # Get the current tick positions
+                current_ticks = ax.get_xticks()
+                # Scale by binsz
+                new_ticks = current_ticks * binsz
+                # Update labels
+                ax.set_xticklabels(np.round(new_ticks, decimals=1))
+
+                ax.set_xlabel(f'Time (seconds)')
                 ax.set_ylabel('Firing rate (Hz)')
 
         if lplot:
