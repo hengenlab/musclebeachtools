@@ -385,6 +385,8 @@ neurons = np.load('neurons_group0.npy', allow_pickle=True)
 neurons[4].calculate_cv(start=False, end=False, lonoff=1)
 
 ```
+$\textcolor{#a0db8e}{\textbf{Here start, end are in seconds}}$
+
 ---
 
 #### $\textcolor{#81d8d0}{\textbf{Calculate presence ratio of the 4th neuron}}$
@@ -402,11 +404,13 @@ neurons = np.load('neurons_group0.npy', allow_pickle=True)
 # lonoff : Apply on off times (default on, 1)
 neurons[4].presence_ratio(nbins=101, start=False, end=False,
                           lonoff=1)
-````
+```
+$\textcolor{#a0db8e}{\textbf{Here start, end are in seconds}}$
+
 ---
 
+#### $\textcolor{#81d8d0}{\textbf{Calculate isi contamination at various thresholds, 2 and 4 ms of the 4th neuron}}$
 
-#### Calculate isi contamination at various thresholds, 2 and 4 ms
 ```
 # cont_thresh_list : threshold lists for calculating isi contamination
 # time_limit : count spikes upto, default np.inf. Try also 100 ms, 0.1
@@ -414,8 +418,10 @@ neurons[4].presence_ratio(nbins=101, start=False, end=False,
 # end : End time (default self.end_time)
 # lonoff : Apply on off times (default on, 1)
 neurons[4].isi_contamination(cont_thresh_list=[0.002, 0.004], time_limit=np.inf)
-                        start=False, end=False, lonoff=1)
+                             start=False, end=False, lonoff=1)
 ```
+ $\textcolor{#a0db8e}{\textbf{Here binsz, start, end are in seconds}}$
+
 ---
 
 ### Check quality and its probability from autoqual (see below).
