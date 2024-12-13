@@ -880,7 +880,8 @@ zcl_i, zcl_v, zcl_mse = mbt.n_zero_crosscorr(neurons)
 print(zcl_i, "\n", zcl_v)
 ```
 
-#### Check validity of neurons_group0 files
+
+#### $\textcolor{#81d8d0}{\textbf{Check validity of neurons group0 files}}$
 ```
 import numpy as np
 import musclebeachtools as mbt
