@@ -50,6 +50,7 @@ try:
 except ImportError:
     raise ImportError('Run command : pip install scipy')
 from scipy.signal import fftconvolve
+from scipy.ndimage import gaussian_filter1d
 # try:
 #     import joblib
 # except ImportError:
@@ -4783,6 +4784,85 @@ def n_check_date_validity(neurons_group0_files_list,
             print(f'Clustering date is {clust_date}')
             print(f'sac date is {sacday}')
             raise ValueError(f'Clustering data after sac date {neurons_file}')
+
+
+def n_smoothed_firing_rates(neuron_list, binsz=0.02,
+                            start=False, end=False,
+                            sigma=0.1,
+                            lonoff=1):
+    '''
+    This function converts spiketimes to spikewords
+    Unless otherwise specified binsz, start, end are in seconds
+
+    n_smoothed_firing_rates(neuron_list, binsz=0.02, sigma=0.05)
+
+    Parameters
+    ----------
+    neuron_list : List of neurons
+    binsz : Bin size (default 0.02 (20 ms))
+    start : Start time (default self.start_time)
+    end : End time (default self.end_time)
+    sigma : default (0.050), 50 ms kernel smoothing
+    lonoff : Apply on off times (default on, 1)
+
+    Returns
+    -------
+    gaussian_smootheed_firing_rates:  smoothed firing rate
+        gaussian_smootheed_firing_rates[n_cells, n_bins]
+
+    Raises
+    ------
+    ValueError if neuron list is empty
+
+    See Also
+    --------
+
+    Notes
+    -----
+
+    Examples
+    --------
+    n_smoothed_firing_rates(neuron_list, binsz=0.02, sigma=0.05)
+    '''
+
+    # check neuron_list is not empty
+    if (len(neuron_list) == 0):
+        raise ValueError('Neuron list is empty')
+    # check binsize is not less than 1ms
+    if (binsz < 0.001):
+        raise ValueError('Bin size is less than 1millisecond')
+
+    # Get time
+    if start is False:
+        start = neuron_list[0].start_time
+    if end is False:
+        end = neuron_list[0].end_time
+
+    # Get spiketime list
+    spiketimes = n_getspikes(neuron_list, start=start, end=end,
+                             lonoff=lonoff)
+
+    # startime in bins
+    binrange = np.arange(start, (end + binsz), binsz)
+    n_cells = len(spiketimes)
+    n_bins = len(binrange) - 1
+
+    # initialize array
+    gaussian_smootheed_firing_rates = np.zeros([n_cells, n_bins])
+
+    # loop over cells and find counts/binarize
+    for i in range(n_cells):
+
+        # spiketimes in seconds to ms
+        spiketimes_cell = np.asarray(spiketimes[i])
+        counts, bins = np.histogram(spiketimes_cell, bins=binrange)
+
+        # sqrt counts
+        sqrt_transformed_counts = np.sqrt(counts)
+        gaussian_smootheed_firing_rates[i, :] = \
+            gaussian_filter1d(sqrt_transformed_counts, sigma / binsz)
+
+    return gaussian_smootheed_firing_rates
 
 
 def load_spike_amplitudes(neuron_list, file_name):
