@@ -594,7 +594,7 @@ for neuron in neurons:
 #### Remove spikes for neuron with large amplitudes
 ```
 # Default method based on standard deviation,
-For example for neurons of quality 1 and 2,  1.5 to 2.5 standard deviation is fine.
+For example for neurons of quality 1 and 2,  1.5 to 4.5 standard deviation is fine.
 But quality 3 neurons make sure to use larger deviations or check manualy with lplot=True
 as it contains multiple nuerons/MUA.
 
