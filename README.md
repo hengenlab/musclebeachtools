@@ -506,7 +506,7 @@ sw = mbt.n_spiketimes_to_spikewords(neuron_list_filt, binsz=0.02,
 ---
 
 
-#### Change quality with plot of ISI, Firingrate and Waveform
+#### $\textcolor{#81d8d0}{\textbf{Change quality with plot of ISI, Firingrate, Waveform and amplitude}}$
 ```
 import numpy as np
 import musclebeachtools as mbt
