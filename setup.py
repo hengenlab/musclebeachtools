@@ -19,7 +19,7 @@ except Exception as e:
 
 setup(
    name='musclebeachtools',
-   version='1.4.1',
+   version='1.4.2',
    description='This package used to analyze neuron data, from basic plotting\
                (ISI histograms, firing rate, cross corr), to hard core\
                computational work (ising models, branching ratios, etc).',
