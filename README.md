@@ -512,6 +512,9 @@ import numpy as np
 import musclebeachtools as mbt
 neurons = np.load('neurons_group0.npy', allow_pickle=True)
 
+# Sort by peack_channel
+neurons = sorted(neurons, key=lambda i: i.peak_channel)
+
 # binsz : Bin size (default 3600)
 # start : Start time (default self.start_time)
 # end : End time (default self.end_time)
