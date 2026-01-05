@@ -594,7 +594,7 @@ for neuron in neurons:
 ```
 ---
 
-#### Remove spikes for neuron with large amplitudes
+#### $\textcolor{#81d8d0}{\textbf{Remove spikes for neuron with large amplitudes}}$
 ```
 # Default method based on standard deviation,
 For example for neurons of quality 1 and 2,  1.5 to 4.5 standard deviation is fine.
