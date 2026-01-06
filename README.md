@@ -619,7 +619,7 @@ mbt.n_save_modified_neuron_list(neurons, '/home/kbn/neuron_mod.npy')
 ```
 ---
 
-#### Sort neurons by peak_channel in ascending order
+#### $\textcolor{#81d8d0}{\textbf{Sort neurons by peak_channel in ascending order}}$
 ```
 import numpy as np
 import musclebeachtools as mbt
