@@ -632,7 +632,7 @@ neurons = sorted(neurons, key=lambda i: i.peak_channel)
 ---
 
 
-#### Shuffle spike times
+#### $\textcolor{#81d8d0}{\textbf{Shuffle spike times}}$
 ```
 import numpy as np
 import musclebeachtools as mbt
