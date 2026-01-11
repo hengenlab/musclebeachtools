@@ -692,7 +692,8 @@ neurons[0].get_behavior(tolerance=2, binsize=4)
 ```
 ---
 
-#### Plot all waveforms in a neuron list
+#### $\textcolor{#81d8d0}{\textbf{Plot all waveforms in a neuron list}}$
+
 ```
 # maxqual filter by quality, list
 # plot waveforms for neurons with quality in maxqual
