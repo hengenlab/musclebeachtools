@@ -705,7 +705,7 @@ mbt.n_plot_neuron_wfs(neurons, maxqual=[1], pltname="block1",
 ```
 ---
 
-#### Plot all neurons checkqual (figure) and save as pdf
+#### $\textcolor{#81d8d0}{\textbf{Plot all neurons checkqual (figure) and save as pdf}}$
 ```
 fl = '/home/kbn/probe1/co/H_2023-12-29_23-09-54_2023-12-30_11-04-55_neurons_group0.npy'
 
