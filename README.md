@@ -736,7 +736,7 @@ mbt.n_checkqual_pdf(neurons, savepdf, maxqual=None,
 ---
 
 
-#### check two neurons are from same tetrode
+#### $\textcolor{#81d8d0}{\textbf{check two neurons are from same tetrode}}$
 ```
 # check_sametetrode_neurons(channel1, channel2,
                             ch_grp_size=4,
