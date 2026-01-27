@@ -756,7 +756,7 @@ lsamechannel = \
 ---
 
 
-#### To create neuron list from sorter_interface output
+#### $\textcolor{#81d8d0}{\textbf{To create neuron list from sorter interface output}}$
 You need to be in sorter_interface conda environment (spike15)
 ```
 import numpy as np
