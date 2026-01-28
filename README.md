@@ -902,7 +902,7 @@ mbt.n_check_date_validity(neurons_group0_files_list,
 ---
 
 
-#### Calculates the group value of a channel
+#### $\textcolor{#81d8d0}{\textbf{Calculates the group value of a channel}}$
 ```
 import numpy as np
 import musclebeachtools as mbt
