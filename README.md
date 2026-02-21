@@ -797,7 +797,7 @@ neurons[0].expt_cond
 ```
 ---
 
-#### Add neurons
+#### $\textcolor{#81d8d0}{\textbf{Add neurons}}$
 ```
 import numpy as np
 import musclebeachtools as mbt
@@ -817,6 +817,22 @@ print("Length ", len(neurons))
 # add merged new merged neuron
 neurons = np.append(neurons, new_neuron)
 print("Length ", len(neurons))
+```
+
+
+---
+#### Correlograms
+```
+import numpy as np
+import musclebeachtools as mbt
+fl = '/media/ckbn/H_2022-05-12_08-59-26_2022-05-12_17-54-28_neurons_group0.npy'
+neurons = np.load(fl, allow_pickle=True)
+# Autocorr
+# default savefig_loc=None, to show plot
+# savefig_loc='/home/kbn/fig_crosscorr.png' to save fig
+neurons[1].crosscorr(friend=None, savefig_loc=None)
+# Crosscorr
+neurons[10].crosscorr(friend=neurons[11], savefig_loc=None)
 ```
 ---
 
@@ -862,17 +878,7 @@ n_amp = mbt.load_spike_amplitudes(n, '/home/kbn/amplitudes0.npy')
 n_amp[4].spike_amplitude
 
 
-# Correlograms
-import numpy as np
-import musclebeachtools as mbt
-fl = '/media/ckbn/H_2022-05-12_08-59-26_2022-05-12_17-54-28_neurons_group0.npy'
-neurons = np.load(fl, allow_pickle=True)
-# Autocorr
-# default savefig_loc=None, to show plot
-# savefig_loc='/home/kbn/fig_crosscorr.png' to save fig
-neurons[1].crosscorr(friend=None, savefig_loc=None)
-# Crosscorr
-neurons[10].crosscorr(friend=neurons[11], savefig_loc=None)
+
 
 
 # zero cross corr
