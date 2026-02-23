@@ -821,7 +821,7 @@ print("Length ", len(neurons))
 
 
 ---
-#### Correlograms
+#### $\textcolor{#81d8d0}{\textbf{Correlograms}}$
 ```
 import numpy as np
 import musclebeachtools as mbt
