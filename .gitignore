@@ -54,3 +54,5 @@ Temporary Items
 *.h5
 *.mp4
 *.npy
+*.nii
+*.nii.gz
