@@ -47,6 +47,11 @@ Temporary Items
 .AppleDouble
 .LSOverride
 
+# Video
+*.avi
+*.mov
+*.mkv
+
 # Possible raw files
 *.abf
 *.bin
@@ -56,3 +61,7 @@ Temporary Items
 *.npy
 *.nii
 *.nii.gz
+*.edf
+*.mat
+*.tiff
+*.tif
