@@ -65,3 +65,5 @@ Temporary Items
 *.mat
 *.tiff
 *.tif
+*.dat
+*.raw
