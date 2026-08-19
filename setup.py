@@ -43,6 +43,9 @@ setup(
     # 'mrestimator@git+https://github.com/Priesemann-Group/mrestimator.git',
     # 'neuraltoolkit@git+https://github.com/hengenlab/neuraltoolkit.git',
     'xgboost'],
+   extras_require={
+        'full': ['neuronqual@git+https://github.com/hengenlab/neuronqual_hlab.git',],
+    },
    # not added as may be users have their own changes in neuraltoolkit
    # 'neuraltoolkit@git+https://github.com/hengenlab/neuraltoolkit.git'],
    classifiers=[
