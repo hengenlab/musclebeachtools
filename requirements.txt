@@ -9,6 +9,6 @@ scikit-learn
 xgboost
 mrestimator@git+https://github.com/Priesemann-Group/mrestimator.git
 neuraltoolkit@git+https://github.com/hengenlab/neuraltoolkit.git
-neuronqual @ git+ssh://git@github.com/hengenlab/neuronqual_hlab.git
+# neuronqual @ git+ssh://git@github.com/hengenlab/neuronqual_hlab.git
 # neuronqual@git+https://github.com/hengenlab/neuronqual_hlab.git
 
