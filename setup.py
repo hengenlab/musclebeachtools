@@ -44,8 +44,11 @@ setup(
     # 'neuraltoolkit@git+https://github.com/hengenlab/neuraltoolkit.git',
     'xgboost'],
    extras_require={
-        'full': ['neuronqual@git+https://github.com/hengenlab/neuronqual_hlab.git',],
-    },
+    'full': [
+        'neuronqual @ '
+        'git+https://github.com/hengenlab/neuronqual_hlab.git',
+    ],
+   },
    # not added as may be users have their own changes in neuraltoolkit
    # 'neuraltoolkit@git+https://github.com/hengenlab/neuraltoolkit.git'],
    classifiers=[
