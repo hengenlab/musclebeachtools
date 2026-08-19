@@ -37,6 +37,8 @@ pip install .
 # cd locationofmusclebeachtools/musclebeachtools/  
 # For example /home/kbn/git/musclebeachtools
 pip install .
+# To install with neuronqual
+pip install -e ".[full]"
 ```
 
 ```
